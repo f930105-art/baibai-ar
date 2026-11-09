@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#0b0907">
+<meta name="description" content="線上拜拜 AR 體驗：選一件心事，神明現身，可上香、擲筊、抽籤。">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px/1.5 system-ui,sans-serif}
+</style>
+</head>
+<body>
+<title>掌心香火</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;900&display=swap">
+<style>
+/* Layout: 全幅相機舞台，神明浮於中央；底部漆木供桌欄收納動作 */
+:root{
+  --ink:#0b0907;
+  --ink-2:#17110e;
+  --ink-3:#241a15;
+  --ink-4:#33251d;
+  --verm:#c8102e;
+  --verm-2:#8d0c1f;
+  --gold:#d8ab55;
+  --gold-hi:#f6dfa8;
+  --jade:#4e8578;
+  --smoke:#ece4d8;
+  --smoke-2:#a2978c;
+  --ok:#7fb069;
+  --no:#b5495b;
+  --font-d:"Noto Serif TC",Songti TC,SimSun,serif;
+  --font-b:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+html,body{height:100%}
+body{
+  margin:0;background:var(--ink);color:var(--smoke);
+  font-family:var(--font-b);overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px;border-radius:4px}
+
+.shell{position:relative;height:100%;width:100%;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- 開場 ---------- */
+#home{
+  background:
+    radial-gradient(120% 70% at 50% -10%, #3a1a14 0%, transparent 60%),
+    radial-gradient(90% 60% at 50% 110%, #2a140f 0%, transparent 65%),
+    var(--ink);
+  overflow-y:auto;
+}
+.home-in{
+  margin:auto;width:100%;max-width:560px;
+  padding-block:28px 32px;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+}
+.plaque{
+  position:relative;padding:14px 34px;
+  background:linear-gradient(180deg,#1d100c,#120a07);
+  border:2px solid var(--gold);border-radius:3px;
+  box-shadow:0 0 0 4px #0b0907,0 0 34px -6px rgba(216,171,85,.5);
+}
+.plaque h1{
+  margin:0;font-family:var(--font-d);font-weight:900;
+  font-size:clamp(30px,9vw,44px);letter-spacing:.22em;
+  color:var(--gold-hi);text-indent:.22em;
+  text-shadow:0 1px 0 #5a3c15,0 0 22px rgba(246,223,168,.3);
+}
+.lantern{position:absolute;top:50%;width:16px;height:22px;border-radius:50% 50% 45% 45%;background:linear-gradient(180deg,var(--verm),var(--verm-2));box-shadow:0 0 16px rgba(200,16,46,.75);transform:translateY(-50%)}
+.lantern.l{left:-26px}.lantern.r{right:-26px}
+.tag{
+  font-size:12.5px;letter-spacing:.3em;color:var(--smoke-2);
+  text-indent:.3em;text-align:center;
+}
+.wishes{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;
+}
+@media (max-width:420px){.wishes{grid-template-columns:repeat(2,1fr)}}
+.wish{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:16px 8px 14px;min-width:0;
+  background:linear-gradient(180deg,rgba(52,37,29,.9),rgba(23,17,14,.9));
+  border:1px solid #3d2c22;border-radius:10px;
+  transition:border-color .2s,transform .12s,box-shadow .2s;
+}
+.wish:hover,.wish:focus-visible{border-color:var(--gold);box-shadow:0 0 22px -8px rgba(216,171,85,.8)}
+.wish:active{transform:scale(.97)}
+.wish .w-ico{width:40px;height:40px}
+.wish .w-n{font-family:var(--font-d);font-size:17px;font-weight:600;letter-spacing:.08em;color:var(--gold-hi)}
+.wish .w-d{font-size:11px;color:var(--smoke-2);letter-spacing:.04em}
+.foot{font-size:11.5px;line-height:1.75;color:#6d645c;text-align:center;max-width:34em}
+.foot b{color:var(--smoke-2);font-weight:500}
+
+/* ---------- 神壇 ---------- */
+#altar{background:var(--ink)}
+#cam{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+#cam.on{opacity:1}
+#backdrop{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(70% 45% at 50% 42%, rgba(216,171,85,.14) 0%, transparent 70%),
+    linear-gradient(180deg,#1a0f0b 0%,#120b08 45%,#0b0907 100%);
+}
+#backdrop::before{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,#2a1710 0 7%,transparent 7% 93%,#2a1710 93% 100%),
+    repeating-linear-gradient(90deg,transparent 0 46px,rgba(216,171,85,.05) 46px 47px);
+}
+#backdrop::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:16%;
+  background:linear-gradient(180deg,#3a1d13,#2a1710 60%,transparent);
+  border-bottom:2px solid rgba(216,171,85,.28);
+}
+.bd-lantern{
+  position:absolute;top:11%;width:38px;height:52px;border-radius:50% 50% 42% 42%;
+  background:linear-gradient(180deg,#d4203c,#7d0a1c);
+  box-shadow:0 0 40px rgba(200,16,46,.6);opacity:.9;
+  animation:sway 6s ease-in-out infinite;
+}
+.bd-lantern::after{content:"";position:absolute;left:50%;bottom:-13px;width:2px;height:13px;background:var(--gold);transform:translateX(-50%)}
+.bd-lantern.a{left:9%}
+.bd-lantern.b{right:9%;animation-delay:-3s}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+
+#smoke{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+#figure{
+  position:absolute;left:50%;top:46%;width:min(66vw,250px);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  animation:float 5.5s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(216,171,85,.45));
+}
+#figure svg{width:100%;height:auto;display:block}
+@keyframes float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 10px))}}
+#figure.entering{animation:none;opacity:0;transform:translate(-50%,-42%) scale(.88)}
+#figure.enter{animation:enter .9s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes enter{to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+.hud{
+  position:absolute;left:0;right:0;top:0;z-index:4;
+  padding-block:12px;
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(180deg,rgba(11,9,7,.82),transparent);
+}
+.hud .who{font-family:var(--font-d);font-size:19px;font-weight:600;letter-spacing:.1em;color:var(--gold-hi)}
+.hud .for{font-size:11.5px;color:var(--smoke-2);letter-spacing:.14em;margin-top:2px}
+.hud .back{
+  margin-left:auto;flex:none;width:38px;height:38px;border-radius:50%;
+  border:1px solid #4a372c;background:rgba(11,9,7,.6);
+  font-size:17px;line-height:1;color:var(--smoke-2);
+}
+.cam-chip{
+  position:absolute;top:60px;left:50%;transform:translateX(-50%);z-index:4;
+  font-size:11px;letter-spacing:.1em;color:var(--smoke-2);
+  background:rgba(11,9,7,.72);border:1px solid #3b2b22;
+  padding:5px 12px;border-radius:999px;white-space:nowrap;
+}
+
+.censer{position:absolute;left:50%;bottom:118px;width:132px;transform:translateX(-50%);z-index:3}
+.censer svg{width:100%;height:auto;display:block}
+
+.rail{
+  position:absolute;left:0;right:0;bottom:0;z-index:5;
+  padding-block:14px 16px;
+  display:flex;gap:9px;
+  background:linear-gradient(180deg,transparent,rgba(11,9,7,.9) 32%,#0b0907);
+  border-top:0;
+}
+.rail::before{
+  content:"";position:absolute;left:0;right:0;top:34px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(216,171,85,.45),transparent);
+}
+.act{
+  flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:11px 4px;border-radius:9px;
+  background:linear-gradient(180deg,#2d2019,#1a1310);
+  border:1px solid #42301f;
+  transition:border-color .2s,opacity .2s,transform .12s;
+}
+.act:active{transform:scale(.96)}
+.act[disabled]{opacity:.34;cursor:not-allowed}
+.act:not([disabled]):hover,.act:not([disabled]):focus-visible{border-color:var(--gold)}
+.act .a-n{font-family:var(--font-d);font-size:16px;font-weight:600;letter-spacing:.14em;color:var(--gold-hi);text-indent:.14em}
+.act .a-d{font-size:10.5px;color:var(--smoke-2);letter-spacing:.03em}
+.act.lit{border-color:var(--gold);box-shadow:0 0 20px -8px var(--gold)}
+
+/* ---------- 結果面板 ---------- */
+.sheet{
+  position:absolute;inset:0;z-index:9;
+  display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(7,5,4,.76);backdrop-filter:blur(3px);
+  animation:fade .25s ease;
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet-in{
+  width:100%;max-width:520px;max-height:92%;overflow-y:auto;
+  padding-block:22px 24px;
+  background:linear-gradient(180deg,#1d1511,#120c09);
+  border:1px solid #43301f;border-bottom:0;
+  border-radius:16px 16px 0 0;
+  box-shadow:0 -14px 50px rgba(0,0,0,.65);
+  animation:rise .34s cubic-bezier(.2,.9,.3,1);
+}
+@keyframes rise{from{transform:translateY(26px);opacity:0}to{transform:none;opacity:1}}
+.sheet h2{
+  margin:0 0 4px;font-family:var(--font-d);font-weight:900;
+  font-size:27px;letter-spacing:.14em;text-indent:.14em;text-align:center;
+  text-wrap:balance;
+}
+.sheet .sub{font-size:12px;letter-spacing:.2em;text-indent:.2em;color:var(--smoke-2);text-align:center;margin:0 0 16px}
+.cups{display:flex;justify-content:center;gap:30px;margin:4px 0 18px}
+.cup-w{display:flex;flex-direction:column;align-items:center;gap:7px}
+.cups svg{width:88px;height:auto}
+.cup-lab{font-size:10.5px;letter-spacing:.16em;text-indent:.16em;color:var(--smoke-2)}
+.cups .cup{animation:toss .75s cubic-bezier(.3,.7,.4,1)}
+.cups .cup-w:nth-child(2) .cup{animation-delay:.08s}
+@keyframes toss{0%{transform:translateY(-120px) rotate(-220deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.verdict{font-size:14px;line-height:1.85;color:#cdc2b5;text-align:center;max-width:26em;margin:0 auto}
+.streak{
+  margin:14px auto 0;max-width:fit-content;
+  font-size:11.5px;letter-spacing:.14em;color:var(--gold-hi);
+  border:1px solid rgba(216,171,85,.45);border-radius:999px;padding:5px 14px;
+}
+
+.poem-wrap{display:flex;justify-content:center;margin:18px 0 20px}
+.poem{
+  writing-mode:vertical-rl;
+  font-family:var(--font-d);font-size:clamp(18px,5.2vw,22px);font-weight:600;
+  line-height:2.1;letter-spacing:.2em;color:var(--gold-hi);
+  padding:18px 14px;border-radius:4px;
+  background:linear-gradient(180deg,rgba(236,228,216,.05),transparent);
+  border-right:2px solid rgba(216,171,85,.4);
+  border-left:2px solid rgba(216,171,85,.4);
+}
+.lot-head{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
+.lot-no{font-family:var(--font-d);font-size:14px;letter-spacing:.14em;color:var(--smoke-2)}
+.grade{
+  font-family:var(--font-d);font-size:13px;font-weight:600;letter-spacing:.14em;
+  padding:3px 11px;border-radius:999px;border:1px solid currentColor;
+}
+.explain{
+  font-size:14px;line-height:1.95;color:#cdc2b5;
+  max-width:28em;margin:0 auto;
+  padding-top:16px;border-top:1px solid #35261d;
+}
+.explain b{display:block;font-size:11px;letter-spacing:.24em;color:var(--smoke-2);font-weight:500;margin-bottom:7px}
+.sheet-btns{display:flex;gap:9px;margin-top:22px}
+.sbtn{
+  flex:1;padding:13px;border-radius:9px;font-size:14px;letter-spacing:.1em;
+  border:1px solid #4a3828;background:#241a14;transition:border-color .2s}
+.sbtn:hover,.sbtn:focus-visible{border-color:var(--gold)}
+.sbtn.primary{background:linear-gradient(180deg,var(--verm),var(--verm-2));border-color:#d6364f;color:#fff}
+
+.toast{
+  position:absolute;left:50%;bottom:112px;transform:translateX(-50%);z-index:8;
+  font-size:12.5px;letter-spacing:.1em;color:var(--gold-hi);
+  background:rgba(11,9,7,.9);border:1px solid rgba(216,171,85,.4);
+  padding:9px 18px;border-radius:999px;white-space:nowrap;
+  animation:toastIn .3s ease;
+}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translateX(-50%)}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+
+<div class="shell">
+
+  <section id="home" class="screen">
+    <div class="home-in gut">
+      <div class="plaque">
+        <span class="lantern l"></span>
+        <h1>掌心香火</h1>
+        <span class="lantern r"></span>
+      </div>
+      <p class="tag">選一件心事　神明在前</p>
+      <div class="wishes" id="wishes"></div>
+      <p class="foot">
+        上香、擲筊、抽籤皆為民俗文化之數位體驗，<b>結果由隨機決定</b>，
+        僅供參考與學習，不作任何實際決策依據。
+      </p>
+    </div>
+  </section>
+
+  <section id="altar" class="screen" hidden>
+    <video id="cam" playsinline muted autoplay></video>
+    <div id="backdrop">
+      <span class="bd-lantern a"></span>
+      <span class="bd-lantern b"></span>
+    </div>
+    <canvas id="smoke"></canvas>
+    <div id="figure"></div>
+    <div class="censer" id="censer"></div>
+
+    <header class="hud gut">
+      <div>
+        <div class="who" id="who">財神爺</div>
+        <div class="for" id="for">求　財運</div>
+      </div>
+      <button class="back" id="back" aria-label="回到選單">✕</button>
+    </header>
+    <div class="cam-chip" id="camChip" hidden></div>
+
+    <nav class="rail gut">
+      <button class="act" data-act="incense" id="bIncense">
+        <span class="a-n">上香</span><span class="a-d">先敬神明</span>
+      </button>
+      <button class="act" data-act="jiao" id="bJiao" disabled>
+        <span class="a-n">擲筊</span><span class="a-d">問允不允</span>
+      </button>
+      <button class="act" data-act="qian" id="bQian" disabled>
+        <span class="a-n">抽籤</span><span class="a-d">求一首詩</span>
+      </button>
+    </nav>
+  </section>
+
+</div>
+<div id="sheet" hidden></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ========== 神明與籤詩 ========== */
+var DEITIES=[
+{id:"cs",name:"財神爺",full:"武財神 趙公明",wish:"財運",desc:"求財、求業績",
+ robe:"#c01f33",robe2:"#7d0f1e",trim:"#e3c069",glow:"#ffcf6b",skin:"#f3d2ae",
+ hat:"wing",beard:"white",prop:"ingot",icon:"ingot",
+ bless:"招財進寶　日進斗金",
+ lots:[
+ {g:"上上籤",p:["金鱗豈是池中物","一遇風雲便化龍","積善之家慶有餘","開門已見貴人逢"],
+  e:"時機成熟了，過去的積累會一次兌現。財來得快，守得住才算真的得到。"},
+ {g:"上吉籤",p:["春耕夏耘秋有實","莫問何時穀滿倉","腳下泥濘休嫌苦","來日方長路更長"],
+  e:"正財可期，但急不得。按部就班做下去，年底自然見分曉。"},
+ {g:"中籤",p:["石中藏玉人不識","待得良工琢磨時","眼前小利休貪戀","自有貴人指路歧"],
+  e:"你手上有被低估的東西。別為小錢分心，等懂的人出現。"},
+ {g:"中平籤",p:["進一步時退兩步","風波暗處且停舟","先將舊帳理分明","方得新渠引水流"],
+  e:"先把舊的債務和麻煩清乾淨，現在不宜開新局。"},
+ {g:"下下籤",p:["鏡裡黃金終是幻","枝頭好果已蟲穿","貪他一粒米中利","失卻半倉舊有錢"],
+  e:"有受騙與投機失利之象。這陣子切勿借貸、跟會或聽信明牌。"}]},
+
+{id:"yl",name:"月下老人",full:"月老星君",wish:"姻緣",desc:"求姻緣、求和合",
+ robe:"#c2566b",robe2:"#8a3147",trim:"#f0d7a8",glow:"#ffb3c4",skin:"#f3d2ae",
+ hat:"cloth",beard:"white",prop:"thread",icon:"knot",
+ bless:"千里姻緣　一線相牽",
+ lots:[
+ {g:"上上籤",p:["千里姻緣一線牽","紅絲早繫不須憂","莫嫌相逢猶未識","明月終當照兩頭"],
+  e:"對的人已經在你附近，只是還沒認出來。多出門、多答應邀約。"},
+ {g:"上吉籤",p:["舊枝新發一點紅","春風不負有心人","若肯低頭多讓步","石上也能開杏花"],
+  e:"有機會，但需要你主動軟一點。別再硬碰硬了。"},
+ {g:"中籤",p:["隔溪相望兩相知","只欠橋頭一語遲","莫待花殘空嘆息","開口原來不費時"],
+  e:"你們其實都有意，缺的只是一句話。該說就說。"},
+ {g:"中平籤",p:["同行一段各西東","不是無緣是未逢","且將心事交流水","自有來時渡口逢"],
+  e:"這段先放下，時候未到。緣分還沒走到渡口。"},
+ {g:"下下籤",p:["強摘之瓜終不甜","牽來之絲易斷弦","回頭看取身邊路","莫向荊叢覓牡丹"],
+  e:"對方無意，勉強只會兩敗俱傷。該放手，也該看看身邊的人。"}]},
+
+{id:"wc",name:"文昌帝君",full:"梓潼帝君",wish:"學業",desc:"求考試、求升學",
+ robe:"#2f6f8f",robe2:"#1b4257",trim:"#e3c069",glow:"#7fd4ff",skin:"#f3d2ae",
+ hat:"scholar",beard:"black",prop:"brush",icon:"brush",
+ bless:"文思泉湧　金榜題名",
+ lots:[
+ {g:"上上籤",p:["十年窗下無人問","一舉成名天下知","筆下自有千鈞力","金榜題名正此時"],
+  e:"準備夠了，放膽去考。臨場不要改答案，相信第一直覺。"},
+ {g:"上吉籤",p:["螢窗雪案苦功深","已過三關剩一關","莫在臨門鬆了手","穩住心神便登山"],
+  e:"進度超前，但最後關頭最危險。別提早慶祝。"},
+ {g:"中籤",p:["書中自有黃金屋","只是沙中未見金","換個法門重整理","豁然開朗在明晨"],
+  e:"方法要換，不是你不夠努力。把筆記重新整理一次。"},
+ {g:"中平籤",p:["讀得三分忘七分","心猿意馬坐難安","且先收拾窗前亂","書聲方得入心間"],
+  e:"心定不下來。先處理讓你分心的那件事，再談讀書。"},
+ {g:"下下籤",p:["臨渴掘井水難得","臨陣磨槍刃不光","此科且作他科計","莫將僥倖當文章"],
+  e:"準備不足，這次勝算不高。及早改計畫，或者延後一年。"}]},
+
+{id:"bs",name:"保生大帝",full:"大道公 吳本",wish:"健康",desc:"求病癒、求平安",
+ robe:"#3d7a62",robe2:"#22493a",trim:"#e3c069",glow:"#8de8c0",skin:"#f3d2ae",
+ hat:"cloth",beard:"black",prop:"gourd",icon:"gourd",
+ bless:"妙手回春　身安體泰",
+ lots:[
+ {g:"上上籤",p:["沉痾一旦雲開散","良藥正逢對症時","自此身輕如脫殼","莫忘當初惜福心"],
+  e:"病痛將解，身體會好轉。痊癒之後記得保養，別故態復萌。"},
+ {g:"上吉籤",p:["藥到病除須三日","調養還需七日功","莫因稍好便逞強","培元固本在從容"],
+  e:"會好，但別急著恢復原本的作息。多給身體一點時間。"},
+ {g:"中籤",p:["病在身上根在心","愁腸百結損元神","解鈴還須繫鈴者","放下便是上藥針"],
+  e:"身體的問題來自心理壓力。先把煩惱處理掉，症狀自然減輕。"},
+ {g:"中平籤",p:["三分在藥七分養","熬夜貪涼總是傷","若肯早眠兼節飲","何須四處覓仙方"],
+  e:"沒有大礙，但壞習慣要改。作息、飲食，兩樣先挑一樣。"},
+ {g:"下下籤",p:["小恙不理成大患","諱疾忌醫最堪憂","速速尋醫莫拖延","莫待秋深悔晚籌"],
+  e:"有警訊被你忽略了。盡快就醫檢查，不要再拖。"}]},
+
+{id:"gg",name:"關聖帝君",full:"協天大帝 關羽",wish:"事業",desc:"求事業、求正義",
+ robe:"#2e6b4f",robe2:"#174330",trim:"#e3c069",glow:"#ffd98a",skin:"#d4624f",
+ hat:"warrior",beard:"black",prop:"blade",icon:"blade",
+ bless:"忠義千秋　事業亨通",
+ lots:[
+ {g:"上上籤",p:["青龍出匣光照天","一刀劈開萬重山","此去前程無阻礙","義字當頭自有緣"],
+  e:"大膽前進，阻礙會自己退開。守住信義的人，貴人會來。"},
+ {g:"上吉籤",p:["過五關時斬六將","一關一難一重天","忠肝義膽終能渡","莫為小人改初顏"],
+  e:"會遇到連續難關，但都過得去。別被小人逼得變了性子。"},
+ {g:"中籤",p:["兵馬未動糧草先","謀定而後再揮鞭","此時不是爭鋒日","養銳三分待明年"],
+  e:"現在不是衝的時候。先補資源、建人脈，明年再出手。"},
+ {g:"中平籤",p:["同舟共濟風浪中","各懷心事各西東","若無一語交分明","空負當初結義情"],
+  e:"團隊有嫌隙沒說破。找個時間開誠布公談一次。"},
+ {g:"下下籤",p:["赤兔雖良失其主","寶刀縱利無用時","此地非是棲身處","早作良圖莫遲疑"],
+  e:"你在錯的地方。環境配不上你的能力，該另謀出路了。"}]},
+
+{id:"mz",name:"天上聖母",full:"媽祖 林默娘",wish:"平安",desc:"求出入、求全家",
+ robe:"#9b2b3e",robe2:"#5e1322",trim:"#e3c069",glow:"#ffd1a8",skin:"#f6ddc0",
+ hat:"phoenix",beard:"none",prop:"tablet",icon:"wave",
+ bless:"慈航普渡　出入平安",
+ lots:[
+ {g:"上上籤",p:["黑水溝前風浪急","一盞紅燈照夜明","娘娘自有慈悲在","平安二字抵千金"],
+  e:"有驚無險，會被護住。這段時間出入平安，不必過度擔心。"},
+ {g:"上吉籤",p:["舟行千里終須靠","只在舵手穩心神","前路雖有三分浪","過得此灘便是春"],
+  e:"有些波折但無大礙。穩住自己的心，就過得去。"},
+ {g:"中籤",p:["出門且看天色變","莫將僥倖付行囊","多備一傘多分穩","小心駛得萬年船"],
+  e:"行程要多做準備，別抱僥倖。該買的保險、該備的東西別省。"},
+ {g:"中平籤",p:["家中瑣事如亂麻","在外奔波兩頭忙","且分輕重先後序","風平浪靜自歸航"],
+  e:"忙亂但無災。把優先順序排好，不要什麼都想顧。"},
+ {g:"下下籤",p:["風起浪高不宜行","強渡此灘恐翻舟","且將行期暫延後","待得雲收月自明"],
+  e:"近期不宜遠行或動大工程。能延後就延後，為上策。"}]}
+];
+
+var GRADE_COLOR={"上上籤":"#f6dfa8","上吉籤":"#8de8c0","中籤":"#ece4d8","中平籤":"#a2978c","下下籤":"#d47e8e"};
+
+/* ========== 圖像 ========== */
+function hatSVG(k,d){
+ if(k==="wing") return '<g><rect x="74" y="26" width="52" height="8" rx="4" fill="#20160f"/>'+
+   '<path d="M74 44 L42 36 Q32 44 42 54 L74 54 Z" fill="#20160f"/>'+
+   '<path d="M126 44 L158 36 Q168 44 158 54 L126 54 Z" fill="#20160f"/>'+
+   '<path d="M70 48 Q70 18 100 16 Q130 18 130 48 Z" fill="#2c1f16"/>'+
+   '<circle cx="100" cy="24" r="7" fill="'+d.trim+'"/></g>';
+ if(k==="scholar") return '<g><path d="M68 50 Q68 22 100 20 Q132 22 132 50 Z" fill="#17323f"/>'+
+   '<rect x="64" y="46" width="72" height="9" rx="4.5" fill="#0f232c"/>'+
+   '<rect x="88" y="4" width="24" height="20" rx="4" fill="#17323f"/>'+
+   '<rect x="86" y="2" width="28" height="7" rx="3.5" fill="'+d.trim+'"/></g>';
+ if(k==="warrior") return '<g><path d="M66 52 Q66 20 100 18 Q134 20 134 52 Z" fill="#1d4a37"/>'+
+   '<rect x="62" y="48" width="76" height="10" rx="5" fill="#133426"/>'+
+   '<path d="M100 10 L112 26 L88 26 Z" fill="'+d.trim+'"/>'+
+   '<circle cx="100" cy="34" r="6" fill="'+d.trim+'"/></g>';
+ if(k==="phoenix") return '<g><path d="M62 50 Q62 16 100 14 Q138 16 138 50 Z" fill="#c9a44c"/>'+
+   '<path d="M70 26 Q100 2 130 26 Q100 14 70 26 Z" fill="#f2dba4"/>'+
+   '<circle cx="100" cy="22" r="8" fill="#c01f33"/>'+
+   '<circle cx="78" cy="30" r="4.5" fill="#f2dba4"/><circle cx="122" cy="30" r="4.5" fill="#f2dba4"/>'+
+   '<g stroke="#f2dba4" stroke-width="2" stroke-linecap="round">'+
+   '<path d="M64 50 V72"/><path d="M72 52 V76"/><path d="M128 52 V76"/><path d="M136 50 V72"/></g>'+
+   '<g fill="#e8c168"><circle cx="64" cy="74" r="3"/><circle cx="72" cy="78" r="3"/><circle cx="128" cy="78" r="3"/><circle cx="136" cy="74" r="3"/></g></g>';
+ /* cloth 道冠 */
+ return '<g><path d="M70 50 Q70 22 100 20 Q130 22 130 50 Z" fill="#2a2520"/>'+
+   '<rect x="66" y="46" width="68" height="9" rx="4.5" fill="#1b1714"/>'+
+   '<path d="M86 20 Q100 6 114 20 Z" fill="'+d.trim+'"/></g>';
+}
+function beardSVG(k){
+ if(k==="none") return "";
+ var c=(k==="black")?"#241a14":"#f0eae1";
+ return '<g><path d="M84 96 Q100 110 116 96 L119 106 Q117 152 100 170 Q83 152 81 106 Z" fill="'+c+'"/>'+
+  '<path d="M80 90 Q90 100 100 97 Q110 100 120 90 Q112 102 100 103 Q88 102 80 90 Z" fill="'+c+'"/></g>';
+}
+function propSVG(k,d){
+ if(k==="ingot") return '<g transform="translate(150,182)">'+
+   '<path d="M-24 10 Q-29 -6 -13 -9 L13 -9 Q29 -6 24 10 Q0 19 -24 10 Z" fill="#e8c168" stroke="#9d7318" stroke-width="2.4"/>'+
+   '<path d="M-13 -9 Q0 -23 13 -9 Z" fill="#f6e0a8" stroke="#9d7318" stroke-width="2.4"/></g>';
+ if(k==="thread") return '<g transform="translate(150,180)" stroke="#e0344e" stroke-width="3.4" fill="none" stroke-linecap="round">'+
+   '<path d="M-22 -16 Q-6 0 -20 14 Q0 26 18 10"/><circle cx="20" cy="4" r="7"/></g>';
+ if(k==="brush") return '<g transform="translate(150,178)">'+
+   '<rect x="-4" y="-34" width="8" height="46" rx="3" fill="#6d4a2a"/>'+
+   '<rect x="-5" y="-6" width="10" height="7" rx="2" fill="#e3c069"/>'+
+   '<path d="M-5 1 Q0 24 5 1 Z" fill="#241a14"/></g>';
+ if(k==="gourd") return '<g transform="translate(150,180)">'+
+   '<circle cx="0" cy="8" r="17" fill="#e0a23c" stroke="#8c5c12" stroke-width="2.4"/>'+
+   '<circle cx="0" cy="-12" r="10" fill="#e8b457" stroke="#8c5c12" stroke-width="2.4"/>'+
+   '<rect x="-4" y="-27" width="8" height="7" rx="2" fill="#6d4a2a"/></g>';
+ if(k==="blade") return '<g transform="translate(156,142)">'+
+   '<rect x="-3" y="-20" width="6" height="104" rx="3" fill="#5a3a22"/>'+
+   '<path d="M3 -18 Q34 -12 30 18 Q14 6 3 10 Z" fill="#cfd8dc" stroke="#8d9ba3" stroke-width="2"/>'+
+   '<circle cx="3" cy="16" r="5" fill="'+d.trim+'"/></g>';
+ /* tablet 笏板 */
+ return '<g transform="translate(150,180)">'+
+   '<rect x="-9" y="-32" width="18" height="60" rx="8" fill="#f1e7d6" stroke="#b9a582" stroke-width="2.2"/>'+
+   '<path d="M-9 -8 H9" stroke="#b9a582" stroke-width="2"/></g>';
+}
+function figureSVG(d){
+ var g="g_"+d.id, r="r_"+d.id;
+ return '<svg viewBox="0 0 200 272" role="img" aria-label="'+d.name+'立像">'+
+ '<defs><radialGradient id="'+g+'"><stop offset="0" stop-color="'+d.glow+'" stop-opacity=".5"/>'+
+ '<stop offset=".55" stop-color="'+d.glow+'" stop-opacity=".12"/><stop offset="1" stop-color="'+d.glow+'" stop-opacity="0"/></radialGradient>'+
+ '<linearGradient id="'+r+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+d.robe+'"/><stop offset="1" stop-color="'+d.robe2+'"/></linearGradient></defs>'+
+ '<circle cx="100" cy="120" r="100" fill="url(#'+g+')"/>'+
+ '<circle cx="100" cy="74" r="58" fill="none" stroke="'+d.glow+'" stroke-opacity=".3" stroke-width="2"/>'+
+ '<ellipse cx="50" cy="192" rx="21" ry="28" fill="'+d.robe2+'"/>'+
+ '<ellipse cx="150" cy="192" rx="21" ry="28" fill="'+d.robe2+'"/>'+
+ '<path d="M100 102 C73 105 61 136 55 182 L45 244 Q100 258 155 244 L145 182 C139 136 127 105 100 102 Z" fill="url(#'+r+')"/>'+
+ '<path d="M45 244 Q100 258 155 244 L157 253 Q100 267 43 253 Z" fill="'+d.trim+'"/>'+
+ '<path d="M82 104 L100 134 L118 104 Q100 114 82 104 Z" fill="'+d.trim+'"/>'+
+ '<circle cx="50" cy="212" r="9" fill="'+d.skin+'"/><circle cx="150" cy="212" r="9" fill="'+d.skin+'"/>'+
+ '<circle cx="100" cy="74" r="38" fill="'+d.skin+'"/>'+
+ '<ellipse cx="62" cy="78" rx="6" ry="9" fill="'+d.skin+'"/><ellipse cx="138" cy="78" rx="6" ry="9" fill="'+d.skin+'"/>'+
+ '<g fill="#3a251a"><ellipse cx="87" cy="76" rx="3.4" ry="4"/><ellipse cx="113" cy="76" rx="3.4" ry="4"/></g>'+
+ '<g stroke="#3a251a" stroke-width="2.6" fill="none" stroke-linecap="round">'+
+ '<path d="M79 66 Q87 61 94 66"/><path d="M106 66 Q113 61 121 66"/></g>'+
+ '<circle cx="76" cy="86" r="5" fill="#e08a7a" opacity=".32"/><circle cx="124" cy="86" r="5" fill="#e08a7a" opacity=".32"/>'+
+ '<path d="M93 90 Q100 95 107 90" stroke="#8a4a38" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+ beardSVG(d.beard)+hatSVG(d.hat,d)+propSVG(d.prop,d)+'</svg>';
+}
+function iconSVG(k){
+ var s='<svg viewBox="0 0 48 48" aria-hidden="true">';
+ if(k==="ingot") s+='<path d="M8 32 Q4 18 16 15 L32 15 Q44 18 40 32 Q24 40 8 32 Z" fill="#e8c168" stroke="#9d7318" stroke-width="2"/><path d="M16 15 Q24 4 32 15 Z" fill="#f6e0a8" stroke="#9d7318" stroke-width="2"/>';
+ else if(k==="knot") s+='<g stroke="#e0344e" stroke-width="3.4" fill="none" stroke-linecap="round"><path d="M10 10 Q26 22 10 34"/><path d="M38 10 Q22 22 38 34"/><circle cx="24" cy="22" r="6"/></g>';
+ else if(k==="brush") s+='<rect x="20" y="6" width="8" height="26" rx="3" fill="#6d4a2a"/><rect x="19" y="28" width="10" height="6" rx="2" fill="#e3c069"/><path d="M19 34 Q24 46 29 34 Z" fill="#ece4d8"/>';
+ else if(k==="gourd") s+='<circle cx="24" cy="31" r="12" fill="#e0a23c" stroke="#8c5c12" stroke-width="2"/><circle cx="24" cy="15" r="7.5" fill="#e8b457" stroke="#8c5c12" stroke-width="2"/><rect x="21" y="4" width="6" height="6" rx="2" fill="#6d4a2a"/>';
+ else if(k==="blade") s+='<rect x="21" y="6" width="5" height="36" rx="2.5" fill="#5a3a22"/><path d="M26 8 Q44 12 40 30 Q32 20 26 22 Z" fill="#cfd8dc" stroke="#8d9ba3" stroke-width="2"/>';
+ else s+='<g stroke="#8dc6e8" stroke-width="3" fill="none" stroke-linecap="round"><path d="M6 20 Q14 12 22 20 Q30 28 42 20"/><path d="M6 32 Q14 24 22 32 Q30 40 42 32"/></g>';
+ return s+"</svg>";
+}
+function censerSVG(lit){
+ var sticks="";
+ if(lit){
+  for(var i=0;i<3;i++){
+   var x=46+i*20, h=28+(i===1?8:0);
+   sticks+='<rect x="'+(x-1.6)+'" y="'+(32-h)+'" width="3.2" height="'+h+'" rx="1.6" fill="#8a3a2a"/>'+
+    '<rect x="'+(x-1.6)+'" y="'+(32-h)+'" width="3.2" height="7" rx="1.6" fill="#c01f33"/>'+
+    '<circle cx="'+x+'" cy="'+(32-h)+'" r="3" fill="#ffb347"><animate attributeName="opacity" values="1;.45;1" dur="2.2s" repeatCount="indefinite" begin="'+(i*0.3)+'s"/></circle>';
+  }
+ }
+ return '<svg viewBox="0 0 132 92" aria-hidden="true">'+sticks+
+ '<ellipse cx="66" cy="38" rx="42" ry="9" fill="#4a3a26"/>'+
+ '<path d="M24 38 Q26 72 48 78 L84 78 Q106 72 108 38 Z" fill="#6b5637"/>'+
+ '<path d="M24 38 Q26 72 48 78 L58 78 Q34 70 32 38 Z" fill="#8a7147" opacity=".6"/>'+
+ '<ellipse cx="66" cy="38" rx="34" ry="7" fill="#2a2015"/>'+
+ '<path d="M22 44 Q8 46 10 58 Q12 66 22 62" fill="none" stroke="#6b5637" stroke-width="6" stroke-linecap="round"/>'+
+ '<path d="M110 44 Q124 46 122 58 Q120 66 110 62" fill="none" stroke="#6b5637" stroke-width="6" stroke-linecap="round"/>'+
+ '<rect x="40" y="78" width="10" height="11" rx="3" fill="#4a3a26"/>'+
+ '<rect x="82" y="78" width="10" height="11" rx="3" fill="#4a3a26"/>'+
+ '<path d="M44 56 h44" stroke="#c9a44c" stroke-width="2.4" opacity=".75"/></svg>';
+}
+function cupSVG(flatUp){
+ var art = flatUp
+  ? '<svg class="cup" viewBox="0 0 90 64"><path d="M8 36 Q45 4 82 36 Q45 54 8 36 Z" fill="#7d1623" stroke="#4d0b12" stroke-width="2.5"/><path d="M15 36 Q45 16 75 36" stroke="#98293a" stroke-width="1.8" fill="none"/><path d="M26 32 Q45 24 64 32" stroke="#98293a" stroke-width="1.8" fill="none"/></svg>'
+  : '<svg class="cup" viewBox="0 0 90 64"><path d="M8 36 Q45 4 82 36 Q45 54 8 36 Z" fill="#c33445" stroke="#4d0b12" stroke-width="2.5"/><ellipse cx="45" cy="26" rx="26" ry="9" fill="#e78391" opacity=".5"/><ellipse cx="34" cy="22" rx="9" ry="4" fill="#ffd4d9" opacity=".6" transform="rotate(-18 34 22)"/></svg>';
+ return '<div class="cup-w">'+art+'<span class="cup-lab">'+(flatUp?"平面":"凸面")+'</span></div>';
+}
+
+/* ========== 狀態 ========== */
+var $=function(s){return document.querySelector(s)};
+var state={deity:null,incense:false,streak:0};
+var homeEl=$("#home"),altarEl=$("#altar"),sheetEl=$("#sheet");
+
+/* 願望卡 */
+(function(){
+ var html="";
+ for(var i=0;i<DEITIES.length;i++){var d=DEITIES[i];
+  html+='<button class="wish" data-i="'+i+'"><span class="w-ico">'+iconSVG(d.icon)+
+    '</span><span class="w-n">'+d.wish+'</span><span class="w-d">'+d.name+'</span></button>';
+ }
+ $("#wishes").innerHTML=html;
+ $("#wishes").addEventListener("click",function(e){
+  var b=e.target.closest(".wish"); if(b) openAltar(DEITIES[+b.dataset.i]);
+ });
+})();
+
+function openAltar(d){
+ state.deity=d; state.incense=false; state.streak=0;
+ $("#who").textContent=d.name;
+ $("#for").textContent="求　"+d.wish+"　·　"+d.full;
+ var fig=$("#figure");
+ fig.innerHTML=figureSVG(d);
+ fig.className="entering";
+ void fig.offsetWidth; fig.classList.add("enter");
+ setTimeout(function(){fig.className="";},950);
+ $("#censer").innerHTML=censerSVG(false);
+ $("#bJiao").disabled=true; $("#bQian").disabled=true;
+ $("#bIncense").disabled=false; $("#bIncense").classList.add("lit");
+ homeEl.hidden=true; altarEl.hidden=false;
+ startCamera(); startSmoke();
+ toast(d.bless);
+}
+function closeAltar(){
+ altarEl.hidden=true; homeEl.hidden=false;
+ stopCamera(); stopSmoke(); closeSheet();
+}
+$("#back").addEventListener("click",closeAltar);
+
+/* ========== 相機（自行架站時啟用；平台沙箱內自動回退） ========== */
+var stream=null;
+function startCamera(){
+ var chip=$("#camChip"), v=$("#cam");
+ if(stream){v.classList.add("on");return;}
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showChip("示範模式 · 廟宇場景");return;}
+ navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false})
+ .then(function(s){
+   stream=s; v.srcObject=s; v.classList.add("on");
+   $("#backdrop").style.opacity=".28";
+   showChip("AR 相機已開啟 · 對準前方");
+ })
+ .catch(function(){ showChip("示範模式 · 廟宇場景"); });
+}
+function stopCamera(){
+ if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null;}
+ $("#cam").classList.remove("on"); $("#backdrop").style.opacity="";
+}
+function showChip(t){
+ var c=$("#camChip"); c.textContent=t; c.hidden=false;
+ clearTimeout(showChip._t); showChip._t=setTimeout(function(){c.hidden=true;},4200);
+}
+
+/* ========== 香煙 ========== */
+var sc=$("#smoke"),sctx=sc.getContext("2d"),parts=[],raf=0,reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function sizeCanvas(){
+ var r=Math.min(devicePixelRatio||1,2);
+ sc.width=sc.clientWidth*r; sc.height=sc.clientHeight*r;
+ sctx.setTransform(r,0,0,r,0,0);
+}
+addEventListener("resize",function(){if(!altarEl.hidden)sizeCanvas();});
+function startSmoke(){ sizeCanvas(); if(!raf) raf=requestAnimationFrame(tick); }
+function stopSmoke(){ cancelAnimationFrame(raf); raf=0; parts.length=0; sctx.clearRect(0,0,sc.width,sc.height); }
+function tick(){
+ raf=requestAnimationFrame(tick);
+ var w=sc.clientWidth,h=sc.clientHeight;
+ sctx.clearRect(0,0,w,h);
+ if(state.incense&&!reduce&&parts.length<90&&Math.random()<.55){
+  var bx=w/2+(Math.random()*40-20), by=h-118-34;
+  parts.push({x:bx,y:by,vx:(Math.random()-.5)*.18,vy:-(.5+Math.random()*.5),r:3+Math.random()*4,a:.4+Math.random()*.2,t:0});
+ }
+ for(var i=parts.length-1;i>=0;i--){
+  var p=parts[i]; p.t++;
+  p.x+=p.vx+Math.sin(p.t/26+p.r)*.28; p.y+=p.vy; p.vy*=.995; p.r+=.22; p.a-=.0042;
+  if(p.a<=0||p.y<-40){parts.splice(i,1);continue;}
+  var gr=sctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*3);
+  gr.addColorStop(0,"rgba(238,232,220,"+p.a.toFixed(3)+")");
+  gr.addColorStop(1,"rgba(238,232,220,0)");
+  sctx.fillStyle=gr; sctx.beginPath(); sctx.arc(p.x,p.y,p.r*3,0,6.283); sctx.fill();
+ }
+}
+
+/* ========== 動作 ========== */
+function toast(t){
+ var old=document.querySelector(".toast"); if(old) old.remove();
+ var el=document.createElement("div"); el.className="toast"; el.textContent=t;
+ $(".shell").appendChild(el);
+ setTimeout(function(){el.remove();},2600);
+}
+$(".rail").addEventListener("click",function(e){
+ var b=e.target.closest(".act"); if(!b||b.disabled) return;
+ var a=b.dataset.act;
+ if(a==="incense") doIncense();
+ if(a==="jiao") doJiao();
+ if(a==="qian") doQian();
+});
+function doIncense(){
+ state.incense=true;
+ $("#censer").innerHTML=censerSVG(true);
+ $("#bIncense").disabled=true; $("#bIncense").classList.remove("lit");
+ $("#bJiao").disabled=false; $("#bQian").disabled=false;
+ $("#bJiao").classList.add("lit"); $("#bQian").classList.add("lit");
+ $("#figure").style.filter="drop-shadow(0 0 46px "+state.deity.glow+"88)";
+ toast("三炷清香　心誠則靈");
+}
+function doJiao(){
+ var a=Math.random()<.5, b=Math.random()<.5;   /* true = 平面朝上（陽） */
+ var kind = (a!==b) ? "sheng" : (a ? "xiao" : "yin");
+ var title,sub,body,color;
+ if(kind==="sheng"){
+  state.streak++;
+  title="聖　筊"; sub="一平一凸　神明允許"; color="#f6dfa8";
+  body="神明答應了。心中所問，可以依此而行；但記得，神明應允的是方向，路還是得自己走。";
+ }else if(kind==="xiao"){
+  state.streak=0;
+  title="笑　筊"; sub="兩平面朝上　笑而不答"; color="#ece4d8";
+  body="神明笑而不答。通常表示問題問得不夠清楚，或者你心裡其實已經有答案了。想清楚再擲一次。";
+ }else{
+  state.streak=0;
+  title="陰　筊"; sub="兩凸面朝上　神明不允"; color="#d47e8e";
+  body="神明沒有答應。可能是時機未到，也可能該換個做法。別硬求，改個問法再試。";
+ }
+ var cups='<div class="cups">'+cupSVG(a)+cupSVG(b)+'</div>';
+ var streak = state.streak>=3 ? '<p class="streak">連三聖杯　大允</p>' : "";
+ if(state.streak>=3) state.streak=0;
+ openSheet(
+  '<h2 style="color:'+color+'">'+title+'</h2>'+
+  '<p class="sub">'+sub+'</p>'+cups+
+  '<p class="verdict">'+body+'</p>'+streak+
+  '<div class="sheet-btns">'+
+   '<button class="sbtn" data-close>退下</button>'+
+   '<button class="sbtn primary" data-again="jiao">再擲一次</button></div>'
+ );
+}
+function doQian(){
+ var d=state.deity;
+ var i=Math.floor(Math.random()*d.lots.length), lot=d.lots[i];
+ var no=["第一籤","第二籤","第三籤","第四籤","第五籤"][i];
+ var col=GRADE_COLOR[lot.g]||"#ece4d8";
+ var poem=lot.p.join("\n");
+ openSheet(
+  '<div class="lot-head"><span class="lot-no">'+d.name+'　'+no+'</span>'+
+   '<span class="grade" style="color:'+col+'">'+lot.g+'</span></div>'+
+  '<div class="poem-wrap"><div class="poem">'+poem.replace(/\n/g,"<br>")+'</div></div>'+
+  '<div class="explain"><b>解　曰</b>'+lot.e+'</div>'+
+  '<div class="sheet-btns">'+
+   '<button class="sbtn" data-close>收籤</button>'+
+   '<button class="sbtn primary" data-again="qian">再抽一支</button></div>'
+ );
+}
+function openSheet(html){
+ sheetEl.className="sheet"; sheetEl.hidden=false;
+ sheetEl.innerHTML='<div class="sheet-in gut" role="dialog" aria-modal="true">'+html+'</div>';
+ var f=sheetEl.querySelector(".sbtn"); if(f) f.focus();
+}
+function closeSheet(){ sheetEl.hidden=true; sheetEl.innerHTML=""; }
+sheetEl.addEventListener("click",function(e){
+ if(e.target===sheetEl){closeSheet();return;}
+ if(e.target.closest("[data-close]")){closeSheet();return;}
+ var ag=e.target.closest("[data-again]");
+ if(ag){ closeSheet(); setTimeout(function(){ ag.dataset.again==="jiao"?doJiao():doQian(); },140); }
+});
+addEventListener("keydown",function(e){ if(e.key==="Escape"){ sheetEl.hidden?closeAltar():closeSheet(); }});
+
+/* 搖手機擲筊（自行架站 + 使用者授權後可用） */
+var lastShake=0;
+function onShake(e){
+ var a=e.accelerationIncludingGravity; if(!a) return;
+ var m=Math.abs(a.x||0)+Math.abs(a.y||0)+Math.abs(a.z||0);
+ if(m>34&&Date.now()-lastShake>1400&&!altarEl.hidden&&sheetEl.hidden&&state.incense){
+  lastShake=Date.now(); doJiao();
+ }
+}
+if(typeof DeviceMotionEvent!=="undefined"&&!DeviceMotionEvent.requestPermission){
+ addEventListener("devicemotion",onShake);
+}
+
+/* 熱更新時保留當下神明 */
+try{
+ var boot=function(s){ if(s&&s.id){ for(var i=0;i<DEITIES.length;i++) if(DEITIES[i].id===s.id){openAltar(DEITIES[i]);break;} } };
+ if(window.claude&&window.claude.hot){
+  window.claude.hot.snapshot(function(){return state.deity?{id:state.deity.id}:{};});
+  window.claude.hot.ready?window.claude.hot.ready(boot):boot(window.claude.hot.data||{});
+ }
+}catch(err){}
+})();
+</script>
+
+</body>
+</html>

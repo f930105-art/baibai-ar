@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0907">
-<meta name="description" content="Taiwanese temple worship in AR / 線上拜拜 AR：六十甲子籤、拜拜流程、神明簡介，中英雙語含拼音與台羅。">
+<meta name="description" content="Taiwanese temple worship in AR / 線上拜拜 AR：六十甲子籤、卦頭故事、拜拜流程、神明簡介，中英雙語含拼音與台羅。">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{margin:0;overscroll-behavior:none}
@@ -349,6 +349,26 @@ html,body{overscroll-behavior:none}
 .drop.hot{border-color:var(--gold-hi);border-style:solid;
   box-shadow:0 0 26px -4px rgba(246,223,168,.8),inset 0 0 20px -6px rgba(246,223,168,.5)}
 
+#hint{pointer-events:none}
+#hint .hs{pointer-events:auto}
+#rite,#rite *{pointer-events:none}
+
+.talebox{margin-top:14px;padding:12px 13px;border-radius:9px;background:rgba(236,228,216,.04);
+  border:1px solid #31241c}
+.talebox summary{font-family:var(--font-d);font-size:13.5px;letter-spacing:.06em;color:var(--gold-hi);
+  cursor:pointer;list-style:none}
+.talebox summary::-webkit-details-marker{display:none}
+.talebox summary::before{content:"▸ ";color:var(--gold)}
+.talebox[open] summary::before{content:"▾ "}
+.tale-z{font-size:13.5px;line-height:1.95;color:#cdc2b5;margin:10px 0 0}
+.tale-e{font-size:12.5px;line-height:1.8;color:#9d9288;margin:9px 0 0;
+  padding-top:9px;border-top:1px solid #2a1f18}
+.tale-s{display:block;font-size:11px;letter-spacing:.06em;color:#6d645c;margin:9px 0 0}
+.story .tale-s{display:inline;margin:0}
+
+.step .d .note{display:block;margin-top:6px;font-size:11.5px;color:#8a7f74;
+  padding-left:9px;border-left:2px solid #3d2c22}
+
 </style>
 
 <div class="shell">
@@ -426,6 +446,71 @@ var QIAN={"wish":{"財運":"求財","姻緣":"婚姻","學業":"功名","健康"
 var PIN={"1":["rì chū biàn jiàn fēng yún sàn","guāng míng qīng jìng zhào shì jiān","yí xiàng qián tú tōng dà dào","wàn shì qīng jí bǎo píng ān"],"2":["yú jīn cǐ jǐng zhèng dāng shí","kàn kàn yù tǔ bǎi huā kuí","ruò néng yù dé chūn sè dào","yī sǎ qīng jí tuō chén āi"],"3":["quàn jūn bǎ dìng xīn mò xū","tiān zhù yī lù zì yǒu yú","hé hé chóng chóng cháng jí qìng","shí lái zhōng yù dé míng zhū"],"4":["fēng tián làng jìng kě xíng zhōu","qià shì zhōng qiū yuè yī lún","fán shì bù xū duō yōu lǜ","fú lù zì yǒu qìng jiā mén"],"5":["zhǐ kǒng qián tú mìng yǒu biàn","quàn jūn zuò jí kě yí xiān","qiě shǒu cháng jiāng wú dà shì","mìng féng tài bái shǒu shēn biān"],"6":["fēng yún zhì yǔ luò yáng yáng","tiān zāi shí qì bì yǒu shāng","mìng nèi cǐ shì nán hé hé","gèng féng yī zú chū wài xiāng"],"7":["yún kāi yuè chū zhèng fēn míng","bù xū jìn tuì wèn qián chéng","hūn yīn jiē yóu tiān zhù dìng","hé hé qīng jí wàn shì chéng"],"8":["hé dào kàn kàn jié chéng wán","cǐ shì bì dìng liǎng xiāng quán","huí dào jiā zhōng kuān xīn zuò","qī ér gǔ wǔ lè tuán yuán"],"9":["lóng hǔ xiāng suí zài shēn shān","jūn ěr hé xū bèi hòu kàn","bù zhī cǐ qù xiāng ài yú","tā rì yǔ wǒ què wú gàn"],"10":["huā kāi jié zi yí bàn kū","kě xī jīn nián rǔ xū dù","jiàn jiàn rì luò xī shān qù","quàn jūn bù yòng xiàng qián tú"],"11":["líng jī jiàn jiàn jiàn fēn míng","fán shì qiě kàn zi chǒu yín","yún kāi yuè chū zhào tiān xià","láng jūn jí biàn jiàn tài píng"],"12":["cháng jiāng fēng làng jiàn jiàn jìng","yú jīn dé jìn kě ān níng","bì yǒu guì rén xiāng fú zhù","xiōng shì tuō chū jiàn tài píng"],"13":["mìng zhòng zhèng féng luó bèi guān","yòng jìn xīn jī zǒng wèi xiū","zuò fú wèn shén nán dé guò","qià shì xíng zhōu shàng gāo tān"],"14":["cái zhōng jiàn jiàn jiàn fēn míng","huā kāi huā xiè jié zi chéng","kuān xīn qiě kàn yuè zhōng guì","láng jūn jí biàn jiàn tài píng"],"15":["bā shí yuán lái shì tài gōng","kàn kàn wǎn jǐng yù wén wáng","mù xià jǐn shì xiū xiāng wèn","quàn jūn qiě shǒu dài yùn tōng"],"16":["bù xū zuò fú bù xū qiú","yòng jìn xīn jī zǒng wèi xiū","yáng shì bù zhī yīn shì shì","guān fǎ rú lú bù zì yóu"],"17":["jiù hèn chóng chóng wèi gǎi wèi","jiā zhōng huò huàn bù lín shēn","xū dāng jǐn fáng yí zuò fú","lóng shé jiāo huì dé hé hé"],"18":["jūn wèn zhōng jiān cǐ yán yīn","kàn kàn lù mǎ gǒng qián chéng","ruò dé guì rén duō dé lì","hé hé zì yǒu liǎng fēn míng"],"19":["fù guì yóu mìng tiān zhù dìng","xīn gāo bì rán wù jūn qī","bù rán qiě huí yī jiù lù","yún kāi yuè chū zì fèn míng"],"20":["qián tú gōng míng wèi dé yì","zhǐ kǒng mìng nèi yǒu jiāo jiā","liǎng jiā bì dìng fáng sǔn shī","quàn jūn qiě tuì mò zī jiē"],"21":["shí fāng fó fǎ yǒu líng tōng","dà nán huò huàn bù xiāng tóng","hóng rì dāng kōng cháng zhào yào","hái yǒu guì rén dào jiā táng"],"22":["tài gōng jiā yè bā shí chéng","yuè chū guāng huī sì hǎi míng","mìng nèi zì rán féng dà jí","máo wū zhōng jiān bǎi shì hēng"],"23":["yù qù cháng jiāng shuǐ kuò máng","qián tú wèi suì yùn wèi tōng","rú jīn sī lún cháng zài shǒu","zhǐ kǒng yú shuǐ bù xiāng féng"],"24":["yuè chū guāng huī sì hǎi míng","qián tú lù wèi jiàn tài píng","fú yún sǎo tuì zhōng wú shì","kě bǎo huò huàn bù lín shēn"],"25":["zǒng shì qián tú mò xīn láo","qiú shén wèn shèng wǎng shì duō","dàn kàn jī quǎn rì guò hòu","bù xū zuò fú shì rú hé"],"26":["xuǎn chū mǔ dān dì yī zhī","quàn jūn zhé qǔ mò chí yí","shì jiān ruò wèn xiāng zhī chù","wàn shì féng chūn zhèng jí shí"],"27":["jūn ěr kuān xīn qiě zì yóu","mén tíng qīng jí jiā wú yōu","cái bǎo zì rán zhōng jí lì","fán shì wú shāng bù yòng qiú"],"28":["yú jīn mò zuò cǐ dāng shí","hǔ luò píng yáng bèi quǎn qī","shì jiān fán shì hé nán dìng","qiān shān wàn shuǐ yě chí yí"],"29":["kū mù kě xī wèi féng chūn","rú jīn fǎn zài àn zhōng cáng","kuān xīn qiě shǒu fēng shuāng tuì","huán jūn yī jiù zuò qián kūn"],"30":["jiàn jiàn kàn cǐ yuè zhōng hé","guò hòu xū fáng wèi dé gāo","gǎi biàn yán sè qián tú qù","fán shì bì dìng jiàn zhòng láo"],"31":["lǜ liǔ cāng cāng zhèng dāng shí","rèn jūn cǐ qù zuò qián kūn","huā guǒ jié shí wú cán xiè","fú lù zì yǒu qìng jiā mén"],"32":["lóng hǔ xiāng jiāo zài mén qián","cǐ shì bì dìng liǎng xiāng lián","huáng jīn hū rán biàn chéng tiě","hé yòng zuò fú wèn shén xiān"],"33":["yù qù cháng jiāng shuǐ kuò máng","xíng zhōu bǎ dìng wèi zāo fēng","hù nèi yòng xīn zài zuò fú","kàn kàn yú shuǐ dé xiāng féng"],"34":["wēi xiǎn gāo shān xíng guò jìn","mò xián cǐ lù yǒu chóng chóng","ruò jiàn lán guì jiàn jiàn fā","cháng shé fǎn zhuǎn biàn chéng lóng"],"35":["cǐ shì hé xū yòng xīn jī","qián tú biàn guài zì rán zhī","kàn kàn cǐ qù dé hé hé","jiàn jiàn tuō chū jiàn tài píng"],"36":["fú rú dōng hǎi shòu rú shān","jūn ěr hé xū tàn kǔ nán","mìng nèi zì rán féng dà jí","qí bǎo fēn míng zì píng ān"],"37":["yùn féng dé yì shēn xiǎn biàn","jūn ěr shēn zhōng jiē yǒu yì","yí xiàng qián tú wú nán shì","jué yì zhī zhōng bǎo qīng jí"],"38":["míng xiǎn yǒu yì zài zhōng yāng","bù xū qí dǎo xīn zì ān","kàn kàn zǎo wǎn rì guò hòu","jí shí dé yì zài qí jiān"],"39":["yì zhōng ruò wèn shén xiān lù","quàn ěr qiě tuì wàng gāo lóu","kuān xīn qiě shǒu kuān xīn zuò","bì rán yù dé guì rén fú"],"40":["píng shēng fù guì chéng lù wèi","jūn jiā mén hù dìng guāng huī","cǐ zhōng bì dìng wú sǔn shī","fū qī bǎi suì xǐ xiāng suí"],"41":["jīn xíng dào cǐ shí nán tuī","gē gē chàng yǐn zì pái huái","jī quǎn xiāng wén xiāo xī jìn","hūn yīn sù shì jié chéng shuāng"],"42":["yī zhòng jiāng shuǐ yī zhòng shān","shuí zhī cǐ qù lù yòu nán","rèn tā gǎi qiú zhōng bù guò","shì fēi zhōng jiǔ wèi dé ān"],"43":["yī nián zuò shì jí rú fēi","jūn ěr kuān xīn mò chí yí","guì rén hái zài qiān lǐ wài","yīn xìn yuè zhōng jiàn jiàn zhī"],"44":["kè dào qián tú duō dé lì","jūn ěr hé gù liǎng xiāng yí","suī shì zhōng jiān féng jìn tuì","yuè chū guāng huī dé yùn shí"],"45":["huā kāi jīn yǐ jié chéng guǒ","fù guì róng huá zhōng dào lǎo","jūn zǐ xiǎo rén xiāng huì hé","wàn shì qīng jí mò fán nǎo"],"46":["gōng míng dé yì yǔ jūn xiǎn","qián tú fù guì xǐ ān rán","ruò yù yī lún míng yuè zhào","shí wǔ tuán yuán guāng mǎn tiān"],"47":["jūn ěr hé xū wèn shèng jī","zì jǐ xīn zhōng jiē yǒu yì","yú jīn qiě kàn yuè zhōng xún","xiōng shì tuō chū huà chéng jí"],"48":["yáng shì zuò shì wèi hé tóng","yún zhē yuè sè zhèng méng lóng","xīn zhōng yì yù qián tú qù","zhǐ kǒng mìng nèi yùn wèi tōng"],"49":["yán yǔ suī duō bù kě cóng","fēng yún jìng chù wèi xíng lóng","àn zhōng zhōng dé míng xiāo xī","jūn ěr hé xū wèn chóng chóng"],"50":["fú qián fā shì wú yì xīn","qiě kàn qián tú dé hǎo yīn","cǐ wù yuán lái běn shì tiě","yě néng biàn huà dé chéng jīn"],"51":["dōng xī nán běi bù kān xíng","qián tú cǐ shì zhèng kě dāng","quàn jūn bǎ dìng mò fán nǎo","jiā mén zì yǒu bǎo ān kāng"],"52":["gōng míng shì yè běn yóu tiān","bù xū guà niàn yì xuán xuán","ruò wèn zhōng jiān chí yǔ sù","fēng yún jì huì zài yǎn qián"],"53":["kàn jūn lái wèn xīn zhōng shì","jī shàn zhī jiā qìng yǒu yú","yùn hēng cái zi shuāng shuāng zhì","zhǐ rì xǐ qì yì mén lǘ"],"54":["gū dēng jì jì yè chén chén","wàn shì qīng jí wàn shì chéng","ruò féng yīn zhōng yǒu shàn guǒ","shāo dé hǎo xiāng dá shén míng"],"55":["xū zhī jìn tuì zǒng yán xū","kàn kàn fā àn wèi bì quán","zhū yù shēn cáng hái wèi biàn","xīn zhōng dàn dé wǎng tú rán"],"56":["bìng zhōng ruò dé kǔ xīn láo","dào dǐ wán quán zǒng wèi zāo","qù hòu bù xū huí tóu wèn","xīn zhōng shì wù jǐn xiāo mó"],"57":["quàn jūn bǎ dìng xīn mò xū","qián tú qīng jí dé yùn shí","dào dǐ zhōng jiān wú dà shì","yòu yù shén xiān shǒu ān jū"],"58":["shé shēn yì yù biàn chéng lóng","zhǐ kǒng mìng nèi yùn wèi tōng","jiǔ bìng qiě zuò kuān xīn zuò","yán yǔ suī duō bù kě cóng"],"59":["yǒu xīn zuò fú mò chí yí","qiú míng qīng jí zhèng dāng shí","cǐ shì bì néng chéng huì hé","cái bǎo zì rán xǐ xiāng suí"],"60":["yuè chū guāng huī běn qīng jí","fú yún zǒng shì bì yīn sè","hù nèi yòng xīn zài zuò fú","dāng guān fēn lǐ biàn yǒu yì"]};
 var TL={"1":["ji̍t-tshut piān kiàn hong-hûn suánn","kong-bîng tshing-tsīng tsiàu sè-kan","it-hiòng tsiân-tôo thang tuā-tō","bān-sū tshing kiat pó pîng-an"],"2":["î tann tshú kíng tsiànn tang-sî","khuànn-khuànn beh thóo pah-hue khue","nā lîng gū tit tshun sik kàu","tsi̍t sè tshing kiat thuah tîn-ai"],"3":["khǹg kun pé tīng-sim bo̍k hi","thinn tsù i lo̍k tsū-iú û","hô-ha̍p tāng tāng siông kiat khìng","sî lâi tsiong gū tit bîng-tsu"],"4":["hong-tiām lōng tsīng khó hîng-tsiu","恰 sī Tiong-tshiu gue̍h tsi̍t lûn","huân-sū put su to iu-lī","hok-lo̍k tsū-iú khìng ka-bûn"],"5":["tsí khióng tsiân-tôo bīng ū piàn","khǹg kun tsoh kip khó gî sing","tshiánn siú Tn̂g-kang bô tāi-sū","bīng hông thài pe̍h siú sin-pinn"],"6":["hong-hûn tì hōo lo̍k iûnn iûnn","thian-tsai sî khì pit ū siunn","bīng lāi tshú sū lān hô-ha̍p","kenn hông tsi̍t tsiok tshut guā-hiong"],"7":["hûn khai gue̍h tshut-tsiann hun-bîng","put su tsìn-thè mn̄g tsiân thiânn","hun-in kai iû thinn-tsù-tiānn","hô-ha̍p tshing kiat bān-sū tsiânn"],"8":["hô tiū khuànn-khuànn kiat-sîng uân","tshú sū pit-tīng niú-siùnn tsuân","huê-kàu ka tiong khuan sim tsē","tshe jî kóo-bú ga̍k thuân-înn"],"9":["lîng hóo siòng suî-tsāi tshim-suann","kun nī uâ su puè-āu khuànn","put tsai tshú khì sio-ài jû","thann ji̍t ú guá khiok bô kan"],"10":["hue khai kat tsí tsi̍t puànn koo","khó-sioh kin-nî lí hi tōo","tsiām-tsiām ji̍t-lo̍h Sai-suann khì","khǹg kun put īng hiòng tsiân-tôo"],"11":["lîng ke tsiām-tsiām kiàn hun-bîng","huân-sū tshiánn-khuànn tsí thiú în","hûn khai gue̍h tshut tsiàu thian-hā","lông-kun tsik piān kiàn thài-pîng"],"12":["Tn̂g-kang hong lōng tsiām-tsiām tsīng","î tann tit tsìn khó an-lîng","pit ū kuì-jîn siòng Hû-tsōo","hiong sū thuah tshut kiàn thài-pîng"],"13":["bīng tiong-tsìng hông lô 孛 kuainn","iōng-tsīn sim-ki tsóng buē hiu","tsoh hok mn̄g sîn lân-tit kò","恰 sī hîng-tsiu siāng ko thuann"],"14":["tsâi tiong tsiām-tsiām kiàn hun-bîng","hue khui-hue siā kat tsí tsiânn","khuan sim tshiánn-khuànn gue̍h tiong kuì","lông-kun tsik piān kiàn thài-pîng"],"15":["peh-tsa̍p guân-lâi sī thài-kong","khuànn-khuànn buán-kíng gū bûn ông","ba̍k-ē kín sū hiu siòng mn̄g","khǹg kun tshiánn siú thāi ūn thang"],"16":["put su tsoh hok put su kiû","iōng-tsīn sim-ki tsóng buē hiu","iông sì put tsai im sè-sū","kuann huat jû lôo put tsū-iû"],"17":["kū hīn tāng tāng buē kái-uî","ka tiong hō-huān put lîm sin","su tng kín hông gî tsoh hok","lîng tsuâ kau ē-tit hô-ha̍p"],"18":["kun mn̄g tiong-kan tshú giân in","khuànn-khuànn lo̍k bé kióng tsiân thiânn","nā tit kuì-jîn to tit lāi","hô-ha̍p tsū-iú nn̄g hun-bîng"],"19":["hù-kuì iû bīng thinn-tsù-tiānn","sim ko pit-jiân gōo kun kî","put jiân tshiánn huê i kū lōo","hûn khai gue̍h tshut-tsū hun-bîng"],"20":["tsiân-tôo kong-bîng buē tik-ì","tsí khióng bīng lāi ū kau-ka","nn̄g ka pit-tīng hông sún-sit","khǹg kun tshiánn thè bo̍k tsu 嗟"],"21":["tsa̍p hng Hu̍t-huat ū lîng-thong","tuā lān hō-huān put sio-tâng","âng ji̍t tng khòng siông tsiàu iāu","hîng ū kuì-jîn kàu ka tông"],"22":["thài-kong ka-gia̍p peh-tsa̍p tsiânn","gue̍h tshut kong-hui sù-hái bîng","bīng lāi tsū-jiân hông tāi-kiat","mâu ok tiong-kan pah sū hing"],"23":["beh khì tióng kang-tsuí khuah bông","tsiân-tôo bī-suī ūn buē thang","jû tann si lûn siông tsāi-tshiú","tsí khióng hî tsuí put siòng hông"],"24":["gue̍h tshut kong-hui sù-hái bîng","tsiân-tôo lo̍k uī kiàn thài-pîng","phû hûn sàu thè tsiong bô-sū","khó pó hō-huān put lîm sin"],"25":["tsóng-sī tsiân-tôo bo̍k sim lô","kiû-sîn mn̄g siànn óng sī to","nā khuànn ke khián ji̍t kuè-āu","put su tsoh hok sū jû uâ"],"26":["suán-tshut bóo-tan tē tsi̍t-ki","khǹg kun tsiat tshú bo̍k tî gî","sè-kan nā mn̄g sio-tsai tshù","bān-sū hông tshun tsiànn ki̍p-sî"],"27":["kun nī khuan sim tshiánn tsū-iû","mn̂g tiânn tshing kiat ka bô iu","tsâi pó tsū-jiân tsiong kiat-lī","huân-sū bô siunn put īng kiû"],"28":["î tann bo̍k tsoh tshú tang-sî","hóo lo̍k pîng-iûnn pī khián khi","sè-kan huân-sū uâ lān tiānn","tshing suann bān tsuí iā tî gî"],"29":["koo ba̍k khó-sioh buē hông tshun","jû tann huán tsāi àm-tiong tshàng","khuan sim tshiánn siú hong-song thè","hîng kun i kū-tsok khiân-khun"],"30":["tsiām-tsiām khuànn tshú gue̍h tiong-hô","kuè-āu su hông buē tit ko","kái-piàn gân-sik tsiân-tôo khì","huân-sū pit-tīng kiàn tāng lô"],"31":["li̍k liú tshong tshong tsiànn tang-sî","jīm kun tshú khì tsoh khiân-khun","hue kué kiat-si̍t bô tsân siā","hok-lo̍k tsū-iú khìng ka-bûn"],"32":["lîng hóo siòng kau tsāi mn̂g tsiân","tshú sū pit-tīng nn̄g sio-liân","n̂g-kim hut-jiân piàn-sîng thih","uâ iōng-tsok hok mn̄g sîn-sian"],"33":["beh khì tióng kang-tsuí khuah bông","hîng-tsiu pé tiānn buē tso hong","hōo-lāi iōng-sim tsài tsoh hok","khuànn-khuànn hî tsuí tit siòng hông"],"34":["guî-hiám ko suann kiânn-kuè tsīn","bo̍k hiâm tshú lōo ū-tāng tāng","nā kiàn lân kuì tsiām-tsiām huat","tióng tsuâ huán-tsuán piàn-sîng lîng"],"35":["tshú sū uâ su īng sim-ki","tsiân-tôo pìnn-kuài tsū-jiân tsai","khuànn-khuànn tshú khì tit hô-ha̍p","tsiām-tsiām thuah tshut kiàn thài-pîng"],"36":["hok jû Tang-hái siū jû suann","kun nī uâ su thàn khóo-lān","bīng lāi tsū-jiân hông tāi-kiat","kî pó hun-bîng tsū pîng-an"],"37":["ūn hông tik-ì sin hiánn piàn","kun nī sin tiong kai ū iah","it-hiòng tsiân-tôo bô lān sū","kuat-ì tsi-tiong pó tshing kiat"],"38":["miâ hiánn iú-ì tsāi tiong-ng","put su kî-tó sim tsū an","khuànn-khuànn tsá mńg ji̍t kuè-āu","tsik-sî tik-ì tsāi kî-kan"],"39":["ì-tiong nā mn̄g sîn-sian lōo","khǹg nī tshiánn thè bāng-ko-lâu","khuan sim tshiánn siú khuan sim tsē","pit-jiân gū tit kuì-jîn hû"],"40":["pîng-sing hù-kuì tsiânn lo̍k uī","kun ka mn̂g-hōo tiānn kong-hui","tshú tiong pit-tīng bô sún-sit","hu-tshe pah huè hí sio-suî"],"41":["tann kiânn-kàu tshú tsa̍t lān the","kua kua thiòng ím tsū pâi 徊","ke khián siòng bûn siau-sit kīn","hun-in 夙 sì kat sîng-siang"],"42":["tsi̍t tāng kang-tsuí tsi̍t tāng suann","suî tsai tshú khì-lōo iū lān","jīm thann kái kiû tsiong put-kò","sī-hui tsiong kú buē tit an"],"43":["tsi̍t-nî tsoh sū kip jû pue","kun nī khuan sim bo̍k tî gî","kuì-jîn huân-tsāi tshing lí-guā","im-sìn gue̍h tiong tsiām-tsiām tsai"],"44":["kheh kàu tsiân-tôo to tit lāi","kun nī hô-kòo niú-siùnn gî","sui sī tiong-kan hông tsìn-thè","gue̍h tshut kong-hui tit ūn sî"],"45":["hue khai tann í kat sîng-kó","hù-kuì îng huâ tsiong kàu lāu","kun-tsú siáu-jîn siòng huē-ha̍p","bān-sū tshing kiat bo̍k huân-ló"],"46":["kong-bîng tik-ì ú kun hiánn","tsiân-tôo hù-kuì hí an-jiân","nā gū tsi̍t lûn bîng-gua̍t tsiàu","tsa̍p-gōo thuân-înn kng muá-thinn"],"47":["kun nī uâ su mn̄g siànn jiah","tsū-kí sim tiong kai ū iah","î tann tshiánn-khuànn gue̍h tiong-sûn","hiong sū thuah tshut huà tsiânn kiat"],"48":["iông sì tsoh sū buē hô-tâng","hûn tsia gue̍h sik tsiànn 朦 朧","sim tìng-ì beh tsiân-tôo khì","tsí khióng bīng lāi ūn buē thang"],"49":["giân-gí sui to put-khó tsiông","hong-hûn tsīng tshù buē kiânn lîng","àm-tiong tsiong tit bîng siau-sit","kun nī uâ su mn̄g tāng tāng"],"50":["hu̍t tsiân huat tsuā bô ī sim","tshiánn-khuànn tsiân-tôo tit hó im","tshú mi̍h guân-lâi pún sī thih","iā lîng piàn-huà tit tsiânn kim"],"51":["tang-sai lâm-pak put kham kiânn","tsiân-tôo tshú sū tsiànn khó tng","khǹg kun pé tiānn bo̍k huân-ló","ka-bûn tsū-iú pó an-khong"],"52":["kong-bîng sū-gia̍p pún iû thinn","put su kuà-liām ì kuân kuân","nā mn̄g tiong-kan tî ú sok","hong-hûn tsè ē tsāi gán-tsiân"],"53":["khuànn kun lâi mn̄g sim tiong sū","tsik-siān tsi ka khìng ū û","ūn hing tsâi tsí siang siang tsì","tsáinn ji̍t hí-khì ik mn̂g 閭"],"54":["koo ting tsi̍k tsi̍k iā tîm tîm","bān-sū tshing kiat bān-sū tsiânn","nā hông im tiong ū siān kué","sio tit hó hiunn ta̍t sîn-bîng"],"55":["su tsai-tsìn-thè tsóng giân hi","khuànn-khuànn huat àm bī-pit tsuân","tsu gi̍k tshim tshàng hîng buē piàn","sim tiong nā tit óng tôo jiân"],"56":["pēnn tiong nā tit khóo-sim lô","tàu-té uân-tsuân tsóng buē tso","khì āu put su huê-thâu mn̄g","sim tiong sū-bū tsīn siau-môo"],"57":["khǹg kun pé tīng-sim bo̍k hi","tsiân-tôo tshing kiat tit ūn sî","tàu-té tiong-kan bô tāi-sū","iū gū sîn-sian siú an ki"],"58":["tsuâ sin ì beh piàn-sîng lîng","tsí khióng bīng lāi ūn buē thang","kú-pēnn tshiánn tsoh khuan sim tsē","giân-gí sui to put-khó tsiông"],"59":["ū-sim tsoh hok bo̍k tî gî","kiû miâ tshing kiat tsiànn tang-sî","tshú sū pit lîng tsiânn huē-ha̍p","tsâi pó tsū-jiân hí sio-suî"],"60":["gue̍h tshut kong-hui pún tshing kiat","phû hûn tsóng-sī pè im sik","hōo-lāi iōng-sim tsài tsoh hok","tng kuann hun lí piān-iú iah"]};
 
+/* 卦頭故事：名稱取自籤譜；白話與英譯為本專案自行撰寫，未抄錄來源網站文字。
+   出處不明者以 null 標示，頁面會顯示「各廟說法不一，暫無可靠出處」。 */
+var TALE={
+1:{n:"包公請雷驚仁宗",s:"民間包公故事",z:"宋朝大旱，民不聊生。包公為百姓向天請來雷神，降下甘霖讓五穀豐收，連京城的仁宗皇帝都為之震動。",e:"During a great drought in the Song dynasty, Judge Bao called down the Thunder God on the people's behalf. Rain fell, the harvest was saved, and even the emperor in the capital was shaken by it."},
+2:{n:"趙子龍救阿斗",s:"《三國演義》長坂坡",z:"長坂坡一役，趙雲單槍匹馬七進七出曹營，懷裡抱著劉備的幼子阿斗殺出重圍。","e":"At Changban, Zhao Yun charged alone through Cao Cao's army seven times and back, carrying Liu Bei's infant son out of the encirclement in his armour."},
+3:null,
+4:{n:"盧龍王次子招親（柳毅傳書）",s:"唐傳奇《柳毅傳》",z:"洞庭龍王之女嫁給涇川龍王之子，卻遭虐待，被罰在河邊牧羊。書生柳毅路過，替她送信回洞庭，龍王之弟錢塘君大怒，殺了惡夫把姪女救回。","e":"The Dragon King of Dongting's daughter was abused by her husband and sent to herd sheep by the river. A passing scholar, Liu Yi, carried her letter home; her uncle the Qiantang Dragon King destroyed the husband and brought her back."},
+5:{n:"韓文公過秦嶺遇霜雪",s:"韓愈〈左遷至藍關示姪孫湘〉",z:"韓愈因直言上諫被貶潮州，途經秦嶺藍關時大雪封路，馬不肯前行。「雲橫秦嶺家何在，雪擁藍關馬不前」寫的就是這一刻。","e":"Banished for speaking plainly to the throne, the poet Han Yu crossed the Qinling range and found Lan Pass buried in snow — his horse would not go on. His famous couplet was written at that moment."},
+6:{n:"烏精亂宋朝",s:"歌仔戲《觀音收大鵬》／《岳飛傳》",z:"宋仁宗年間，觀音座前的大鵬鳥化為人形下凡作亂，天災人禍不斷。最後觀音親自下凡，收服大鵬，百姓才得以安生。","e":"A great roc from Guanyin's side took human form and brought disaster to the Song realm. Guanyin herself came down to subdue it before the people could live in peace again."},
+7:{n:"國公暗察白袍將",s:"《隋唐演義》薛仁貴",z:"唐太宗夢見白袍將軍助他征高麗。兵馬總管張士貴卻讓女婿冒名頂功，把真正的薛仁貴貶去當伙夫。尉遲恭幾次在陣前瞥見白袍將、幾次都讓他溜走，於是暗中查訪，終於還了薛仁貴公道。","e":"Emperor Taizong dreamed of a white-robed general who would win his campaign. His marshal hid the real hero, Xue Rengui, in the army kitchens and credited his own son-in-law. Duke Yuchi glimpsed the white robe twice in battle, lost him twice, and finally went looking in secret until the truth came out."},
+8:{n:"薛仁貴回家",s:"《隋唐演義》汾河灣",z:"薛仁貴征東十八年後返鄉，在汾河灣見一少年射雁，技藝高超，起了較量之心而誤傷對方——那正是他從未謀面的兒子薛丁山。","e":"Returning home after eighteen years at war, Xue Rengui saw a youth shooting wild geese with astonishing skill. He loosed an arrow to match him and struck him down — the boy was the son he had never met."},
+9:null,
+10:{n:"劉智遠戰瓜精",s:"南戲《白兔記》",z:"劉智遠貧困時寄居舅家，舅舅嫌他窮，哄他去看守瓜園，想讓瓜精害死他。他夜裡持槍戰退瓜精，反而在地下掘出寶劍，從此辭別妻子投軍，日後竟得了天下。","e":"Despised by his wife's family for being poor, Liu Zhiyuan was sent to guard a melon field where demons were said to kill men. He fought them off through the night, dug up a buried sword where they fled, and left to join the army — and in time took the throne."},
+11:{n:"三藏被紅孩兒燒",s:"《西遊記》",z:"紅孩兒以三昧真火困住唐僧師徒，孫悟空水火不侵之術也破不了，最後請來觀音才將他收服為善財童子。","e":"The Red Boy trapped the pilgrims with his samadhi fire, which even the Monkey King could not quench. Only Guanyin could subdue him, taking him on as her attendant."},
+12:{n:"桃園三結義",s:"《三國演義》",z:"劉備、關羽、張飛在桃園備下烏牛白馬祭告天地，結為兄弟，誓同心協力、同年同月同日死。","e":"Liu Bei, Guan Yu and Zhang Fei swore brotherhood in a peach garden, vowing to act as one and to die on the same day."},
+13:{n:"渭水河太公釣魚",s:"《封神演義》／《史記》",z:"姜太公八十歲仍在渭水邊垂釣，用的是直鉤、離水三尺，說「願者上鉤」。周文王出獵遇見，載他回朝拜為軍師。","e":"At eighty, Jiang Ziya still fished the Wei River with a straight hook held above the water — “only the willing will bite.” King Wen met him while hunting and took him home as his counsellor."},
+14:{n:"李世民遊地府",s:"《西遊記》",z:"唐太宗魂遊地府，見盡生前所造的業報，還陽之後下令大辦水陸法會超度亡魂，才有了後來玄奘西行取經之事。","e":"Emperor Taizong's soul travelled through the underworld and saw the consequences of all he had done. Returning to life, he ordered the great mass for the dead that set Xuanzang on the road west."},
+15:{n:"莊子破棺（莊子試妻）",s:"《警世通言》",z:"莊子假死試探妻子田氏。守孝不過二十日，田氏便要改嫁俊美的楚國公子；公子忽稱心痛需人腦為藥，田氏竟去劈莊子的棺。莊子破棺而出，田氏羞愧自盡。","e":"Zhuangzi faked his death to test his wife. Within twenty days she agreed to remarry a handsome prince, who then claimed he needed human brain as medicine. She went to split Zhuangzi's coffin open — and he climbed out alive. She took her own life in shame."},
+16:null,
+17:{n:"紅孩兒捷住路頭",s:"《西遊記》",z:"紅孩兒在取經路上設伏攔路，化作迷途小兒騙取唐僧憐憫，將他擄走。","e":"The Red Boy waited on the pilgrims' road disguised as a lost child, won Xuanzang's pity, and carried him off."},
+18:{n:"孫悟空大難火災",s:"《西遊記》",z:"孫悟空大鬧天宮後被推入太上老君的八卦爐，煉了七七四十九日非但沒死，反而煉出一雙火眼金睛。","e":"Thrown into Laozi's eight-trigram furnace after wrecking Heaven, the Monkey King burned for forty-nine days and came out not dead but with eyes that see through all disguise."},
+19:{n:"朱壽昌辭官尋母",s:"《二十四孝》",z:"朱壽昌七歲時生母被迫改嫁，五十年不得相見。他辭去官職，發誓找不到母親絕不回家，終於在陝西尋得，母子重逢。","e":"Zhu Shouchang's mother was forced to remarry when he was seven; fifty years passed without word. He resigned his post, swore not to return until he found her, and at last met her again in Shaanxi."},
+20:{n:"周文王為姜太公拖車",s:"民間姜太公傳說",z:"文王請姜太公出山，太公要他親自拉車。文王拉了八百步力竭，太公便說：你拉我八百步，我保你周朝八百年。","e":"When King Wen came to recruit him, Jiang Ziya asked the king to pull his cart. The king managed eight hundred paces before his strength failed. “Eight hundred paces,” said Jiang, “and I will give your house eight hundred years.”"},
+21:null,
+22:{n:"秦叔寶救李淵",s:"《隋唐演義》",z:"李淵一家在臨潼山遇盜被圍，秦叔寶路見不平出手相救，卻不留姓名便走，從此結下日後的君臣之緣。","e":"Ambushed by bandits at Lintong, the Li family was saved by a passing stranger — Qin Shubao, who rode off without giving his name. Years later that debt shaped a dynasty."},
+23:null,
+24:{n:"秦叔寶救李淵",s:"《隋唐演義》",z:"李淵一家在臨潼山遇盜被圍，秦叔寶路見不平出手相救，卻不留姓名便走，從此結下日後的君臣之緣。","e":"Ambushed by bandits at Lintong, the Li family was saved by a passing stranger — Qin Shubao, who rode off without giving his name. Years later that debt shaped a dynasty."},
+25:null,
+26:{n:"范丹洗浴遇賢妻",s:"民間故事",z:"范丹家貧如洗，連衣服都要輪流穿。某日他在河邊洗浴，卻遇上一位不嫌他窮的女子願意嫁他，從此家道轉好。","e":"Fan Dan was so poor that his household shared a single set of clothes. Bathing in the river one day he met a woman who did not mind his poverty and agreed to marry him — and from then on his fortunes turned."},
+27:null,
+28:{n:"李存孝打虎",s:"《殘唐五代史演義》",z:"李存孝年少時在山中牧羊，遇猛虎襲來，徒手將虎打死。晉王李克用見其神力，收為義子，後成十三太保之首。","e":"As a boy herding sheep, Li Cunxiao killed an attacking tiger with his bare hands. The Prince of Jin saw his strength, adopted him, and he became the first of the thirteen generals."},
+29:{n:"古城會關公斬蔡陽",s:"《三國演義》",z:"關羽千里尋兄來到古城，張飛疑他降曹不肯開門。恰逢曹將蔡陽追來，關羽一刀斬之，兄弟之間的誤會才冰釋。","e":"Guan Yu reached Gucheng after a thousand li in search of his brothers, but Zhang Fei suspected he had gone over to Cao Cao and barred the gate. When Cao's general Cai Yang rode up in pursuit, Guan Yu cut him down in a single stroke — and the doubt was settled."},
+30:{n:"薛丁山三請樊梨花",s:"《薛丁山征西》",z:"樊梨花本領高強，薛丁山卻三番兩次疑她、休她。最後兵敗被困，還是得親自三度上山請她出馬相救。","e":"Fan Lihua was the better warrior, yet Xue Dingshan doubted her and cast her off again and again. Trapped and defeated at last, he had to climb the mountain three times to beg her to come back."},
+31:{n:"孟姜女招親",s:"孟姜女傳說",z:"范杞良為躲避築長城的徭役，翻牆躲進孟家花園，恰被孟姜女撞見。兩人因此結為夫妻，卻在新婚不久後被抓去築城。","e":"Fleeing conscription for the Great Wall, Fan Qiliang hid in the Meng family garden and was found by their daughter Meng Jiangnü. They married — and soon after, he was taken away to the Wall."},
+32:{n:"劉備入東吳進贅",s:"《三國演義》甘露寺",z:"周瑜設下美人計，誘劉備到東吳成親好扣為人質。孔明早有錦囊妙計，劉備不但娶得孫夫人，還安然脫身，「賠了夫人又折兵」。","e":"Zhou Yu lured Liu Bei to Wu with a marriage offer, meaning to hold him hostage. Zhuge Liang had already sealed the counter-plan in a silk bag: Liu Bei got the bride and got away — Wu “lost the lady and the soldiers too.”"},
+33:{n:"銅銀買紙靴",s:"民間諺語",z:"用摻銅的假銀，買到紙做的假靴。想騙人的，自己也被騙了——害人終究害己。","e":"He paid with counterfeit silver and was sold boots made of paper. The cheat was cheated: harm set out comes back."},
+34:{n:"曹操潼關遇馬超",s:"《三國演義》",z:"潼關一戰曹操被馬超殺得大敗，逃命時怕被認出，先割去鬍鬚、再丟掉紅袍，才狼狽脫身。","e":"Routed by Ma Chao at Tong Pass, Cao Cao fled for his life — cutting off his beard and throwing away his red cloak so he would not be recognised."},
+35:{n:"吳漢殺妻",s:"傳統戲曲《斬經堂》",z:"吳漢得知殺父仇人竟是自己的岳父王莽，母親要他在家仇與夫妻情之間做選擇。他最終在經堂前含淚殺妻，妻子也早已自刎。","e":"Wu Han learned that the man who killed his father was his own father-in-law, the usurper Wang Mang. His mother made him choose between blood debt and marriage. He went to the sutra hall with his sword — and found his wife had already taken her own life."},
+36:{n:"薛仁貴救駕",s:"《隋唐演義》",z:"唐太宗親征高麗時陷入重圍，危急之際白袍將薛仁貴單騎殺入，救駕脫險。","e":"Surrounded on campaign in Korea, Emperor Taizong was saved when the white-robed Xue Rengui cut his way in alone and brought him out."},
+37:{n:"正德君戲李鳳姐",s:"《遊龍戲鳳》",z:"明武宗正德皇帝微服出巡，在梅龍鎮的酒店遇見賣酒的李鳳姐，一番調笑之後表明身分，將她帶回宮中。","e":"The Zhengde Emperor, travelling in disguise, stopped at an inn in Meilong and teased the innkeeper's sister, Li Fengjie. He revealed who he was and took her back to the palace."},
+38:{n:"劉備三顧茅廬",s:"《三國演義》",z:"劉備三次親自前往隆中拜訪諸葛亮。前兩次都撲空，第三次在草廬外站著等他睡醒，終於請出孔明。","e":"Three times Liu Bei rode to the thatched hut at Longzhong. Twice Zhuge Liang was out; the third time Liu Bei stood waiting outside while he slept — and so gained his strategist."},
+39:{n:"楊文廣被困柳州城",s:"《楊家將演義》",z:"楊文廣奉命征南，中伏被困柳州城，糧盡援絕。最後靠楊家女將出兵相救才得以解圍。","e":"Campaigning in the south, Yang Wenguang was ambushed and besieged at Liuzhou with no supplies and no relief. The women generals of the Yang family marched out and broke the siege."},
+40:null,
+41:{n:"山伯英台",s:"梁祝傳說",z:"祝英台女扮男裝求學，與梁山伯同窗三年情誼深厚。山伯識破真相時英台已許配他人，山伯抑鬱而終，英台在送嫁途中哭墳殉情，雙雙化蝶。","e":"Zhu Yingtai studied disguised as a man and spent three years beside Liang Shanbo. By the time he learned she was a woman she had been promised to another. He died of grief; on the way to her wedding she wept at his grave and followed him — and the two rose as butterflies."},
+42:{n:"孟姜女哭倒萬里長城",s:"孟姜女傳說",z:"孟姜女千里送寒衣給築城的丈夫，到了長城才知道他早已累死，屍骨就砌在牆裡。她放聲痛哭，哭倒了八百里長城。","e":"Meng Jiangnü carried winter clothes a thousand li to her husband at the Great Wall, only to learn he had died of exhaustion and been buried in the masonry. She wept until eight hundred li of wall came down."},
+43:{n:"蘇秦回家假不第",s:"《戰國策》",z:"蘇秦遊說失敗回鄉，故意裝作落魄，家人冷眼相待。後來佩六國相印衣錦還鄉，當初輕視他的人紛紛跪伏道旁。","e":"Su Qin came home from a failed campaign of persuasion and let his family believe he had amounted to nothing; they treated him with contempt. He returned later bearing the seals of six states, and those who had scorned him knelt by the road."},
+44:{n:"益春留傘（陳三五娘）",s:"《荔鏡記》",z:"陳三為接近黃五娘，假扮磨鏡匠入府為奴。兩人情投意合卻遲遲不能表明，婢女益春藉著「留傘」一節從中撮合，成就了這段姻緣。","e":"To be near Huang Wuniang, Chen San disguised himself as a mirror-polisher and entered her household as a servant. Neither could speak their feelings; it was the maid Yichun who, by keeping back his umbrella, brought them together."},
+45:{n:"孔夫子過番逢小兒",s:"《孔子項橐相問書》",z:"孔子東遊遇見七歲孩童項橐在路上用土堆築城。孔子要他讓路，項橐反問：是車繞城走，還是城讓車過？孔子無言以對，下車向他請教。","e":"Travelling east, Confucius met a seven-year-old, Xiang Tuo, building a city of earth in the road. Asked to move aside, the boy replied: does the cart go round the city, or the city make way for the cart? Confucius got down and asked to learn from him."},
+46:null,
+47:{n:"李三娘井邊會",s:"南戲《白兔記》",z:"劉智遠投軍後，妻子李三娘被兄嫂折磨，日夜在磨房推磨、井邊挑水。十六年後，她在井邊遇見追白兔而來的少年，才知道是自己當年送走的親生兒子。","e":"After Liu Zhiyuan left for the army, his wife Li Sanniang was worked day and night by her brother and his wife. Sixteen years later, at the well, she met a youth chasing a white hare — and recognised the son she had sent away."},
+48:{n:"蜻蜓誤入蜘蛛網",s:"民間比喻",z:"蜻蜓一頭撞進蛛網，有翅也飛不出去。掙扎或求助還有一線生機，不動就只能等死。","e":"A dragonfly flies into a spider's web: it has wings and still cannot leave. Struggle, or ask for help, and there is a thread of hope; do nothing and there is none."},
+49:{n:"蘇小妹答佛印",s:"民間蘇東坡故事",z:"佛印禪師與蘇東坡、蘇小妹以詩偈相戲。佛印出句譏諷，蘇小妹機鋒更利，往往一句就把禪師堵了回去。","e":"The monk Foyin traded verses with Su Dongpo and his sister Su Xiaomei. Foyin's lines were barbed; hers were sharper, and more than once a single couplet left the monk with nothing to say."},
+50:{n:"小兒遇三煞",s:"民間關煞之說",z:"民俗相信小孩命中有各種「關煞」要過。此卦象本凶，但傳統認為誠心求符、拜請神明護佑，難關可過，鐵也能成金。","e":"Folk belief holds that children must pass through a series of dangerous “gates” in early life. The omen is a hard one, but tradition says that with a sincere petition and the gods' protection the gate can be passed."},
+51:{n:"趙玄郎大戰龍虎關",s:"《飛龍傳》",z:"宋太祖趙匡胤發跡前南征北戰，在龍虎關一役力克強敵，為日後陳橋兵變、黃袍加身鋪下根基。","e":"Before he founded the Song, Zhao Kuangyin fought his way through one hard campaign after another. His victory at Longhu Pass laid the ground for the day his officers threw the yellow robe over his shoulders."},
+52:{n:"上帝公收龜蛇",s:"玄天上帝傳說",z:"玄天上帝修道時剖腹洗腸，棄置的腸胃化為龜、蛇二妖為害人間。上帝公再下凡將牠們收伏，踏於腳下成為龜蛇二將。","e":"While cultivating the Way, the Emperor of the Dark Heaven cut open his belly and washed his entrails; what he discarded became a turtle and a snake that plagued the world. He came down again, subdued them, and set them beneath his feet as his two generals."},
+53:{n:"蘇秦夫妻相會",s:"《戰國策》",z:"蘇秦落魄時妻子不肯下織機相迎、嫂嫂不肯為他做飯。後來他身佩六國相印歸來，一家人跪著不敢抬頭。蘇秦嘆道：同樣一個人，貧窮與富貴時待遇竟差這麼多。","e":"When Su Qin was poor, his wife would not leave her loom to greet him and his sister-in-law would not cook for him. He came back bearing the seals of six states and the family knelt without daring to look up. “The same man,” he said, “and poverty and rank are treated so differently.”"},
+54:{n:"念月英（郭華買胭脂）",s:"《胭脂記》",z:"書生郭華在京赴試，於胭脂鋪見王月英而鍾情，託買胭脂傳意。兩人相約相國寺，郭華卻醉酒沉睡誤了佳期，月英留下繡鞋為證。","e":"The scholar Guo Hua fell for Wang Yueying at her rouge shop and used his purchases to court her. They agreed to meet at the Xiangguo Temple — but he drank too much and slept through it. She left an embroidered shoe behind as proof she had come."},
+55:{n:"郭華醉酒誤佳期",s:"《胭脂記》",z:"郭華與王月英相約相國寺幽會，他卻在等待時飲酒過量，醉倒不醒，錯過了約定的時刻。","e":"Guo Hua waited for Wang Yueying at the temple, drank too much while waiting, and was still unconscious when she came and went."},
+56:null,
+57:{n:"白蛇精遇許漢文",s:"《白蛇傳》",z:"白蛇修煉千年化為白素貞，在西湖斷橋邊借傘與許仙相識，結為夫妻。","e":"A white snake of a thousand years' cultivation took the form of Bai Suzhen, met Xu Xian by the Broken Bridge on West Lake over a borrowed umbrella, and married him."},
+58:{n:"白蛇精詐言往南海",s:"《白蛇傳》",z:"白素貞為救許仙，謊稱回南海探親，實則冒死上崑崙山盜取仙草。","e":"To save Xu Xian, Bai Suzhen said she was visiting family in the south. In truth she went to Kunlun to steal the herb of life, at the risk of her own."},
+59:null,
+60:{n:"薛剛踢死太子驚崩聖駕",s:"《薛剛反唐》",z:"薛剛元宵夜醉酒鬧事，失手踢死太子，皇帝受驚駕崩。薛家因此滿門抄斬，薛剛逃亡在外，日後舉兵反唐。","e":"Drunk on the Lantern Festival night, Xue Gang killed the crown prince by accident and the shock killed the emperor. The whole Xue clan was executed; Xue Gang escaped, and later raised an army against the Tang."}
+};
+
 /* ========== i18n ========== */
 var LANG="zh";
 try{ var sv=localStorage.getItem("baibai.lang"); if(sv==="en"||sv==="zh") LANG=sv; }catch(e9){}
@@ -481,9 +566,9 @@ var UI={
  declOk:["心誠則靈","Sincerity is what counts"],
  /* 上香 */
  r1:["把香拖到燭火上點燃","Drag the incense into the candle flame"],
- r2:["香點著了　<em>左右甩動手機熄掉火焰</em>","Lit. <em>Shake the phone side to side to put out the flame</em>"],
+ r2:["香點著了　<em>抓著香左右甩，把火甩熄</em>","Lit. <em>Hold the incense and swing it side to side to put the flame out</em>"],
  r3:["把香插進香爐","Put the incense into the burner"],
- rSkip:["跳過，直接上香","Skip"], rSkip2:["不方便？點此熄火","Can't shake? Tap here"],
+ rSkip:["跳過，直接上香","Skip"], rSkip2:["不方便？點此熄火","Can't swing? Tap here"],
  rBlow:["火要甩熄，不能用嘴吹","Shake it out — never blow on it"],
  rDone:["記得報上姓名、農曆生日、住址","Now state your name, birthday and address"],
  p1:["一　點燃","1 Light"], p2:["二　甩熄","2 Shake out"], p3:["三　插香","3 Place"],
@@ -512,10 +597,10 @@ var UI={
  retryAsk:["再請示一次","Ask again"],
  xiaoAsk:["把問題想得更清楚一點，再請示一次。","Make the question clearer, then ask again."],
  yinAsk:["神明這次沒有允許賜籤。靜一靜，再請示一次。","Not this time. Pause a moment, then ask again."],
- confN:["拿著籤再擲筊，問神明：「是不是這一支？」<br><em>要連續三個聖筊才算數</em>，中途不是就放回去重抽。",
-   "Holding the stick, cast again and ask: “Is this the one?”<br><em>Three sacred casts in a row are needed.</em> If not, put it back and draw again."],
+ confN:["拿著籤再擲筊，問神明：「是不是這一支？」<br><em>要擲出三個聖筊才算數</em>。<br>笑筊表示問得不夠清楚，籤不用放回；陰筊才要放回重抽。",
+   "Holding the stick, cast again and ask: “Is this the one?”<br><em>Three sacred casts are needed.</em><br>A laughing cast means the question wasn’t clear — keep the stick and cast again. Only a negative cast sends it back to the cylinder."],
  confDo:["擲筊確認","Cast to confirm"],
- conf3T:["連三聖筊","Three in a Row"], conf3S:["就是這一支","This is the one"],
+ conf3T:["三　聖　筊","Three Sacred Casts"], conf3S:["就是這一支","This is the one"],
  seeLot:["看籤詩","Read the verse"],
  xiaoConf:["神明笑而不答。籤不用放回去，把話問清楚，再擲一次。","No answer. Keep the stick, ask more clearly, and cast again."],
  yinConf:["不是這一支。把籤放回籤筒，重新再抽。","Not this one. Put it back and draw again."],
@@ -525,8 +610,10 @@ var UI={
  vern:["白　話","In plain words"],
  detail:["傳統籤解","Traditional reading"],
  storyLab:["卦頭故事","Story behind the verse"],
+ source:["出　處","Source"],
+ noSource:["　（各廟說法不一，暫無可靠出處）","　(accounts differ between temples; no reliable source)"],
  keep:["收籤","Keep"], oneMore:["再求一支","Draw another"],
- srcLot:["籤詩與籤解為傳統六十甲子籤內容，各宮廟版本略有差異。白話說明為本專案撰寫，僅供參考。",
+ srcLot:["籤詩與籤解為傳統六十甲子籤內容，各宮廟版本略有差異。白話說明與故事簡介為本專案撰寫，僅供參考。",
    "Verse and traditional readings are from the historical Sixty Jiazi stick-book; versions differ slightly between temples. The plain-language reading was written for this project."],
  romNote:["拼音為自動標注，破音字可能需校正；台羅為機器轉寫，文白讀未經校對。",
    "Pinyin is auto-generated; Tâi-lô is machine-converted and literary/colloquial readings have not been checked."],
@@ -574,7 +661,7 @@ var GUIDE=[
  [["用燭火點燃","Light it from the candle"],["到主爐旁的燭台引火。",
    "Use the candle flame beside the main burner."]],
  [["甩熄，不要用嘴吹","Shake it out — never blow"],
-  ["<em>這是最常見的錯誤。</em>用手輕搧或上下甩動把火焰熄掉，留下紅色火星即可。口氣被視為不潔，不可對著神明的香吹。",
+  ["<em>這是最常見的錯誤。</em>抓著香左右或上下甩動，把火焰甩熄，留下紅色火星即可。口氣被視為不潔，不可對著神明的香吹。",
    "<em>This is the most common mistake visitors make.</em> Fan it with your hand or shake it until only the ember glows. Breath is considered unclean and must never touch the gods' incense."]],
  [["香拿在胸前","Hold it at your chest"],["雙手持香舉至額前，不要四處揮舞，小心燙到人。",
    "Hold it with both hands and raise it to your forehead. Don't wave it around — it burns."]]]},
@@ -617,8 +704,8 @@ var GUIDE=[
    "Ask “may I draw a stick?” — <em>only a sacred cast lets you proceed</em>."]],
  [["搖籤筒抽籤","Shake the cylinder"],["心中默念所求之事，搖到一支竹籤掉出來為止。只掉一支才算。",
    "Hold your question in mind and shake until one bamboo stick falls out. Only one counts."]],
- [["拿籤號再擲筊確認","Confirm the number with the blocks"],["問「是不是這一支」，<em>要連續三個聖筊</em>才算數。",
-   "Ask “is this the one?” — <em>three sacred casts in a row</em> are needed."]],
+ [["拿籤號再擲筊確認","Confirm the number with the blocks"],["問「是不是這一支」，<em>要連續三個聖筊</em>才算數。<br><span class=\'note\'>本程式採較寬鬆的算法：笑筊不中斷計數，只有陰筊才歸零重抽。</span>",
+   "Ask “is this the one?” — <em>three sacred casts in a row</em> are needed.<br><span class=\'note\'>This app is more forgiving: a laughing cast does not break the count; only a negative cast resets it.</span>"]],
  [["不是就放回去重抽","Put it back if not"],["中途出現陰筊，把籤放回籤筒，重新再來。笑筊則是重擲同一支。",
    "A negative cast means put the stick back and draw again. A laughing cast means cast again for the same stick."]],
  [["到籤櫃取籤詩","Collect the printed verse"],["確認後，依籤號到籤詩櫃抽出對應的那張紙。看不懂可以找解籤志工。",
@@ -944,9 +1031,10 @@ function cupSVG(flatUp){
 }
 
 /* 三炷香（state: 0 未燃 1 火焰 2 紅星） */
-function jossSVG(st){
- var tip="";
- if(st===1) tip='<g><path d="M43 6 Q49 -4 43 -14 Q37 -4 43 6 Z" fill="#ffb347"><animate attributeName="opacity" values="1;.6;1" dur=".5s" repeatCount="indefinite"/></path>'+
+function jossSVG(st,fs){
+ var tip="", k=(typeof fs==="number")?Math.max(fs,0):1;
+ if(st===1) tip='<g transform="translate(43,6) scale('+k.toFixed(2)+') translate(-43,-6)">'+
+   '<path d="M43 6 Q49 -4 43 -14 Q37 -4 43 6 Z" fill="#ffb347"><animate attributeName="opacity" values="1;.55;1" dur=".4s" repeatCount="indefinite"/></path>'+
    '<path d="M43 4 Q46 -2 43 -8 Q40 -2 43 4 Z" fill="#fff0c0"/></g>';
  if(st===2) tip='<circle cx="43" cy="6" r="4.5" fill="#ff8c3a"><animate attributeName="opacity" values="1;.5;1" dur="2s" repeatCount="indefinite"/></circle>';
  var s='<svg viewBox="0 0 86 120" aria-label="三炷香">'+tip;
@@ -1317,8 +1405,8 @@ function jossCenter(){var r=jossEl.getBoundingClientRect();return{x:r.left+r.wid
 function near(el,pt,pad){var r=el.getBoundingClientRect();
  return Math.hypot(pt.x-(r.left+r.width/2),pt.y-(r.top+r.height/2))< (Math.max(r.width,r.height)/2+(pad||46));}
 function onRiteDown(e){
- if(rite.step===2) return;
  rite.drag=true; rite.sx=e.clientX; rite.sy=e.clientY;
+ if(rite.step===2){ swing.dir=0; swing.x=e.clientX; swing.t=Date.now(); }
  var r=jossEl.getBoundingClientRect();
  var inside=e.clientX>=r.left-26&&e.clientX<=r.right+26&&e.clientY>=r.top-26&&e.clientY<=r.bottom+26;
  if(inside){ rite.ox=e.clientX-r.left; rite.oy=e.clientY-r.top; }
@@ -1326,12 +1414,34 @@ function onRiteDown(e){
  onRiteMove(e);
 }
 function onRiteMove(e){
- if(rite.step===2){ swipeShake(e.clientX); return; }
- if(!rite.drag) return;
+ if(!rite.drag){ if(rite.step===2) swipeShake(e.clientX); return; }
  rite.x=e.clientX-rite.ox; rite.y=e.clientY-rite.oy;
  jossEl.style.left=rite.x+"px"; jossEl.style.top=rite.y+"px";
+ if(rite.step===2){ swingCount(e.clientX); return; }
  var tgt=rite.step===1?candleEl:$("#censer"), dz=altarEl.querySelector(".drop");
  if(dz) dz.classList.toggle("hot", riteHit(tgt,{x:e.clientX,y:e.clientY}));
+}
+/* 抓著香左右甩：數方向反轉次數，三次熄滅 */
+var swing={dir:0,n:0,x:0,t:0};
+function swingCount(x){
+ var now=Date.now();
+ if(now-swing.t>1000){ swing.n=0; swing.dir=0; }
+ swing.t=now;
+ var dx=x-swing.x; swing.x=x;
+ if(Math.abs(dx)<14) return;
+ var nd=dx>0?1:-1;
+ if(swing.dir&&nd!==swing.dir){
+  swing.n++;
+  sfx("tick");
+  if(swing.n>=3){ dousing(); return; }
+  jossEl.innerHTML=jossSVG(1, 1-swing.n*0.33);
+ }
+ swing.dir=nd;
+}
+function dousing(){
+ if(rite.step!==2) return;
+ swing.n=0; swing.dir=0;
+ if(shakeWant) shakeWant();
 }
 function riteHit(el,fin){ return near(el,jossCenter(),76)||near(el,fin,76); }
 function homeJoss(){
@@ -1343,6 +1453,10 @@ function onRiteUp(e){
  var fin=(e&&typeof e.clientX==="number")?{x:e.clientX,y:e.clientY}:jossCenter();
  if(rite.step===1&&riteHit(candleEl,fin)){
   jossEl.innerHTML=jossSVG(1); rite.step=2; pips(); clearDrop();
+  swing.n=0; swing.dir=0; swing.t=0;
+  var cz=$("#censer").getBoundingClientRect();
+  rite.x=cz.left+cz.width/2-43; rite.y=cz.top-96;
+  jossEl.style.left=rite.x+"px"; jossEl.style.top=rite.y+"px";
   shakeWant=function(){ if(rite.step!==2) return;
    jossEl.innerHTML=jossSVG(2); rite.step=3; pips(); shakeWant=null;
    markDrop($("#censer"));
@@ -1353,7 +1467,7 @@ function onRiteUp(e){
   return;
  }
  if(rite.step===3&&riteHit($("#censer"),fin)){ finishRite(); return; }
- homeJoss();
+ if(rite.step!==2) homeJoss();
 }
 function finishRite(){
  endRite();
@@ -1741,7 +1855,17 @@ function showLot(L){
   rows+='<div class="row'+(k===hi?" hi":"")+'"><dt>'+esc(UI.J[k][LANG==="en"?1:0])+'</dt>'+
         '<dd>'+esc(L.jie[k]||"—")+'</dd></div>';
  }
- var story=String(L.story||"").replace(/^[0-9一二三四五六七八九十]+[、.]\s*/,"");
+ var tale=TALE[L.i], storyBox="";
+ if(tale){
+  storyBox='<details class="talebox"><summary>'+U("storyLab")+'　'+esc(tale.n)+'</summary>'+
+   '<p class="tale-z">'+esc(T(tale.z,tale.e))+'</p>'+
+   (LANG==="en"?'':'<p class="tale-e">'+esc(tale.e)+'</p>')+
+   '<p class="tale-s">'+U("source")+'　'+esc(tale.s)+'</p></details>';
+ } else {
+  var nm=String(L.story||"").replace(/^[0-9一二三四五六七八九十]+[、.]\s*/,"");
+  storyBox='<p class="story"><b>'+U("storyLab")+'</b>　'+esc(nm)+
+    '<span class="tale-s">'+U("noSource")+'</span></p>';
+ }
  var rom="";
  if(ROM.pin&&PIN[L.i]) rom+='<div class="rom-line">'+PIN[L.i].join("<br>")+'</div>';
  if(ROM.tl&&TL[L.i])   rom+='<div class="rom-line tl-line">'+TL[L.i].join("<br>")+'</div>';
@@ -1757,7 +1881,7 @@ function showLot(L){
   '<details class="jiebox"'+(LANG==="en"?"":" open")+'><summary>'+U("detail")+'</summary>'+
    (LANG==="en"?'<p class="srcline" style="text-align:left;margin:8px 0 2px">'+U("jieZhOnly")+'</p>':'')+
    '<dl class="jie">'+rows+'</dl></details>'+
-  (story?'<p class="story"><b>'+U("storyLab")+'</b>　'+esc(story)+'</p>':"")+
+  storyBox+
   '<div class="sheet-btns"><button class="sbtn" data-close>'+U("keep")+'</button>'+
   '<button class="sbtn primary" data-q="again">'+U("oneMore")+'</button></div>'+
   '<p class="srcline">'+U("srcLot")+'<br>'+U("romNote")+'</p>');

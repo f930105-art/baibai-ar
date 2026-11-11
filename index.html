@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <meta name="theme-color" content="#0b0907">
-<meta name="description" content="線上拜拜 AR 體驗：神明以陀螺儀錨定在空間中，可上香、擲筊、抽籤、合影。">
+<meta name="description" content="Taiwanese temple worship in AR / 線上拜拜 AR：六十甲子籤、拜拜流程、神明簡介，中英雙語含拼音與台羅。">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;font:14px/1.5 system-ui,sans-serif}
@@ -203,21 +203,160 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+/* ---- v3 新增 ---- */
+.linkbtn{font-size:12px;letter-spacing:.1em;color:var(--smoke-2);
+  border:1px solid #3d2c22;border-radius:999px;padding:9px 20px;transition:border-color .2s,color .2s}
+.linkbtn:hover,.linkbtn:focus-visible{border-color:var(--gold);color:var(--gold-hi)}
+.wish{position:relative}
+.info{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;
+  border:1px solid #4a372c;color:var(--smoke-2);font-size:11px;line-height:1;
+  display:flex;align-items:center;justify-content:center}
+.info:hover,.info:focus-visible{border-color:var(--gold);color:var(--gold-hi)}
+
+/* 教學 / 簡介 捲動頁 */
+#page{position:absolute;inset:0;z-index:11;overflow-y:auto;background:
+  radial-gradient(120% 60% at 50% -10%, #3a1a14 0%, transparent 55%), var(--ink)}
+.page-in{max-width:620px;margin:0 auto;padding-block:16px 48px}
+.page-top{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;display:flex;align-items:center;gap:12px;
+  padding-block:12px;margin-bottom:8px;background:linear-gradient(180deg,#1a0f0b 70%,transparent)}
+.page-top h2{margin:0;font-family:var(--font-d);font-size:21px;font-weight:900;letter-spacing:.16em;color:var(--gold-hi)}
+.sec{margin-top:26px}
+.sec > h3{display:flex;align-items:center;gap:10px;margin:0 0 12px;
+  font-family:var(--font-d);font-size:17px;font-weight:600;letter-spacing:.12em;color:var(--gold-hi)}
+.sec > h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(216,171,85,.4),transparent)}
+.step{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid #2a1f18}
+.step:last-child{border-bottom:0}
+.step .n{flex:none;width:27px;height:27px;border-radius:50%;border:1px solid var(--gold);
+  color:var(--gold-hi);font-size:13px;display:flex;align-items:center;justify-content:center;
+  font-variant-numeric:tabular-nums}
+.step .b{min-width:0}
+.step .t{font-size:14.5px;color:var(--smoke);line-height:1.6}
+.step .d{font-size:12.5px;color:var(--smoke-2);line-height:1.75;margin-top:4px}
+.step .d em{font-style:normal;color:var(--gold-hi)}
+.warn{display:flex;gap:10px;padding:12px 14px;border-radius:9px;margin-top:10px;
+  background:rgba(200,16,46,.09);border:1px solid rgba(200,16,46,.4)}
+.warn .wi{flex:none;color:#e0657a;font-size:14px}
+.warn .wt{font-size:13px;line-height:1.7;color:#d9c9c2}
+.kv{display:grid;grid-template-columns:4.6em 1fr;gap:8px 14px;font-size:13.5px;line-height:1.7}
+.kv dt{color:var(--smoke-2);letter-spacing:.1em}
+.kv dd{margin:0;color:var(--smoke)}
+.kv dd small{color:#8a7f74;font-size:11.5px}
+.gods{display:flex;flex-direction:column;gap:14px}
+.god{padding:16px;border-radius:11px;background:linear-gradient(180deg,#1f1712,#15100d);border:1px solid #39291f}
+.god-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.god-h .gi{width:42px;height:42px;flex:none}
+.god-h .gn{font-family:var(--font-d);font-size:18px;font-weight:600;letter-spacing:.1em;color:var(--gold-hi)}
+.god-h .gf{font-size:11.5px;color:var(--smoke-2);margin-top:2px}
+
+/* 上香三步 */
+#rite{position:absolute;left:0;right:0;bottom:96px;z-index:7;pointer-events:none}
+#rite .bar{display:flex;justify-content:center;gap:7px;margin-bottom:12px}
+#rite .pip{font-size:10.5px;letter-spacing:.1em;color:#6d645c;
+  border:1px solid #3b2b22;border-radius:999px;padding:4px 11px;background:rgba(11,9,7,.78)}
+#rite .pip.on{color:var(--gold-hi);border-color:var(--gold)}
+#rite .pip.done{color:var(--jade);border-color:rgba(78,133,120,.6)}
+#joss{position:absolute;z-index:7;width:86px;touch-action:none;will-change:transform}
+#joss svg{width:100%;height:auto;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
+#candle{position:absolute;z-index:6;width:54px;pointer-events:none}
+#candle svg{width:100%;height:auto;display:block}
+.drop{position:absolute;z-index:5;border:2px dashed rgba(216,171,85,.55);border-radius:50%;
+  pointer-events:none;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}
+
+/* 求籤流程 */
+.rite-note{font-size:12.5px;line-height:1.8;color:var(--smoke-2);text-align:center;max-width:24em;margin:0 auto 4px}
+.tally{display:flex;justify-content:center;gap:9px;margin:14px 0 4px}
+.tally i{width:11px;height:11px;border-radius:50%;border:1px solid #4a3828;font-style:normal}
+.tally i.ok{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px -2px var(--gold)}
+.qno{font-family:var(--font-d);font-size:40px;font-weight:900;letter-spacing:.1em;
+  color:var(--gold-hi);text-align:center;margin:10px 0 2px}
+.qgz{font-size:13px;letter-spacing:.3em;text-indent:.3em;color:var(--smoke-2);text-align:center}
+.jie{display:grid;grid-template-columns:3.4em 1fr;gap:7px 12px;font-size:13px;line-height:1.65;
+  margin-top:16px;padding-top:14px;border-top:1px solid #35261d}
+.jie dt{color:var(--smoke-2);letter-spacing:.08em}
+.jie dd{margin:0;color:#cdc2b5}
+.jie .hi dt{color:var(--gold-hi)}
+.jie .hi dd{color:var(--gold-hi)}
+.jie .row{display:contents}
+.story{font-size:12.5px;line-height:1.75;color:var(--smoke-2);margin-top:14px;
+  padding:11px 13px;border-radius:8px;background:rgba(236,228,216,.04)}
+.story b{color:var(--gold-hi);font-weight:500}
+.tone{display:inline-block;font-family:var(--font-d);font-size:13px;font-weight:600;
+  letter-spacing:.14em;padding:3px 12px;border-radius:999px;border:1px solid currentColor}
+.srcline{font-size:10.5px;line-height:1.7;color:#5f574f;text-align:center;margin-top:18px}
+.form{display:grid;grid-template-columns:5.2em 1fr;gap:10px 12px;align-items:center;margin:16px 0 4px}
+.form label{font-size:12.5px;letter-spacing:.1em;color:var(--smoke-2)}
+.form input{width:100%;min-width:0;padding:11px 12px;border-radius:8px;font-size:14px;
+  background:#120c09;border:1px solid #43301f;color:var(--smoke);font-family:inherit}
+.form input::placeholder{color:#5f574f}
+.form input:focus{outline:none;border-color:var(--gold)}
+.langbtn{position:absolute;top:max(10px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));
+  z-index:3;font-size:11.5px;letter-spacing:.14em;color:var(--smoke-2);
+  border:1px solid #3d2c22;border-radius:999px;padding:6px 14px;background:rgba(11,9,7,.6)}
+.langbtn:hover,.langbtn:focus-visible{border-color:var(--gold);color:var(--gold-hi)}
+#home{position:relative}
+.tl{display:block;text-align:center;font-size:12px;letter-spacing:.06em;color:var(--jade);margin:-6px 0 12px}
+.tlist dd .rom{color:var(--jade);font-weight:500}
+.romrow{display:flex;justify-content:center;gap:8px;margin:-6px 0 12px}
+.chipbtn{font-size:11px;letter-spacing:.1em;color:var(--smoke-2);border:1px solid #3d2c22;
+  border-radius:999px;padding:5px 13px;transition:border-color .2s,color .2s}
+.chipbtn.on{border-color:var(--gold);color:var(--gold-hi)}
+.rom-line{font-size:12.5px;line-height:2;color:var(--smoke-2);text-align:center;margin:0 0 12px;
+  font-family:var(--font-b);letter-spacing:.02em}
+.rom-line.tl-line{color:var(--jade)}
+.jiebox{margin-top:14px;border-top:1px solid #35261d;padding-top:12px}
+.jiebox summary{font-size:11px;letter-spacing:.24em;color:var(--smoke-2);cursor:pointer;list-style:none}
+.jiebox summary::-webkit-details-marker{display:none}
+.jiebox summary::before{content:"▸ ";color:var(--gold)}
+.jiebox[open] summary::before{content:"▾ "}
+.jiebox .jie{border-top:0;padding-top:10px;margin-top:0}
+.sndbtn{position:absolute;top:max(10px,env(safe-area-inset-top,0px));
+  left:max(14px,env(safe-area-inset-left,0px));z-index:3;
+  width:32px;height:32px;border-radius:50%;font-size:13px;line-height:1;color:var(--smoke-2);
+  border:1px solid #3d2c22;background:rgba(11,9,7,.6)}
+.sndbtn:hover,.sndbtn:focus-visible{border-color:var(--gold);color:var(--gold-hi)}
+.sndbtn.off{color:#5f574f}
+.vhead{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 2px 7px;
+  font-size:10.5px;letter-spacing:.24em;color:#6d645c;border-bottom:1px solid #2a1f18}
+.vlist{display:flex;flex-direction:column}
+.vrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:11px 2px;border-bottom:1px solid #241a15}
+.vrow:last-child{border-bottom:0}
+.vz,.vt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.vrow .han{font-family:var(--font-d);font-size:16px;letter-spacing:.06em;color:var(--smoke)}
+.vt .han{color:var(--gold-hi)}
+.vrow .rom{font-size:12px;letter-spacing:.01em;color:var(--jade)}
+.vrow .rom.pin{color:var(--smoke-2)}
+.tl b{font-weight:600;color:var(--smoke)}
+.chant{margin:16px 0 6px;padding:16px 18px;border-radius:10px;
+  background:linear-gradient(180deg,rgba(236,228,216,.05),transparent);
+  border-left:2px solid rgba(216,171,85,.45);border-right:2px solid rgba(216,171,85,.45)}
+.cl{display:flex;align-items:baseline;gap:10px;padding:7px 0;flex-wrap:wrap}
+.cl .cf{flex:none;font-family:var(--font-d);font-size:14px;letter-spacing:.1em;color:var(--smoke-2)}
+.cl .bl{flex:1;min-width:90px;border-bottom:1px dashed #5a4a3c;height:1.3em}
+.cl .fill{flex:1;min-width:90px;font-family:var(--font-d);font-size:16px;color:var(--gold-hi);
+  border-bottom:1px solid rgba(216,171,85,.5)}
+.cl .cf{display:flex;flex-direction:column;gap:2px}
+.cl .cf b{font-weight:600;font-family:var(--font-d);font-size:15px;letter-spacing:.08em;color:var(--smoke)}
+.cl .cf i,.cl .fill i{font-style:normal;font-family:var(--font-b);font-size:11px;color:#8a7f74;letter-spacing:.01em}
+.cl .fill{display:flex;flex-direction:column;gap:2px;padding-bottom:3px}
+.cl .fill b{font-weight:600;font-family:var(--font-d);font-size:16px;color:var(--gold-hi)}
+.cl .bl{align-self:flex-end;margin-bottom:6px}
+
 </style>
 
 <div class="shell">
 
   <section id="home" class="screen">
     <div class="home-in gut">
+      <button class="langbtn" id="langBtn">EN</button>
+      <button class="sndbtn" id="sndBtn" aria-label="sound">♪</button>
       <div class="plaque">
         <span class="lantern l"></span><h1>掌心香火</h1><span class="lantern r"></span>
       </div>
-      <p class="tag">選一件心事　神明在前</p>
+      <p class="tag" id="tagline"></p>
       <div class="wishes" id="wishes"></div>
-      <p class="foot">
-        上香、擲筊、抽籤皆為民俗文化之數位體驗，<b>結果由隨機決定</b>，
-        僅供參考與學習，不作任何實際決策依據。
-      </p>
+      <button class="linkbtn" id="bGuide"></button>
+      <p class="foot" id="homeFoot"></p>
     </div>
   </section>
 
@@ -227,12 +366,14 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
     <canvas id="smoke"></canvas>
     <div id="figure"></div>
     <div class="censer" id="censer"></div>
+    <div id="candle" hidden></div>
+    <div id="joss" hidden></div>
     <div id="touch"></div>
     <div id="ghost" hidden></div>
 
     <header class="hud gut">
       <div>
-        <div class="who" id="who">財神爺</div>
+        <button class="who" id="who" style="padding:0;text-align:left">財神爺</button>
         <div class="for" id="for">求　財運</div>
       </div>
       <button class="icbtn sp" id="bAnchor" title="空間錨定" aria-label="空間錨定">
@@ -247,114 +388,432 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
     <div class="chip" id="camChip" hidden></div>
     <div id="hint" hidden><span class="ht"></span><button class="hs"></button></div>
 
+    <div id="rite" hidden><div class="bar">
+      <span class="pip" data-s="1">一　點燃</span>
+      <span class="pip" data-s="2">二　甩熄</span>
+      <span class="pip" data-s="3">三　插香</span>
+    </div></div>
+
     <nav class="rail gut">
-      <button class="act" data-act="incense" id="bIncense"><span class="a-n">上香</span><span class="a-d">畫圈點香</span></button>
-      <button class="act" data-act="jiao" id="bJiao" disabled><span class="a-n">擲筊</span><span class="a-d">搖手機</span></button>
-      <button class="act" data-act="qian" id="bQian" disabled><span class="a-n">抽籤</span><span class="a-d">求一首詩</span></button>
+      <button class="act" data-act="incense" id="bIncense"><span class="a-n">上香</span><span class="a-d">三炷清香</span></button>
+      <button class="act" data-act="jiao" id="bJiao" disabled><span class="a-n">擲筊</span><span class="a-d">問允不允</span></button>
+      <button class="act" data-act="qian" id="bQian" disabled><span class="a-n">求籤</span><span class="a-d">六十甲子</span></button>
       <button class="act" data-act="photo" id="bPhoto"><span class="a-n">拍照</span><span class="a-d">合影留念</span></button>
     </nav>
   </section>
 
+  <section id="page" hidden><div class="page-in gut">
+    <div class="page-top"><button class="icbtn" id="pageBack" aria-label="返回"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><h2 id="pageTitle"></h2></div>
+    <div id="pageBody"></div>
+  </div></section>
+
 </div>
 <div id="sheet" hidden></div>
+
 
 <script>
 (function(){
 "use strict";
 
-/* ========== 神明與籤詩 ========== */
+var QIAN={"wish":{"財運":"求財","姻緣":"婚姻","學業":"功名","健康":"治病","事業":"經商","平安":"出外"},"show":["凡事","家運","婚姻","求財","功名","治病","出外","經商"],"lots":[{"i":1,"no":"第一籤","gz":"甲子","wuxing":"屬金利秋 宜其西方","p":["日出便見風雲散","光明清淨照世間","一向前途通大道","萬事清吉保平安"],"story":"朱德武入寺相分明","stories":["朱德武入寺相分明","崔文德胡鳳嬌到家空成婚","包公請雷驚仁宗","包公請雷驚仁宗（另一版本）"],"tone":"吉","v":"烏雲散去，陽光照進來。眼前的阻礙會過去，放心往前走。","jie":{"凡事":"大吉昌","家運":"平安大吉","婚姻":"允成","求財":"先大進。後小利","功名":"望後有成","治病":"未日(半月)痊安","出外":"平安","經商":"如意"}},{"i":2,"no":"第二籤","gz":"甲寅","wuxing":"屬水利冬 宜其北方","p":["於今此景正當時","看看欲吐百花魁","若能遇得春色到","一洒清吉脫塵埃"],"story":"趙子郎救阿斗","stories":["趙子郎救阿斗","陳東初祭梅得救","薛交薛癸旁州遇採樓得繡球"],"tone":"吉","v":"花正要開。時機剛剛成熟，再等一下就豁然開朗。","jie":{"凡事":"春天到","家運":"福祉茂盛","婚姻":"永偕伉儷","求財":"如泉湧。(先有後無)","功名":"二次成。秋進連中","治病":"老不好。少平安","出外":"春夏好。秋冬呆","經商":"大吉利市"}},{"i":3,"no":"第三籤","gz":"甲辰","wuxing":"屬火利夏 宜其南方","p":["勸君把定心莫虛","天註衣祿自有餘","和合重重常吉慶","時來終遇得明珠"],"story":"朱德武入寺相分明","stories":["朱德武入寺相分明","崔文德胡鳳嬌到家空成婚","沈萬三掘寶與正德君鬥法"],"tone":"吉","v":"把心定下來。該是你的不會少，時候到了自然得到。","jie":{"凡事":"吉","家運":"和氣。後得祥瑞","婚姻":"大吉","求財":"後遇貴人大興","功名":"後科連登。尾有","治病":"命不畏。平安","出外":"向南方遇貴人","經商":"先利平。後大財"}},{"i":4,"no":"第四籤","gz":"甲午","wuxing":"屬金利秋 宜其西方","p":["風恬浪靜可行舟","恰是中秋月一輪","凡事不須多憂慮","福祿自有慶家門"],"story":"盧龍王次子招親","stories":["盧龍王次子招親","趙子龍救阿斗"],"tone":"吉","v":"風平浪靜可以行船。不用多慮，順著走就好。","jie":{"凡事":"成者大吉","家運":"大獲吉昌","婚姻":"和諧。月半成","求財":"在家好。出外凶","功名":"顯祖榮宗","治病":"近日痊癒","出外":"求財求事如意","經商":"大吉利"}},{"i":5,"no":"第五籤","gz":"甲申","wuxing":"屬水利冬 宜其北方","p":["只恐前途命有變","勸君作急可宜先","且守長江無大事","命逢太白守身邊"],"story":"韓文公過秦嶺遇霜雪凍","stories":["韓文公過秦嶺遇霜雪凍","王剪戰袁達"],"tone":"平","v":"前途有變數。該動的要早點動，守成則無大事。","jie":{"凡事":"待時機","家運":"先被邪。後吉祥","婚姻":"多口舌。不吉","求財":"以待時來。(不吉)","功名":"必遇。防徼","治病":"月光癒。暗不吉","出外":"下半年好","經商":"先利。後遇貴人"}},{"i":6,"no":"第六籤","gz":"甲戌","wuxing":"屬火利夏 宜其南方","p":["風雲致雨落洋洋","天災時氣必有傷","命內此事難和合","更逢一足出外鄉"],"story":"烏精亂宋朝","stories":["烏精亂宋朝","劉志遠戰瓜精。(劉志遠投軍)"],"tone":"凶","v":"風雨交加。這件事難成，可能還得在外奔波。","jie":{"凡事":"待望","家運":"有怪必防","婚姻":"不宜","求財":"空有","功名":"難望","治病":"邪作病。險不吉","出外":"無貴人","經商":"財本耗散"}},{"i":7,"no":"第七籤","gz":"乙丑","wuxing":"屬金利秋 宜其西方","p":["雲開月出正分明","不須進退問前程","婚姻皆由天註定","和合清吉萬事成"],"story":"國公暗察白袍將","stories":["國公暗察白袍將","尉遲恭掛帥"],"tone":"吉","v":"雲開月明。不必進退猶豫，該成的自然會成。","jie":{"凡事":"後成","家運":"漸漸平安","婚姻":"月光成。暗不成","求財":"有成","功名":"少有成。老無","治病":"女平。男晚好。少險。老不畏","出外":"滿路異香","經商":"成者大吉"}},{"i":8,"no":"第八籤","gz":"乙卯","wuxing":"屬水利冬 宜其北方","p":["禾稻看看結成完","此事必定兩相全","回到家中寬心坐","妻兒鼓舞樂團圓"],"story":"薛仁貴回家","stories":["薛仁貴回家","朱并(幷)回家"],"tone":"吉","v":"稻子要收成了。事情會兩全，回家安心等著。","jie":{"凡事":"和者得。不和失","家運":"平安","婚姻":"成。大吉。兩全其美","求財":"下半年好。家利","功名":"二次得進","治病":"少不畏。老不好","出外":"不可","經商":"有利必得"}},{"i":9,"no":"第九籤","gz":"乙巳","wuxing":"屬火利夏 宜其南方","p":["龍虎相隨在深山","君爾何須背後看","不知此去相愛愉","他日與我卻無干"],"story":"龍虎爭鬥（龍虎相會）","stories":["龍虎爭鬥（龍虎相會）"],"tone":"平","v":"龍虎相持。和氣才有收穫，鬧翻就兩頭落空。","jie":{"凡事":"謹慎","家運":"有邪。難安","婚姻":"不可","求財":"無益","功名":"不取","治病":"運深危險。寅辰日過不畏","出外":"不可","經商":"了錢"}},{"i":10,"no":"第十籤","gz":"乙未","wuxing":"屬金利秋 宜其西方","p":["花開結子一半枯","可惜今年汝虛度","漸漸日落西山去","勸君不用向前途"],"story":"智遠戰瓜精 （劉志遠戰瓜精、劉志遠投軍）:","stories":["智遠戰瓜精 （劉志遠戰瓜精、劉志遠投軍）:","桃花女流勿太歲"],"tone":"凶","v":"花開一半就枯了。今年白忙，別再硬撐。","jie":{"凡事":"拖尾。難解難脫","家運":"難安","婚姻":"不可。難成","求財":"上半年空破財。九月過不畏","功名":"枉費。難得","治病":"月半安。月尾死","出外":"不可","經商":"不好。了錢"}},{"i":11,"no":"第十一籤","gz":"乙酉","wuxing":"屬水利冬 宜其北方","p":["靈雞漸漸見分明","凡事且看子丑寅","雲開月出照天下","郎君即便見太平"],"story":"三藏被紅孩兒燒","stories":["三藏被紅孩兒燒","撐渡伯行舟遇太歲"],"tone":"平","v":"天快亮了。再等一段時間，事情會明朗。","jie":{"凡事":"作不和。子錢安","家運":"漸漸得居春風","婚姻":"終成","求財":"漸漸有收","功名":"費了工。八月好","治病":"大命不好。子丑寅日過不畏","出外":"子丑寅日可行","經商":"不利"}},{"i":12,"no":"第十二籤","gz":"乙亥","wuxing":"屬火利夏 宜其南方","p":["長江風浪漸漸靜","于今得進可安寧","必有貴人相扶助","凶事脫出見太平"],"story":"桃園三結義","stories":["桃園三結義","曹操賜雲 長馬袍贈金銀"],"tone":"吉","v":"風浪漸漸平息。有貴人相助，壞事會過去。","jie":{"凡事":"月光好","家運":"漸安","婚姻":"可合成者吉","求財":"好運。得意","功名":"難得","治病":"月光好。老不痊","出外":"有貴人扶","經商":"大吉"}},{"i":13,"no":"第十三籤","gz":"丙子","wuxing":"屬水利冬 宜其北方","p":["命中正逢羅孛關","用盡心機總未休","作福問神難得過","恰是行舟上高灘"],"story":"渭水河太公釣魚","stories":["渭水河太公釣魚","武吉挑柴打死人。(武吉遇師)"],"tone":"凶","v":"船卡在淺灘。再用心機也過不去，先停下來。","jie":{"凡事":"不吉","家運":"人不安。邪作祟","婚姻":"難合","求財":"犯活鬼。下年無","功名":"費工。望後得進","治病":"犯(太歲)必死。未不畏","出外":"不可","經商":"失運"}},{"i":14,"no":"第十四籤","gz":"丙寅","wuxing":"屬火利夏 宜其南方","p":["財中漸漸見分明","花開花謝結子成","寬心且看月中桂","郎君即便見太平"],"story":"李世民遊地府:","stories":["李世民遊地府:"],"tone":"吉","v":"財路漸漸清楚。耐心等，會結果。","jie":{"凡事":"大吉","家運":"平安","婚姻":"成好","求財":"月光進。漸暗少","功名":"可喜","治病":"險。月光過不畏","出外":"不可(必得貴人)","經商":"漸得"}},{"i":15,"no":"第十五籤","gz":"丙辰","wuxing":"屬土利年 四方皆宜","p":["八十原來是太公","看看晚景遇文王","目下緊事休相問","勸君且守待運通"],"story":"莊子破棺。(莊子試妻)","stories":["莊子破棺。(莊子試妻)","薛公大鬧花燈跌死太子驚死聖駕","姜尚未卜吉凶事"],"tone":"平","v":"姜太公八十歲才遇文王。急事先放著，等運來。","jie":{"凡事":"大破財。求解和","家運":"平平","婚姻":"配偶慢成","求財":"晚即發","功名":"難就","治病":"求平安。十日險","出外":"慢日可行","經商":"漸且候時"}},{"i":16,"no":"第十六籤","gz":"丙午","wuxing":"屬水利冬 宜其北方","p":["不須作福不須求","用盡心機總未休","陽世不知陰世事","官法如爐不自由"],"story":"楊管醉玉仝坐馬","stories":["楊管醉玉仝坐馬","秦叔寶救李淵般家"],"tone":"凶","v":"求也沒用。這件事不在你的掌控裡，別再鑽。","jie":{"凡事":"恐防風波災","家運":"陰邪。求神解決","婚姻":"不合。有鬼作怪","求財":"春夏好秋冬呆","功名":"難得","治病":"必危。有陰公作祟。未日(半月)過不畏","出外":"防險","經商":"難就。了錢"}},{"i":17,"no":"第十七籤","gz":"丙申","wuxing":"屬火利夏 宜其南方","p":["舊恨重重未改為","家中禍患不臨身","須當謹防宜作福","龍蛇交會得和合"],"story":"紅孩兒捷住路頭","stories":["紅孩兒捷住路頭","范丹妻未出身殺九夫"],"tone":"平","v":"舊怨還沒解開。忍一忍、求個和，就能化解。","jie":{"凡事":"人害緊。和無事","家運":"居之則安","婚姻":"大吉","求財":"勤儉必得","功名":"修陰德必中","治病":"求神庇祐。辰未日(半月)過漸癒","出外":"辰巳日則可","經商":"平平"}},{"i":18,"no":"第十八籤","gz":"丙戌","wuxing":"屬土利年。四方皆宜","p":["君問中間此言因","看看祿馬拱前程","若得貴人多得利","和合自有兩分明"],"story":"孫悟空大難火災","stories":["孫悟空大難火災","薛丁山著飛刀"],"tone":"吉","v":"祿馬拱著前程。遇到貴人就有利可圖。","jie":{"凡事":"忍耐求和","家運":"瑞氣盈庭","婚姻":"大吉","求財":"不多。(萬金萬貫連得)","功名":"有望","治病":"痊癒","出外":"有貴人提攜","經商":"大進利市"}},{"i":19,"no":"第十九籤","gz":"丁丑","wuxing":"屬水利冬 宜其北方","p":["富貴由命天註定","心高必然誤君期","不然且回依舊路","雲開月出自分明"],"story":"朱壽昌尋母在長亭（朱壽昌辭官尋母）:","stories":["朱壽昌尋母在長亭（朱壽昌辭官尋母）:"],"tone":"平","v":"眼高會誤事。回到原來的路，自然會明朗。","jie":{"凡事":"被人害。理完(終)明","家運":"不佳。可住平安","婚姻":"不成。由天註定","求財":"守機而作","功名":"難得","治病":"險。月光好。若(暗)不癒","出外":"不可","經商":"難如意。守待時"}},{"i":20,"no":"第二十籤","gz":"丁卯","wuxing":"屬火利夏 宜其南方","p":["前途功名未得意","只恐命內有交加","兩家必定防損失","勸君且退莫咨嗟"],"story":"周文王為姜太公拖車:","stories":["周文王為姜太公拖車:"],"tone":"凶","v":"功名還沒到。雙方都會有損失，退一步為上。","jie":{"凡事":"了錢。拖尾。不合","家運":"防邪怪作之災","婚姻":"難合","求財":"不得","功名":"科運無。難進中","治病":"大命險。未日(半月)好","出外":"無運。不可","經商":"不就"}},{"i":21,"no":"第二十一籤","gz":"丁巳","wuxing":"屬土利年 四方皆宜","p":["十方佛法有靈通","大難禍患不相同","紅日當空常照耀","還有貴人到家堂"],"story":"周玉姊可遇陳春生","stories":["周玉姊可遇陳春生","姜子牙送飯為武吉掩卦"],"tone":"吉","v":"紅日當空。大難化小，還有貴人上門。","jie":{"凡事":"貴人扶持","家運":"必得吉昌","婚姻":"難成","求財":"先無後有","功名":"望後科","治病":"大命險。貴人扶","出外":"緩有貴人","經商":"先難後吉"}},{"i":22,"no":"第二十二籤","gz":"丁未","wuxing":"屬水利冬 宜其北方","p":["太公家業八十成","月出光輝四海明","命內自然逢大吉","茅屋中間百事亨"],"story":"秦叔寶救李淵","stories":["秦叔寶救李淵","孟良焦讚救宗寶"],"tone":"吉","v":"大器晚成之命。就算現在簡陋，百事都會亨通。","jie":{"凡事":"先呆。得貴人吉","家運":"安居春風","婚姻":"和合","求財":"先微後進","功名":"晚可有進","治病":"老不畏。少不好","出外":"平平。(有貴人提攜。得利)","經商":"有利益"}},{"i":23,"no":"第二十三籤","gz":"丁酉","wuxing":"屬火利夏 宜其南方","p":["欲去長江水闊茫","前途未遂運未通","如今絲綸常在手","只恐魚水不相逢"],"story":"鳳嬌觀音庵問籤中奸臣計","stories":["鳳嬌觀音庵問籤中奸臣計","胡鳳嬌觀音寺行香求懺"],"tone":"凶","v":"江面茫茫。釣竿在手卻遇不上魚，時機不對。","jie":{"凡事":"不可作。和者吉","家運":"崎嶇不順","婚姻":"大吉","求財":"先失運。後有利","功名":"無望","治病":"了錢。尾過漸好","出外":"不可","經商":"顛倒"}},{"i":24,"no":"第二十四籤","gz":"丁亥","wuxing":"屬土利年 四方皆宜","p":["月出光輝四海明","前途祿位見太平","浮雲掃退終無事","可保禍患不臨身"],"story":"秦叔寶救李淵","stories":["秦叔寶救李淵","孟良焦讚救宗寶"],"tone":"吉","v":"月光照亮四海。浮雲掃開，禍患不上身。","jie":{"凡事":"緊和平。了錢工","家運":"平安","婚姻":"和合","求財":"少有","功名":"顯榮祖宗。恐有變","治病":"陰邪祟。求神安","出外":"先少利。後可得","經商":"無利"}},{"i":25,"no":"第二十五籤","gz":"戊子","wuxing":"屬火利夏 宜其南方","p":["總是前途莫心勞","求神問聖枉是多","但看雞犬日過後","不須作福事如何"],"story":"鳳嬌觀音庵問籤中奸臣計","stories":["鳳嬌觀音庵問籤中奸臣計","胡鳳嬌觀音寺行香求懺"],"tone":"平","v":"別太操心。過了雞犬那幾日自然見分曉。","jie":{"凡事":"作可作。和者吉","家運":"宅舍難居","婚姻":"不好難成","求財":"微利不吉","功名":"未就","治病":"運深。酉戌不畏","出外":"不可","經商":"新業差。舊業平"}},{"i":26,"no":"第二十六籤","gz":"戊寅","wuxing":"屬土利年 四方皆宜","p":["選出牡丹第一枝","勸君折取莫遲疑","世間若問相知處","萬事逢春正及時"],"story":"范丹洗浴遇賢妻","stories":["范丹洗浴遇賢妻","薛丁山破收飛刀"],"tone":"吉","v":"牡丹第一枝。看準就折，別再遲疑。","jie":{"凡事":"春吉冬呆","家運":"安居春風","婚姻":"成者好","求財":"財源廣進","功名":"朱衣點頭。(及第)","治病":"平安。(婦忌十一月男能十二月。老危少安)","出外":"平安有。春滿載","經商":"逢春發無窮"}},{"i":27,"no":"第二十七籤","gz":"戊辰","wuxing":"屬木利春 宜其東方","p":["君爾寬心且自由","門庭清吉家無憂","財寶自然終吉利","凡事無傷不用求"],"story":"胡完救文氏母女","stories":["胡完救文氏母女","摧文德清胡鳳嬌"],"tone":"吉","v":"家門清吉。放寬心，什麼都不用強求。","jie":{"凡事":"有財允成。不畏","家運":"可得興旺","婚姻":"大吉","求財":"先輕後得","功名":"晚到","治病":"得安","出外":"先呆後好","經商":"獲如意。後大利"}},{"i":28,"no":"第二十八籤","gz":"戊午","wuxing":"屬火利夏 宜其南方","p":["於今莫作此當時","虎落平陽被犬欺","世間凡事何難定","千山萬水也遲疑"],"story":"李存孝打虎","stories":["李存孝打虎","石存孝遇李克用收為誼子"],"tone":"凶","v":"虎落平陽被犬欺。現在不是你的時候，別硬來。","jie":{"凡事":"後成吉","家運":"人作怪。恐風波","婚姻":"不吉。(女帶殺氣)","求財":"不得","功名":"無","治病":"運犯劫。被邪欺。寅戌日過不畏","出外":"被人欺","經商":"呆人欺。難如意"}},{"i":29,"no":"第二十九籤","gz":"戊申","wuxing":"屬土利年 四方皆宜","p":["枯木可惜未逢春","如今反在暗中藏","寬心且守風霜退","還君依舊作乾坤"],"story":"古城會關公斬蔡陽","stories":["古城會關公斬蔡陽"],"tone":"平","v":"枯木還沒逢春。熬過這陣風霜，局面會還給你。","jie":{"凡事":"待時","家運":"合家興旺。(運滯)","婚姻":"平平","求財":"新業差。舊業平","功名":"不就","治病":"運暗。逢春出運。(老凶)","出外":"不可","經商":"須守安命不可"}},{"i":30,"no":"第三十籤","gz":"戊戌","wuxing":"屬木利春 宜其東方","p":["漸漸看此月中和","過後須防未得高","改變顏色前途去","凡事必定見重勞"],"story":"豬哥過柿山","stories":["豬哥過柿山","薛丁山三請樊梨花"],"tone":"平","v":"月中還算平和，之後要防。而且要多費一番力氣。","jie":{"凡事":"了錢。甚不好","家運":"了錢難安","婚姻":"不成","求財":"無利","功名":"不成難進","治病":"險。半月不癒。重","出外":"不可出","經商":"經營不就"}},{"i":31,"no":"第三十一籤","gz":"己丑","wuxing":"屬火利夏 宜其南方","p":["綠柳蒼蒼正當時","任君此去作乾坤","花果結實無殘謝","福祿自有慶家門"],"story":"孟姜女招親","stories":["孟姜女招親","董永皇都市仙女送孩兒。(董永遇仙)","董永遇仙"],"tone":"吉","v":"綠柳正蒼翠。放手去做，會結出果實。","jie":{"凡事":"得利","家運":"世世興旺","婚姻":"好結尾","求財":"用心即有。(春敗好。在家好)","功名":"差人來報喜","治病":"喜遇良醫","出外":"大吉可進","經商":"大發資財"}},{"i":32,"no":"第三十二籤","gz":"己卯","wuxing":"屬土利年 四方皆宜","p":["龍虎相交在門前","此事必定兩相連","黃金忽然變成鐵","何用作福問神仙"],"story":"劉備入東吳進贅","stories":["劉備入東吳進贅","龍虎交會"],"tone":"凶","v":"黃金忽然變成鐵。情勢急轉直下，求神也沒用。","jie":{"凡事":"退卻","家運":"多口舌之災","婚姻":"不吉","求財":"失利虧本","功名":"無望","治病":"有邪凶險。拖尾。少者好。寅辰日不畏","出外":"不可。犯災難","經商":"了錢"}},{"i":33,"no":"第三十三籤","gz":"己巳","wuxing":"屬木利春 宜其東方","p":["欲去長江水闊茫","行舟把定未遭風","戶內用心再作福","看看魚水得相逢"],"story":"銅銀指私混銅之偽銀幣","stories":["銅銀指私混銅之偽銀幣","劉備入東吳回荊州"],"tone":"平","v":"把船穩住就不會遭風。在家多用點心，會遇上。","jie":{"凡事":"不可急進","家運":"門庭興旺","婚姻":"大吉","求財":"漸有","功名":"望後科","治病":"拖尾。破財。不畏","出外":"平安","經商":"安分待時"}},{"i":34,"no":"第三十四籤","gz":"己未","wuxing":"屬火利夏 宜其南方","p":["危險高山行過盡","莫嫌此路有重重","若見蘭桂漸漸發","長蛇反轉變成龍"],"story":"1、曹操潼關遇馬超","stories":["1、曹操潼關遇馬超"],"tone":"吉","v":"最險的山已經走完。再撐一下，長蛇會變成龍。","jie":{"凡事":"勤勞徐進","家運":"險後漸得吉慶","婚姻":"晚成好","求財":"先呆後好","功名":"有望","治病":"少平安。老不好","出外":"平順","經商":"後有大財"}},{"i":35,"no":"第三十五籤","gz":"己酉","wuxing":"屬土利年 四方皆宜","p":["此事何須用心機","前途變怪自然知","看看此去得和合","漸漸脫出見太平"],"story":"吳漢殺妻為母救主:","stories":["吳漢殺妻為母救主:"],"tone":"平","v":"不必耍心機。順其自然，就會走到和解。","jie":{"凡事":"臨機應變","家運":"風波漸消","婚姻":"難成。成大吉","求財":"遇呆人。漸很利","功名":"有活鬼。難進","治病":"鬼作祟。後拖尾","出外":"平正","經商":"難得如意"}},{"i":36,"no":"第三十六籤","gz":"己亥","wuxing":"屬木利春 宜其東方","p":["福如東海壽如山","君爾何須嘆苦難","命內自然逢大吉","祈保分明自平安"],"story":"薛仁貴救駕","stories":["薛仁貴救駕","李世民落海灘"],"tone":"吉","v":"福如東海，壽如山。不用嘆苦，自有大吉。","jie":{"凡事":"亨通得自安","家運":"吉星拱照","婚姻":"美滿大吉","求財":"黃金萬貫","功名":"祝神求佛可進","治病":"少者不畏。老險","出外":"不可。(滿載榮歸)","經商":"萬商雲集"}},{"i":37,"no":"第三十七籤","gz":"庚子","wuxing":"屬土利年 四方皆宜","p":["運逢得意身顯變","君爾身中皆有益","一向前途無難事","決意之中保清吉"],"story":"正德君看呼綠牡丹開","stories":["正德君看呼綠牡丹開","正德君戲李鳳姐"],"tone":"吉","v":"運勢正旺。下定決心去做，一路沒有難事。","jie":{"凡事":"有錢。拖尾。平安","家運":"居之平安","婚姻":"好","求財":"漸有","功名":"望後科。(身顯)","治病":"險不畏。祈平安","出外":"平正","經商":"峻發日新"}},{"i":38,"no":"第三十八籤","gz":"庚寅","wuxing":"屬木利春 宜其東方","p":["名顯有意在中央","不須祈禱心自安","看看早晚日過後","即時得意在其間"],"story":"劉備三顧孔明茅蘆(廬)","stories":["劉備三顧孔明茅蘆(廬)","三顧草廬"],"tone":"吉","v":"名聲就在眼前。不用求，過幾天就得意。","jie":{"凡事":"守己安分","家運":"恭順","婚姻":"成好","求財":"晚來好","功名":"真可喜","治病":"平安痊癒","出外":"必得利","經商":"後有大財"}},{"i":39,"no":"第三十九籤","gz":"庚辰","wuxing":"屬金利秋 宜其西方","p":["意中若問神仙路","勸爾且退望高樓","寬心且守寬心坐","必然遇得貴人扶"],"story":"楊文廣被困柳州城","stories":["楊文廣被困柳州城","孔夫子小兒答"],"tone":"平","v":"先退一步看清楚。穩住心，必有貴人來扶。","jie":{"凡事":"漸應","家運":"漸漸平安","婚姻":"成好。(二次者成好)","求財":"漸有","功名":"望後科","治病":"少貴人。老拖運","出外":"遇貴人","經商":"先平後利"}},{"i":40,"no":"第四十籤","gz":"庚午","wuxing":"屬土利年 四方皆宜","p":["平生富貴成祿位","君家門戶定光輝","此中必定無損失","夫妻百歲喜相隨"],"story":"三元會葛其量夫妻相會","stories":["三元會葛其量夫妻相會","三元會葛奇蔡坤買書"],"tone":"吉","v":"門戶光輝。沒有損失，夫妻偕老。","jie":{"凡事":"拖尾。了錢。漸吉","家運":"五世其昌","婚姻":"美滿","求財":"有大進","功名":"指日高陞","治病":"少漸癒。老不安","出外":"平安","經商":"有成"}},{"i":41,"no":"第四十一籤","gz":"庚申","wuxing":"屬木利春 宜其東方","p":["今行到此實難推","歌歌暢飲自徘徊","雞犬相聞消息近","婚姻夙世結成雙"],"story":"王小姐為色事到禍審英月","stories":["王小姐為色事到禍審英月","掩雞拖木屐三伯探英台"],"tone":"吉","v":"消息近了。該來的會來，姻緣是前世註定。","jie":{"凡事":"和者吉","家運":"漸得平安","婚姻":"偕老","求財":"難。酉戌日即成","功名":"無","治病":"拖尾。戌日不畏","出外":"東北方好","經商":"遲有利"}},{"i":42,"no":"第四十二籤","gz":"庚戌","wuxing":"屬金利秋 宜其西方","p":["一重江水一重山","誰知此去路又難","任他改求終不過","是非終久未得安"],"story":"姜女送寒衣哭倒萬里長城:","stories":["姜女送寒衣哭倒萬里長城:"],"tone":"凶","v":"一重山又一重水。怎麼改都過不去，是非難平。","jie":{"凡事":"了錢。過運","家運":"不安","婚姻":"無望","求財":"無有益","功名":"不就","治病":"病險。未日(半月)不畏","出外":"不可","經商":"難有成就"}},{"i":43,"no":"第四十三籤","gz":"辛丑","wuxing":"屬土利年 四方皆宜","p":["一年作事急如飛","君爾寬心莫遲疑","貴人還在千里外","音信月中漸漸知"],"story":"偶才母井邊相會","stories":["偶才母井邊相會","三嬸報喜。蘇秦回家假不第"],"tone":"平","v":"別急。貴人還在千里外，月中才有音信。","jie":{"凡事":"候時過(月半)。貴人成","家運":"光輝門庭","婚姻":"平平","求財":"未遇時。月半合","功名":"不就。(得意允進)","治病":"月半過。有貴人","出外":"不利","經商":"先無後有"}},{"i":44,"no":"第四十四籤","gz":"辛卯","wuxing":"屬木利春 宜其東方","p":["客到前途多得利","君爾何故兩相疑","雖是中間逢進退","月出光輝得運時"],"story":"洪益春留傘愛陣三","stories":["洪益春留傘愛陣三"],"tone":"吉","v":"客來得利。中間雖有進退，終究會走運。","jie":{"凡事":"月光好","家運":"左右平安","婚姻":"中和","求財":"淡淡。(漸利益。亨可喜)","功名":"必能得進","治病":"月光安。運光彩","出外":"一路順風","經商":"大吉利市"}},{"i":45,"no":"第四十五籤","gz":"辛巳","wuxing":"屬金利秋 宜其西方","p":["花開今已結成果","富貴榮華終到老","君子小人相會合","萬事清吉莫煩惱"],"story":"孔夫子過番逢小兒","stories":["孔夫子過番逢小兒","薛仁貴固白虎關父子不相逢"],"tone":"吉","v":"花開已經結成果。富貴到老，不用煩惱。","jie":{"凡事":"以禮待人","家運":"福祉合亨","婚姻":"中和。(合姻緣。百年老)","求財":"可得萬貫","功名":"晚成大器","治病":"老惡運。少不畏","出外":"平正。(不利)","經商":"舊業俊發。後呆"}},{"i":46,"no":"第四十六籤","gz":"辛未","wuxing":"屬土利年 四方皆宜","p":["功名得意與君顯","前途富貴喜安然","若遇一輪明月照","十五團圓光滿天"],"story":"江中立遇永祿君","stories":["江中立遇永祿君"],"tone":"吉","v":"功名得意。若遇十五月圓，更是光滿天。","jie":{"凡事":"大吉利","家運":"安居樂業","婚姻":"偕老","求財":"平平","功名":"有","治病":"老拖尾。少立癒","出外":"有貴人好","經商":"利市三倍"}},{"i":47,"no":"第四十七籤","gz":"辛酉","wuxing":"屬木利春 宜其東方","p":["君爾何須問聖跡","自己心中皆有益","於今且看月中旬","凶事脫出化成吉"],"story":"劉永作官蔭妻兒","stories":["劉永作官蔭妻兒","李三娘井邊會"],"tone":"吉","v":"答案在你自己心裡。月中旬凶事會化成吉。","jie":{"凡事":"先凶後好","家運":"門庭小吉","婚姻":"正好","求財":"輕","功名":"有。(後科得進)","治病":"逢未月平安。十二月不吉","出外":"先凶後吉","經商":"利市"}},{"i":48,"no":"第四十八籤","gz":"辛亥","wuxing":"屬金利秋 宜其西方","p":["陽世作事未和同","雲遮月色正朦朧","心中意欲前途去","只恐命內運未通"],"story":"蜻蜓誤入蜘蛛網:","stories":["蜻蜓誤入蜘蛛網:"],"tone":"凶","v":"雲遮住了月色。想往前走，但運還沒通。","jie":{"凡事":"被人害。和者吉","家運":"有邪氣。不安","婚姻":"不好","求財":"輕。無利","功名":"無","治病":"鬼作祟。未日(半月)好。寅辰卯不畏","出外":"不可向前","經商":"無財"}},{"i":49,"no":"第四十九籤","gz":"壬子","wuxing":"屬木利春 宜其東方","p":["言語雖多不可從","風雲靜處未行龍","暗中終得明消息","君爾何須問重重"],"story":"佛印稍婆答歌詩","stories":["佛印稍婆答歌詩","蘇小妹答佛印(禪師)"],"tone":"平","v":"閒話多，不可盡信。暗中終究會有好消息。","jie":{"凡事":"不和。有鬼作祟","家運":"平常","婚姻":"口舌多難成。(成者允吉)","求財":"輕淡有利益","功名":"未遂。不可","治病":"老不好。少不畏","出外":"不可","經商":"夥不和者。無利"}},{"i":50,"no":"第五十籤","gz":"壬寅","wuxing":"屬金利秋 宜其西方","p":["佛前發誓無異心","且看前途得好音","此物原來本是鐵","也能變化得成金"],"story":"小兒遇三煞","stories":["小兒遇三煞","小兒路遇惡鬼"],"tone":"吉","v":"鐵也能變成金。誠心不二，會等到好音。","jie":{"凡事":"有公人求完。吉","家運":"瑞氣滿門","婚姻":"難成。成者大吉","求財":"大吉。寶樹開花","功名":"無","治病":"祝天地者平安。老拖尾","出外":"不可。(慢即有大財)","經商":"先平平。後大吉"}},{"i":51,"no":"第五十一籤","gz":"壬辰","wuxing":"屬水利冬 宜其北方","p":["東西南北不堪行","前途此事正可當","勸君把定莫煩惱","家門自有保安康"],"story":"趙玄郎河東大戰龍虎關","stories":["趙玄郎河東大戰龍虎關","宋朝趙匡胤困河東"],"tone":"平","v":"四方都不宜遠行。守住家門自然安康。","jie":{"凡事":"自守待運","家運":"門庭永昌","婚姻":"成好","求財":"冬天大吉。(依舊好)","功名":"後科","治病":"命拖尾。老少安","出外":"不可","經商":"小利。(在家好)"}},{"i":52,"no":"第五十二籤","gz":"壬午","wuxing":"屬木利春 宜其東方","p":["功名事業本由天","不須掛念意懸懸","若問中間遲與速","風雲際會在眼前"],"story":"上帝公收龜蛇","stories":["上帝公收龜蛇","薛仁貴回家遇丁山"],"tone":"吉","v":"功名本由天定，不用懸著心。機會就在眼前。","jie":{"凡事":"慢成。大險","家運":"到處有貴人","婚姻":"成好","求財":"浮沉。(有大利)","功名":"揚名在即","治病":"三日過貴人好","出外":"行遇主公","經商":"萬商雲集"}},{"i":53,"no":"第五十三籤","gz":"壬申","wuxing":"屬金利秋 宜其西方","p":["看君來問心中事","積善之家慶有餘","運亨財子雙雙至","指日喜氣溢門閭"],"story":"蘇秦夫妻相會","stories":["蘇秦夫妻相會","蘇秦不第","蘇秦回家假不第"],"tone":"吉","v":"積善之家慶有餘。財與子雙雙而至。","jie":{"凡事":"大吉。有貴人","家運":"禎祥福祉","婚姻":"成好。(益夫旺子)","求財":"積善大利","功名":"無。(可得進)","治病":"拖尾不畏。平安","出外":"好。(利路亨通)","經商":"萬利可得"}},{"i":54,"no":"第五十四籤","gz":"壬戌","wuxing":"屬土利年 四方皆宜","p":["孤燈寂寂夜沉沉","萬事清吉萬事成","若逢陰中有善果","燒得好香達神明"],"story":"念月英相國寺","stories":["念月英相國寺","念月英求佛嫁良緣"],"tone":"吉","v":"夜雖深，萬事仍會成。誠心燒的香神明聽得見。","jie":{"凡事":"清吉。不用財","家運":"門庭興旺","婚姻":"大吉","求財":"先無後有","功名":"善心有","治病":"不畏。拖尾。祈神","出外":"須靠自己","經商":"勿與人合夥"}},{"i":55,"no":"第五十五籤","gz":"癸丑","wuxing":"屬木利春 宜其東方","p":["須知進退總言虛","看看發暗未必全","珠玉深藏還未變","心中但得枉徒然"],"story":"郭華醉酒誤佳期","stories":["郭華醉酒誤佳期","玉堂春求佛嫁良緣"],"tone":"平","v":"進退的說法都是虛的。珠玉還深藏著，急也沒用。","jie":{"凡事":"了工。無利益","家運":"先凶後吉","婚姻":"不成","求財":"輕","功名":"等後科","治病":"不好。拖尾","出外":"無貴人","經商":"了錢"}},{"i":56,"no":"第五十六籤","gz":"癸卯","wuxing":"屬金利秋 宜其西方","p":["病中若得苦心勞","到底完全總未遭","去後不須回頭問","心中事務盡消磨"],"story":"楊戩得病在西軒","stories":["楊戩得病在西軒"],"tone":"平","v":"辛苦，但不至於出大事。過去了就別再回頭問。","jie":{"凡事":"小心為要。(成者不好)","家運":"平常罔居","婚姻":"不可","求財":"空無","功名":"難望。(可望)","治病":"先凶後吉","出外":"在家待時","經商":"多勞辛苦"}},{"i":57,"no":"第五十七籤","gz":"癸巳","wuxing":"屬水利冬 宜其北方","p":["勸君把定心莫虛","前途清吉得運時","到底中間無大事","又遇神仙守安居"],"story":"白蛇精遇許漢文。(許宣)","stories":["白蛇精遇許漢文。(許宣)","龐涓孫臏學法"],"tone":"吉","v":"把心定住。中間沒有大事，還有神明守著。","jie":{"凡事":"心意把定","家運":"神仙扶持。平安","婚姻":"大吉","求財":"輕得。(應手而得)","功名":"必中","治病":"漸平安。貴人扶","出外":"遇貴人提攜。(在家好)","經商":"小有成就。(永發其財)"}},{"i":58,"no":"第五十八籤","gz":"癸未","wuxing":"屬木利春 宜其東方","p":["蛇身意欲變成龍","只恐命內運未通","久病且作寬心坐","言語雖多不可從"],"story":"白蛇精詐言往南海遇漢文","stories":["白蛇精詐言往南海遇漢文","袁達入昭國關"],"tone":"平","v":"蛇想化龍，但運還沒通。放寬心，別聽閒言。","jie":{"凡事":"不好。難成","家運":"不順","婚姻":"不吉","求財":"淡淡","功名":"未該得。不能進","治病":"拖尾。不痊癒","出外":"未日抽成","經商":"無利可求"}},{"i":59,"no":"第五十九籤","gz":"癸酉","wuxing":"屬金利秋 宜其西方","p":["有心作福莫遲疑","求名清吉正當時","此事必能成會合","財寶自然喜相隨"],"story":"皇都市上有神仙","stories":["皇都市上有神仙","老鼠精鬧宋朝"],"tone":"吉","v":"正是時候。這件事能成，財寶自然跟著來。","jie":{"凡事":"後吉得利","家運":"門庭增輝","婚姻":"成好","求財":"慢好。有利益","功名":"有可得","治病":"子丑寅過不畏","出外":"平安。(後得財星拱照)","經商":"先呆。後有利"}},{"i":60,"no":"第六十籤","gz":"癸亥","wuxing":"屬水利冬 宜其北方","p":["月出光輝本清吉","浮雲總是蔽陰色","戶內用心再作福","當官分理便有益"],"story":"薛剛踢死太子驚崩聖駕","stories":["薛剛踢死太子驚崩聖駕","楊六婿斬子"],"tone":"平","v":"月亮本亮，卻被浮雲遮住。在家多用心，講理就有益。","jie":{"凡事":"拖尾。了錢","家運":"小吉","婚姻":"難得","求財":"淡有","功名":"望後科","治病":"拖尾。後痊癒。(男女犯魂必死)","出外":"不可","經商":"後來有得"}}]};
+var PIN={"1":["rì chū biàn jiàn fēng yún sàn","guāng míng qīng jìng zhào shì jiān","yí xiàng qián tú tōng dà dào","wàn shì qīng jí bǎo píng ān"],"2":["yú jīn cǐ jǐng zhèng dāng shí","kàn kàn yù tǔ bǎi huā kuí","ruò néng yù dé chūn sè dào","yī sǎ qīng jí tuō chén āi"],"3":["quàn jūn bǎ dìng xīn mò xū","tiān zhù yī lù zì yǒu yú","hé hé chóng chóng cháng jí qìng","shí lái zhōng yù dé míng zhū"],"4":["fēng tián làng jìng kě xíng zhōu","qià shì zhōng qiū yuè yī lún","fán shì bù xū duō yōu lǜ","fú lù zì yǒu qìng jiā mén"],"5":["zhǐ kǒng qián tú mìng yǒu biàn","quàn jūn zuò jí kě yí xiān","qiě shǒu cháng jiāng wú dà shì","mìng féng tài bái shǒu shēn biān"],"6":["fēng yún zhì yǔ luò yáng yáng","tiān zāi shí qì bì yǒu shāng","mìng nèi cǐ shì nán hé hé","gèng féng yī zú chū wài xiāng"],"7":["yún kāi yuè chū zhèng fēn míng","bù xū jìn tuì wèn qián chéng","hūn yīn jiē yóu tiān zhù dìng","hé hé qīng jí wàn shì chéng"],"8":["hé dào kàn kàn jié chéng wán","cǐ shì bì dìng liǎng xiāng quán","huí dào jiā zhōng kuān xīn zuò","qī ér gǔ wǔ lè tuán yuán"],"9":["lóng hǔ xiāng suí zài shēn shān","jūn ěr hé xū bèi hòu kàn","bù zhī cǐ qù xiāng ài yú","tā rì yǔ wǒ què wú gàn"],"10":["huā kāi jié zi yí bàn kū","kě xī jīn nián rǔ xū dù","jiàn jiàn rì luò xī shān qù","quàn jūn bù yòng xiàng qián tú"],"11":["líng jī jiàn jiàn jiàn fēn míng","fán shì qiě kàn zi chǒu yín","yún kāi yuè chū zhào tiān xià","láng jūn jí biàn jiàn tài píng"],"12":["cháng jiāng fēng làng jiàn jiàn jìng","yú jīn dé jìn kě ān níng","bì yǒu guì rén xiāng fú zhù","xiōng shì tuō chū jiàn tài píng"],"13":["mìng zhòng zhèng féng luó bèi guān","yòng jìn xīn jī zǒng wèi xiū","zuò fú wèn shén nán dé guò","qià shì xíng zhōu shàng gāo tān"],"14":["cái zhōng jiàn jiàn jiàn fēn míng","huā kāi huā xiè jié zi chéng","kuān xīn qiě kàn yuè zhōng guì","láng jūn jí biàn jiàn tài píng"],"15":["bā shí yuán lái shì tài gōng","kàn kàn wǎn jǐng yù wén wáng","mù xià jǐn shì xiū xiāng wèn","quàn jūn qiě shǒu dài yùn tōng"],"16":["bù xū zuò fú bù xū qiú","yòng jìn xīn jī zǒng wèi xiū","yáng shì bù zhī yīn shì shì","guān fǎ rú lú bù zì yóu"],"17":["jiù hèn chóng chóng wèi gǎi wèi","jiā zhōng huò huàn bù lín shēn","xū dāng jǐn fáng yí zuò fú","lóng shé jiāo huì dé hé hé"],"18":["jūn wèn zhōng jiān cǐ yán yīn","kàn kàn lù mǎ gǒng qián chéng","ruò dé guì rén duō dé lì","hé hé zì yǒu liǎng fēn míng"],"19":["fù guì yóu mìng tiān zhù dìng","xīn gāo bì rán wù jūn qī","bù rán qiě huí yī jiù lù","yún kāi yuè chū zì fèn míng"],"20":["qián tú gōng míng wèi dé yì","zhǐ kǒng mìng nèi yǒu jiāo jiā","liǎng jiā bì dìng fáng sǔn shī","quàn jūn qiě tuì mò zī jiē"],"21":["shí fāng fó fǎ yǒu líng tōng","dà nán huò huàn bù xiāng tóng","hóng rì dāng kōng cháng zhào yào","hái yǒu guì rén dào jiā táng"],"22":["tài gōng jiā yè bā shí chéng","yuè chū guāng huī sì hǎi míng","mìng nèi zì rán féng dà jí","máo wū zhōng jiān bǎi shì hēng"],"23":["yù qù cháng jiāng shuǐ kuò máng","qián tú wèi suì yùn wèi tōng","rú jīn sī lún cháng zài shǒu","zhǐ kǒng yú shuǐ bù xiāng féng"],"24":["yuè chū guāng huī sì hǎi míng","qián tú lù wèi jiàn tài píng","fú yún sǎo tuì zhōng wú shì","kě bǎo huò huàn bù lín shēn"],"25":["zǒng shì qián tú mò xīn láo","qiú shén wèn shèng wǎng shì duō","dàn kàn jī quǎn rì guò hòu","bù xū zuò fú shì rú hé"],"26":["xuǎn chū mǔ dān dì yī zhī","quàn jūn zhé qǔ mò chí yí","shì jiān ruò wèn xiāng zhī chù","wàn shì féng chūn zhèng jí shí"],"27":["jūn ěr kuān xīn qiě zì yóu","mén tíng qīng jí jiā wú yōu","cái bǎo zì rán zhōng jí lì","fán shì wú shāng bù yòng qiú"],"28":["yú jīn mò zuò cǐ dāng shí","hǔ luò píng yáng bèi quǎn qī","shì jiān fán shì hé nán dìng","qiān shān wàn shuǐ yě chí yí"],"29":["kū mù kě xī wèi féng chūn","rú jīn fǎn zài àn zhōng cáng","kuān xīn qiě shǒu fēng shuāng tuì","huán jūn yī jiù zuò qián kūn"],"30":["jiàn jiàn kàn cǐ yuè zhōng hé","guò hòu xū fáng wèi dé gāo","gǎi biàn yán sè qián tú qù","fán shì bì dìng jiàn zhòng láo"],"31":["lǜ liǔ cāng cāng zhèng dāng shí","rèn jūn cǐ qù zuò qián kūn","huā guǒ jié shí wú cán xiè","fú lù zì yǒu qìng jiā mén"],"32":["lóng hǔ xiāng jiāo zài mén qián","cǐ shì bì dìng liǎng xiāng lián","huáng jīn hū rán biàn chéng tiě","hé yòng zuò fú wèn shén xiān"],"33":["yù qù cháng jiāng shuǐ kuò máng","xíng zhōu bǎ dìng wèi zāo fēng","hù nèi yòng xīn zài zuò fú","kàn kàn yú shuǐ dé xiāng féng"],"34":["wēi xiǎn gāo shān xíng guò jìn","mò xián cǐ lù yǒu chóng chóng","ruò jiàn lán guì jiàn jiàn fā","cháng shé fǎn zhuǎn biàn chéng lóng"],"35":["cǐ shì hé xū yòng xīn jī","qián tú biàn guài zì rán zhī","kàn kàn cǐ qù dé hé hé","jiàn jiàn tuō chū jiàn tài píng"],"36":["fú rú dōng hǎi shòu rú shān","jūn ěr hé xū tàn kǔ nán","mìng nèi zì rán féng dà jí","qí bǎo fēn míng zì píng ān"],"37":["yùn féng dé yì shēn xiǎn biàn","jūn ěr shēn zhōng jiē yǒu yì","yí xiàng qián tú wú nán shì","jué yì zhī zhōng bǎo qīng jí"],"38":["míng xiǎn yǒu yì zài zhōng yāng","bù xū qí dǎo xīn zì ān","kàn kàn zǎo wǎn rì guò hòu","jí shí dé yì zài qí jiān"],"39":["yì zhōng ruò wèn shén xiān lù","quàn ěr qiě tuì wàng gāo lóu","kuān xīn qiě shǒu kuān xīn zuò","bì rán yù dé guì rén fú"],"40":["píng shēng fù guì chéng lù wèi","jūn jiā mén hù dìng guāng huī","cǐ zhōng bì dìng wú sǔn shī","fū qī bǎi suì xǐ xiāng suí"],"41":["jīn xíng dào cǐ shí nán tuī","gē gē chàng yǐn zì pái huái","jī quǎn xiāng wén xiāo xī jìn","hūn yīn sù shì jié chéng shuāng"],"42":["yī zhòng jiāng shuǐ yī zhòng shān","shuí zhī cǐ qù lù yòu nán","rèn tā gǎi qiú zhōng bù guò","shì fēi zhōng jiǔ wèi dé ān"],"43":["yī nián zuò shì jí rú fēi","jūn ěr kuān xīn mò chí yí","guì rén hái zài qiān lǐ wài","yīn xìn yuè zhōng jiàn jiàn zhī"],"44":["kè dào qián tú duō dé lì","jūn ěr hé gù liǎng xiāng yí","suī shì zhōng jiān féng jìn tuì","yuè chū guāng huī dé yùn shí"],"45":["huā kāi jīn yǐ jié chéng guǒ","fù guì róng huá zhōng dào lǎo","jūn zǐ xiǎo rén xiāng huì hé","wàn shì qīng jí mò fán nǎo"],"46":["gōng míng dé yì yǔ jūn xiǎn","qián tú fù guì xǐ ān rán","ruò yù yī lún míng yuè zhào","shí wǔ tuán yuán guāng mǎn tiān"],"47":["jūn ěr hé xū wèn shèng jī","zì jǐ xīn zhōng jiē yǒu yì","yú jīn qiě kàn yuè zhōng xún","xiōng shì tuō chū huà chéng jí"],"48":["yáng shì zuò shì wèi hé tóng","yún zhē yuè sè zhèng méng lóng","xīn zhōng yì yù qián tú qù","zhǐ kǒng mìng nèi yùn wèi tōng"],"49":["yán yǔ suī duō bù kě cóng","fēng yún jìng chù wèi xíng lóng","àn zhōng zhōng dé míng xiāo xī","jūn ěr hé xū wèn chóng chóng"],"50":["fú qián fā shì wú yì xīn","qiě kàn qián tú dé hǎo yīn","cǐ wù yuán lái běn shì tiě","yě néng biàn huà dé chéng jīn"],"51":["dōng xī nán běi bù kān xíng","qián tú cǐ shì zhèng kě dāng","quàn jūn bǎ dìng mò fán nǎo","jiā mén zì yǒu bǎo ān kāng"],"52":["gōng míng shì yè běn yóu tiān","bù xū guà niàn yì xuán xuán","ruò wèn zhōng jiān chí yǔ sù","fēng yún jì huì zài yǎn qián"],"53":["kàn jūn lái wèn xīn zhōng shì","jī shàn zhī jiā qìng yǒu yú","yùn hēng cái zi shuāng shuāng zhì","zhǐ rì xǐ qì yì mén lǘ"],"54":["gū dēng jì jì yè chén chén","wàn shì qīng jí wàn shì chéng","ruò féng yīn zhōng yǒu shàn guǒ","shāo dé hǎo xiāng dá shén míng"],"55":["xū zhī jìn tuì zǒng yán xū","kàn kàn fā àn wèi bì quán","zhū yù shēn cáng hái wèi biàn","xīn zhōng dàn dé wǎng tú rán"],"56":["bìng zhōng ruò dé kǔ xīn láo","dào dǐ wán quán zǒng wèi zāo","qù hòu bù xū huí tóu wèn","xīn zhōng shì wù jǐn xiāo mó"],"57":["quàn jūn bǎ dìng xīn mò xū","qián tú qīng jí dé yùn shí","dào dǐ zhōng jiān wú dà shì","yòu yù shén xiān shǒu ān jū"],"58":["shé shēn yì yù biàn chéng lóng","zhǐ kǒng mìng nèi yùn wèi tōng","jiǔ bìng qiě zuò kuān xīn zuò","yán yǔ suī duō bù kě cóng"],"59":["yǒu xīn zuò fú mò chí yí","qiú míng qīng jí zhèng dāng shí","cǐ shì bì néng chéng huì hé","cái bǎo zì rán xǐ xiāng suí"],"60":["yuè chū guāng huī běn qīng jí","fú yún zǒng shì bì yīn sè","hù nèi yòng xīn zài zuò fú","dāng guān fēn lǐ biàn yǒu yì"]};
+var TL={"1":["ji̍t-tshut piān kiàn hong-hûn suánn","kong-bîng tshing-tsīng tsiàu sè-kan","it-hiòng tsiân-tôo thang tuā-tō","bān-sū tshing kiat pó pîng-an"],"2":["î tann tshú kíng tsiànn tang-sî","khuànn-khuànn beh thóo pah-hue khue","nā lîng gū tit tshun sik kàu","tsi̍t sè tshing kiat thuah tîn-ai"],"3":["khǹg kun pé tīng-sim bo̍k hi","thinn tsù i lo̍k tsū-iú û","hô-ha̍p tāng tāng siông kiat khìng","sî lâi tsiong gū tit bîng-tsu"],"4":["hong-tiām lōng tsīng khó hîng-tsiu","恰 sī Tiong-tshiu gue̍h tsi̍t lûn","huân-sū put su to iu-lī","hok-lo̍k tsū-iú khìng ka-bûn"],"5":["tsí khióng tsiân-tôo bīng ū piàn","khǹg kun tsoh kip khó gî sing","tshiánn siú Tn̂g-kang bô tāi-sū","bīng hông thài pe̍h siú sin-pinn"],"6":["hong-hûn tì hōo lo̍k iûnn iûnn","thian-tsai sî khì pit ū siunn","bīng lāi tshú sū lān hô-ha̍p","kenn hông tsi̍t tsiok tshut guā-hiong"],"7":["hûn khai gue̍h tshut-tsiann hun-bîng","put su tsìn-thè mn̄g tsiân thiânn","hun-in kai iû thinn-tsù-tiānn","hô-ha̍p tshing kiat bān-sū tsiânn"],"8":["hô tiū khuànn-khuànn kiat-sîng uân","tshú sū pit-tīng niú-siùnn tsuân","huê-kàu ka tiong khuan sim tsē","tshe jî kóo-bú ga̍k thuân-înn"],"9":["lîng hóo siòng suî-tsāi tshim-suann","kun nī uâ su puè-āu khuànn","put tsai tshú khì sio-ài jû","thann ji̍t ú guá khiok bô kan"],"10":["hue khai kat tsí tsi̍t puànn koo","khó-sioh kin-nî lí hi tōo","tsiām-tsiām ji̍t-lo̍h Sai-suann khì","khǹg kun put īng hiòng tsiân-tôo"],"11":["lîng ke tsiām-tsiām kiàn hun-bîng","huân-sū tshiánn-khuànn tsí thiú în","hûn khai gue̍h tshut tsiàu thian-hā","lông-kun tsik piān kiàn thài-pîng"],"12":["Tn̂g-kang hong lōng tsiām-tsiām tsīng","î tann tit tsìn khó an-lîng","pit ū kuì-jîn siòng Hû-tsōo","hiong sū thuah tshut kiàn thài-pîng"],"13":["bīng tiong-tsìng hông lô 孛 kuainn","iōng-tsīn sim-ki tsóng buē hiu","tsoh hok mn̄g sîn lân-tit kò","恰 sī hîng-tsiu siāng ko thuann"],"14":["tsâi tiong tsiām-tsiām kiàn hun-bîng","hue khui-hue siā kat tsí tsiânn","khuan sim tshiánn-khuànn gue̍h tiong kuì","lông-kun tsik piān kiàn thài-pîng"],"15":["peh-tsa̍p guân-lâi sī thài-kong","khuànn-khuànn buán-kíng gū bûn ông","ba̍k-ē kín sū hiu siòng mn̄g","khǹg kun tshiánn siú thāi ūn thang"],"16":["put su tsoh hok put su kiû","iōng-tsīn sim-ki tsóng buē hiu","iông sì put tsai im sè-sū","kuann huat jû lôo put tsū-iû"],"17":["kū hīn tāng tāng buē kái-uî","ka tiong hō-huān put lîm sin","su tng kín hông gî tsoh hok","lîng tsuâ kau ē-tit hô-ha̍p"],"18":["kun mn̄g tiong-kan tshú giân in","khuànn-khuànn lo̍k bé kióng tsiân thiânn","nā tit kuì-jîn to tit lāi","hô-ha̍p tsū-iú nn̄g hun-bîng"],"19":["hù-kuì iû bīng thinn-tsù-tiānn","sim ko pit-jiân gōo kun kî","put jiân tshiánn huê i kū lōo","hûn khai gue̍h tshut-tsū hun-bîng"],"20":["tsiân-tôo kong-bîng buē tik-ì","tsí khióng bīng lāi ū kau-ka","nn̄g ka pit-tīng hông sún-sit","khǹg kun tshiánn thè bo̍k tsu 嗟"],"21":["tsa̍p hng Hu̍t-huat ū lîng-thong","tuā lān hō-huān put sio-tâng","âng ji̍t tng khòng siông tsiàu iāu","hîng ū kuì-jîn kàu ka tông"],"22":["thài-kong ka-gia̍p peh-tsa̍p tsiânn","gue̍h tshut kong-hui sù-hái bîng","bīng lāi tsū-jiân hông tāi-kiat","mâu ok tiong-kan pah sū hing"],"23":["beh khì tióng kang-tsuí khuah bông","tsiân-tôo bī-suī ūn buē thang","jû tann si lûn siông tsāi-tshiú","tsí khióng hî tsuí put siòng hông"],"24":["gue̍h tshut kong-hui sù-hái bîng","tsiân-tôo lo̍k uī kiàn thài-pîng","phû hûn sàu thè tsiong bô-sū","khó pó hō-huān put lîm sin"],"25":["tsóng-sī tsiân-tôo bo̍k sim lô","kiû-sîn mn̄g siànn óng sī to","nā khuànn ke khián ji̍t kuè-āu","put su tsoh hok sū jû uâ"],"26":["suán-tshut bóo-tan tē tsi̍t-ki","khǹg kun tsiat tshú bo̍k tî gî","sè-kan nā mn̄g sio-tsai tshù","bān-sū hông tshun tsiànn ki̍p-sî"],"27":["kun nī khuan sim tshiánn tsū-iû","mn̂g tiânn tshing kiat ka bô iu","tsâi pó tsū-jiân tsiong kiat-lī","huân-sū bô siunn put īng kiû"],"28":["î tann bo̍k tsoh tshú tang-sî","hóo lo̍k pîng-iûnn pī khián khi","sè-kan huân-sū uâ lān tiānn","tshing suann bān tsuí iā tî gî"],"29":["koo ba̍k khó-sioh buē hông tshun","jû tann huán tsāi àm-tiong tshàng","khuan sim tshiánn siú hong-song thè","hîng kun i kū-tsok khiân-khun"],"30":["tsiām-tsiām khuànn tshú gue̍h tiong-hô","kuè-āu su hông buē tit ko","kái-piàn gân-sik tsiân-tôo khì","huân-sū pit-tīng kiàn tāng lô"],"31":["li̍k liú tshong tshong tsiànn tang-sî","jīm kun tshú khì tsoh khiân-khun","hue kué kiat-si̍t bô tsân siā","hok-lo̍k tsū-iú khìng ka-bûn"],"32":["lîng hóo siòng kau tsāi mn̂g tsiân","tshú sū pit-tīng nn̄g sio-liân","n̂g-kim hut-jiân piàn-sîng thih","uâ iōng-tsok hok mn̄g sîn-sian"],"33":["beh khì tióng kang-tsuí khuah bông","hîng-tsiu pé tiānn buē tso hong","hōo-lāi iōng-sim tsài tsoh hok","khuànn-khuànn hî tsuí tit siòng hông"],"34":["guî-hiám ko suann kiânn-kuè tsīn","bo̍k hiâm tshú lōo ū-tāng tāng","nā kiàn lân kuì tsiām-tsiām huat","tióng tsuâ huán-tsuán piàn-sîng lîng"],"35":["tshú sū uâ su īng sim-ki","tsiân-tôo pìnn-kuài tsū-jiân tsai","khuànn-khuànn tshú khì tit hô-ha̍p","tsiām-tsiām thuah tshut kiàn thài-pîng"],"36":["hok jû Tang-hái siū jû suann","kun nī uâ su thàn khóo-lān","bīng lāi tsū-jiân hông tāi-kiat","kî pó hun-bîng tsū pîng-an"],"37":["ūn hông tik-ì sin hiánn piàn","kun nī sin tiong kai ū iah","it-hiòng tsiân-tôo bô lān sū","kuat-ì tsi-tiong pó tshing kiat"],"38":["miâ hiánn iú-ì tsāi tiong-ng","put su kî-tó sim tsū an","khuànn-khuànn tsá mńg ji̍t kuè-āu","tsik-sî tik-ì tsāi kî-kan"],"39":["ì-tiong nā mn̄g sîn-sian lōo","khǹg nī tshiánn thè bāng-ko-lâu","khuan sim tshiánn siú khuan sim tsē","pit-jiân gū tit kuì-jîn hû"],"40":["pîng-sing hù-kuì tsiânn lo̍k uī","kun ka mn̂g-hōo tiānn kong-hui","tshú tiong pit-tīng bô sún-sit","hu-tshe pah huè hí sio-suî"],"41":["tann kiânn-kàu tshú tsa̍t lān the","kua kua thiòng ím tsū pâi 徊","ke khián siòng bûn siau-sit kīn","hun-in 夙 sì kat sîng-siang"],"42":["tsi̍t tāng kang-tsuí tsi̍t tāng suann","suî tsai tshú khì-lōo iū lān","jīm thann kái kiû tsiong put-kò","sī-hui tsiong kú buē tit an"],"43":["tsi̍t-nî tsoh sū kip jû pue","kun nī khuan sim bo̍k tî gî","kuì-jîn huân-tsāi tshing lí-guā","im-sìn gue̍h tiong tsiām-tsiām tsai"],"44":["kheh kàu tsiân-tôo to tit lāi","kun nī hô-kòo niú-siùnn gî","sui sī tiong-kan hông tsìn-thè","gue̍h tshut kong-hui tit ūn sî"],"45":["hue khai tann í kat sîng-kó","hù-kuì îng huâ tsiong kàu lāu","kun-tsú siáu-jîn siòng huē-ha̍p","bān-sū tshing kiat bo̍k huân-ló"],"46":["kong-bîng tik-ì ú kun hiánn","tsiân-tôo hù-kuì hí an-jiân","nā gū tsi̍t lûn bîng-gua̍t tsiàu","tsa̍p-gōo thuân-înn kng muá-thinn"],"47":["kun nī uâ su mn̄g siànn jiah","tsū-kí sim tiong kai ū iah","î tann tshiánn-khuànn gue̍h tiong-sûn","hiong sū thuah tshut huà tsiânn kiat"],"48":["iông sì tsoh sū buē hô-tâng","hûn tsia gue̍h sik tsiànn 朦 朧","sim tìng-ì beh tsiân-tôo khì","tsí khióng bīng lāi ūn buē thang"],"49":["giân-gí sui to put-khó tsiông","hong-hûn tsīng tshù buē kiânn lîng","àm-tiong tsiong tit bîng siau-sit","kun nī uâ su mn̄g tāng tāng"],"50":["hu̍t tsiân huat tsuā bô ī sim","tshiánn-khuànn tsiân-tôo tit hó im","tshú mi̍h guân-lâi pún sī thih","iā lîng piàn-huà tit tsiânn kim"],"51":["tang-sai lâm-pak put kham kiânn","tsiân-tôo tshú sū tsiànn khó tng","khǹg kun pé tiānn bo̍k huân-ló","ka-bûn tsū-iú pó an-khong"],"52":["kong-bîng sū-gia̍p pún iû thinn","put su kuà-liām ì kuân kuân","nā mn̄g tiong-kan tî ú sok","hong-hûn tsè ē tsāi gán-tsiân"],"53":["khuànn kun lâi mn̄g sim tiong sū","tsik-siān tsi ka khìng ū û","ūn hing tsâi tsí siang siang tsì","tsáinn ji̍t hí-khì ik mn̂g 閭"],"54":["koo ting tsi̍k tsi̍k iā tîm tîm","bān-sū tshing kiat bān-sū tsiânn","nā hông im tiong ū siān kué","sio tit hó hiunn ta̍t sîn-bîng"],"55":["su tsai-tsìn-thè tsóng giân hi","khuànn-khuànn huat àm bī-pit tsuân","tsu gi̍k tshim tshàng hîng buē piàn","sim tiong nā tit óng tôo jiân"],"56":["pēnn tiong nā tit khóo-sim lô","tàu-té uân-tsuân tsóng buē tso","khì āu put su huê-thâu mn̄g","sim tiong sū-bū tsīn siau-môo"],"57":["khǹg kun pé tīng-sim bo̍k hi","tsiân-tôo tshing kiat tit ūn sî","tàu-té tiong-kan bô tāi-sū","iū gū sîn-sian siú an ki"],"58":["tsuâ sin ì beh piàn-sîng lîng","tsí khióng bīng lāi ūn buē thang","kú-pēnn tshiánn tsoh khuan sim tsē","giân-gí sui to put-khó tsiông"],"59":["ū-sim tsoh hok bo̍k tî gî","kiû miâ tshing kiat tsiànn tang-sî","tshú sū pit lîng tsiânn huē-ha̍p","tsâi pó tsū-jiân hí sio-suî"],"60":["gue̍h tshut kong-hui pún tshing kiat","phû hûn tsóng-sī pè im sik","hōo-lāi iōng-sim tsài tsoh hok","tng kuann hun lí piān-iú iah"]};
+
+/* ========== i18n ========== */
+var LANG="zh";
+try{ var sv=localStorage.getItem("baibai.lang"); if(sv==="en"||sv==="zh") LANG=sv; }catch(e9){}
+function setLang(l){ LANG=l; try{localStorage.setItem("baibai.lang",l);}catch(e){} }
+function T(zh,en){ return LANG==="en"?en:zh; }
+
+/* 教育部臺灣台語常用詞辭典（sutian.moe.edu.tw）查得之台羅 */
+var TAILO={
+ "拜拜":["拜拜","pài-pài","bài bài"], "燒香":["燒香","sio-hiunn","shāo xiāng"],
+ "香爐":["香爐","hiunn-lôo","xiāng lú"], "金紙":["金紙","kim-tsuá","jīn zhǐ"],
+ "天公":["天公","Thinn-kong","tiān gōng"], "神明":["神明","sîn-bîng","shén míng"],
+ "廟":["廟","biō","miào"], "保庇":["保庇","pó-pì","bǎo bì"],
+ "進香":["進香","tsìn-hiunn","jìn xiāng"],
+ "擲筊":["跋桮","pua̍h-pue","zhì jiǎo"], "聖筊":["象桮","siūnn-pue","shèng jiǎo"],
+ "笑筊":["笑桮","tshiò-pue","xiào jiǎo"], "陰筊":["陰桮","im-pue","yīn jiǎo"],
+ "抽籤":["抽籤","thiu-tshiam","chōu qiān"], "籤詩":["籤詩","tshiam-si","qiān shī"],
+ "收驚":["收驚","siu-kiann","shōu jīng"], "爐主":["爐主","lôo-tsú","lú zhǔ"]
+};
+function tl(zh){ var t=TAILO[zh];
+ return t? '<span class="tl"><b>'+zh+'</b> '+t[2]+'　·　'+t[0]+' '+t[1]+'</span>' : ''; }
+
+var UI={
+ tagline:["選一件心事　神明在前","Choose what weighs on you"],
+ guideBtn:["第一次拜拜？看完整流程","First time at a temple? Read the guide"],
+ foot:["籤詩採台灣<b>六十甲子籤</b>，詩文與籤解為傳統籤譜內容。上香、擲筊、抽籤為民俗文化之數位體驗，<b>結果由隨機決定</b>，僅供學習參考。",
+   "Fortune sticks use Taiwan's <b>Sixty Jiazi</b> set; the verses and traditional readings come from the historical stick-book. Offering incense, casting moon blocks and drawing a stick here are a cultural experience — <b>outcomes are random</b> and are for learning only."],
+ incense:["上香","Incense"], incenseD:["三炷清香","light three sticks"],
+ jiao:["擲筊","Moon blocks"], jiaoD:["問允不允","yes or no"],
+ qian:["求籤","Draw a stick"], qianD:["六十甲子","Sixty Jiazi"],
+ photo:["拍照","Photo"], photoD:["合影留念","take a picture"],
+ guideTitle:["拜拜流程","How to Worship"], godsTitle:["神明簡介","The Deities"],
+ wishFor:["求","Praying for"],
+ taboo:["禁忌一覽","What not to do"],
+ srcGuide:["各宮廟規矩略有差異，以現場告示與廟方人員說明為準。",
+   "Customs vary between temples. Follow the signs on site and ask the temple staff."],
+ srcGods:["聖誕日期與供品習俗各廟說法略有出入，前往參拜前建議向廟方確認。",
+   "Feast days and offering customs differ between temples — check with the temple before you go."],
+ duty:["職　司","Domain"], origin:["由　來","Origin"], bday:["聖　誕","Feast day"],
+ offer:["供　品","Offerings"], temples:["代表廟","Main temples"], tip:["小知識","Good to know"],
+ /* 報名 */
+ decl:["報　名","Introduce Yourself"],
+ declSub:["讓神明知道你是誰","So the god knows who is asking"],
+ declNote:["上香後，照著下面的格式<b>在心裡或小聲念出來</b>。沒有報名，神明「不知道你是誰」。",
+   "After offering incense, <b>say the following out loud, or silently in your head</b>. Without it the god does not know who is speaking."],
+ cName:["弟子／信女","My name is"],   cNameP:["dì zǐ ／ xìn nǚ","dì zǐ / xìn nǚ"],
+ cBirth:["生辰","Born on"],          cBirthP:["shēng chén","shēng chén"],
+ cAddr:["住在","Living at"],          cAddrP:["zhù zài","zhù zài"],
+ cWish:["今日前來　祈求","I come today to ask for"], cWishP:["jīn rì qián lái　qí qiú","jīn rì qián lái, qí qiú"],
+ sayDecl:["心誠則靈","Speak it sincerely"],
+ declPriv:["這裡不收集、不儲存、也不傳送任何資料。想留存請自行截圖。",
+   "Nothing here is collected, stored or sent. Take a screenshot if you want to keep it."],
+ later:["之後再說","Later"], declDo:["稟告完畢","Done"],
+ declOk:["心誠則靈","Sincerity is what counts"],
+ /* 上香 */
+ r1:["把香拖到燭火上點燃","Drag the incense into the candle flame"],
+ r2:["香點著了　<em>左右甩動手機熄掉火焰</em>","Lit. <em>Shake the phone side to side to put out the flame</em>"],
+ r3:["把香插進香爐","Put the incense into the burner"],
+ rSkip:["跳過，直接上香","Skip"], rSkip2:["不方便？點此熄火","Can't shake? Tap here"],
+ rBlow:["火要甩熄，不能用嘴吹","Shake it out — never blow on it"],
+ rDone:["記得報上姓名、農曆生日、住址","Now state your name, birthday and address"],
+ p1:["一　點燃","1 Light"], p2:["二　甩熄","2 Shake out"], p3:["三　插香","3 Place"],
+ /* 擲筊 */
+ shengT:["聖　筊","Sacred"], shengS:["一平一凸　神明允許","one flat, one round — yes"],
+ shengM:["神明答應了。心中所問可以依此而行；但神明應允的是方向，路還是得自己走。",
+   "The god says yes. You may go ahead — but a yes points the direction; you still walk the road yourself."],
+ xiaoT:["笑　筊","Laughing"], xiaoS:["兩平面朝上　笑而不答","both flat — no answer"],
+ xiaoM:["神明笑而不答。通常表示問題不夠清楚，或者你心裡其實已經有答案。想清楚再擲一次。",
+   "The god smiles but does not answer. Usually the question was not clear enough — or you already know the answer. Think it through and cast again."],
+ yinT:["陰　筊","Negative"], yinS:["兩凸面朝上　神明不允","both round — no"],
+ yinM:["神明沒有答應。可能時機未到，也可能該換個做法。別硬求，改個問法再試。",
+   "The god says no. Perhaps the timing is wrong, perhaps the approach is. Do not push — ask differently."],
+ flat:["平面","flat"], round:["凸面","round"],
+ streak3:["連三聖杯　大允","Three in a row — a strong yes"],
+ again:["再擲一次","Cast again"], dismiss:["退下","Close"],
+ /* 求籤 */
+ askT:["請示神明","Ask Permission"], askS:["求籤前先擲筊","Cast the blocks first"],
+ askN:["先向%s報上姓名、農曆生日與住址，說明所求之事，再擲筊請問：<br>「可否賜弟子／信女一支籤？」",
+   "State your name, date of birth and address to %s, say what you are asking about, then cast the moon blocks and ask:<br>“May I draw a fortune stick?”"],
+ askDo:["擲筊請示","Cast to ask"],
+ drawT:["搖　籤　筒","Shake the Cylinder"], drawS:["聖筊　神明允了","Sacred — permission given"],
+ drawN:["心中默念所求之事，搖到一支竹籤掉出來。","Hold your question in mind and shake until one bamboo stick falls out."],
+ drawDo:["搖出一支籤","Shake out a stick"], drawAlt:["也可以左右甩動手機","You can also shake the phone"],
+ okGo:["可以求籤。","You may draw."], goShake:["去搖籤筒","Go shake"],
+ retryAsk:["再請示一次","Ask again"],
+ xiaoAsk:["把問題想得更清楚一點，再請示一次。","Make the question clearer, then ask again."],
+ yinAsk:["神明這次沒有允許賜籤。靜一靜，再請示一次。","Not this time. Pause a moment, then ask again."],
+ confN:["拿著籤再擲筊，問神明：「是不是這一支？」<br><em>要連續三個聖筊才算數</em>，中途不是就放回去重抽。",
+   "Holding the stick, cast again and ask: “Is this the one?”<br><em>Three sacred casts in a row are needed.</em> If not, put it back and draw again."],
+ confDo:["擲筊確認","Cast to confirm"],
+ conf3T:["連三聖筊","Three in a Row"], conf3S:["就是這一支","This is the one"],
+ seeLot:["看籤詩","Read the verse"],
+ xiaoConf:["神明笑而不答。籤不用放回去，把話問清楚，再擲一次。","No answer. Keep the stick, ask more clearly, and cast again."],
+ yinConf:["不是這一支。把籤放回籤筒，重新再抽。","Not this one. Put it back and draw again."],
+ putBack:["放回重抽","Draw again"],
+ /* 籤詩頁 */
+ lotSet:["六十甲子籤","Sixty Jiazi Set"],
+ vern:["白　話","In plain words"],
+ detail:["傳統籤解","Traditional reading"],
+ storyLab:["卦頭故事","Story behind the verse"],
+ keep:["收籤","Keep"], oneMore:["再求一支","Draw another"],
+ srcLot:["籤詩與籤解為傳統六十甲子籤內容，各宮廟版本略有差異。白話說明為本專案撰寫，僅供參考。",
+   "Verse and traditional readings are from the historical Sixty Jiazi stick-book; versions differ slightly between temples. The plain-language reading was written for this project."],
+ romNote:["拼音為自動標注，破音字可能需校正；台羅為機器轉寫，文白讀未經校對。",
+   "Pinyin is auto-generated; Tâi-lô is machine-converted and literary/colloquial readings have not been checked."],
+ showPin:["漢語拼音","Pinyin"], showTl:["台羅","Tâi-lô"],
+ /* 分項 */
+ J:{"凡事":["凡事","Overall"],"家運":["家運","Household"],"婚姻":["婚姻","Marriage"],
+    "求財":["求財","Wealth"],"功名":["功名","Exams & rank"],"治病":["治病","Illness"],
+    "出外":["出外","Travel"],"經商":["經商","Business"]},
+ jieZhOnly:["以下為籤譜原文（文言），未翻譯。","The lines below are the original classical Chinese and are left untranslated."],
+ /* 其他 */
+ photoT:["合影留念","Your Photo"], photoS:["長按圖片可存到相簿","Press and hold the image to save it"],
+ save:["儲存圖片","Save image"], close:["關閉","Close"],
+ composing:["合成中…","Composing…"], saved:["已儲存","Saved"],
+ camOn:["AR 相機已開啟 · 可拖曳神明","Camera on — drag the deity"],
+ camOff:["示範模式 · 廟宇場景","Demo mode — painted temple"],
+ anchorOn:["空間錨定已開啟 · 轉動手機看看","Anchored in space — turn your phone"],
+ anchorOff:["空間錨定已關閉","Anchor off"],
+ anchorNo:["未取得動作權限，可改用手指拖曳","Motion access denied — drag with your finger instead"],
+ recentre:["神明已回到正前方","Back to centre"],
+ readAloud:["朗讀","Read aloud"],
+ vocabH:["拜拜生詞","Key Words"],
+ colZh:["華語","Mandarin"], colTw:["台語","Taiwanese"],
+ sndOn:["音效與朗讀已開啟","Sound on"], sndOff:["已靜音","Muted"]
+};
+function U(k){ var v=UI[k]; return v? (LANG==="en"?v[1]:v[0]) : k; }
+
+/* 拜拜流程：zh / en 並列。t=標題 d=說明 */
+var GUIDE=[
+{h:["進廟之前","Before You Enter"],steps:[
+ [["衣著整齊","Dress neatly"],["避免過於暴露。部分廟宇對穿著較講究，短褲拖鞋可能被勸阻。",
+   "Avoid revealing clothing. Some temples are strict and may turn away shorts or flip-flops."]],
+ [["手機轉靜音","Silence your phone"],["正殿內盡量不講電話。拍照前先看有無「禁止攝影」標示，或直接問廟方人員。",
+   "Don't take calls in the main hall. Check for “no photography” signs before shooting, or ask the staff."]]]},
+{h:["入廟","Going In"],steps:[
+ [["從龍門進，虎門出","Enter by the Dragon Door, leave by the Tiger Door"],
+  ["面向廟宇時，<em>右手邊是龍門（入口），左手邊是虎門（出口）</em>。俗話說「入龍喉，出虎口」。",
+   "Facing the temple, <em>the Dragon Door is on your right, the Tiger Door on your left</em>. The saying goes: in through the dragon's throat, out through the tiger's mouth."]],
+ [["中門不能走","Never use the centre door"],["正中央那道門是神明走的，信眾一律走兩側。",
+   "The central doorway belongs to the gods. Worshippers always use the side doors."]],
+ [["跨過門檻","Step over the threshold"],["門檻不可踩踏，要抬腳跨過去。",
+   "Never tread on the raised threshold — lift your foot and step over it."]]]},
+{h:["點香","Lighting Incense"],steps:[
+ [["取香","Take your incense"],["香的數量各廟不同，通常一人一炷或三炷，依廟方準備的為準。",
+   "The number varies by temple — usually one or three sticks per person. Take what the temple provides."]],
+ [["用燭火點燃","Light it from the candle"],["到主爐旁的燭台引火。",
+   "Use the candle flame beside the main burner."]],
+ [["甩熄，不要用嘴吹","Shake it out — never blow"],
+  ["<em>這是最常見的錯誤。</em>用手輕搧或上下甩動把火焰熄掉，留下紅色火星即可。口氣被視為不潔，不可對著神明的香吹。",
+   "<em>This is the most common mistake visitors make.</em> Fan it with your hand or shake it until only the ember glows. Breath is considered unclean and must never touch the gods' incense."]],
+ [["香拿在胸前","Hold it at your chest"],["雙手持香舉至額前，不要四處揮舞，小心燙到人。",
+   "Hold it with both hands and raise it to your forehead. Don't wave it around — it burns."]]]},
+{h:["參拜順序","The Order of Worship"],steps:[
+ [["先拜天公","The Jade Emperor first"],["走到廟埕的天公爐前，<em>面向廟外</em>（朝天）拜玉皇上帝。",
+   "Go to the Heaven Burner in the forecourt and bow <em>facing outward</em>, towards the sky, to the Jade Emperor."]],
+ [["再拜主神","Then the main deity"],["轉身進正殿，拜這間廟的主祀神明。",
+   "Turn around, enter the main hall, and pay respects to the temple's principal god."]],
+ [["最後拜配祀神明","Then the side halls"],["依廟內指示的順序，逐殿參拜。",
+   "Visit the remaining halls in the order the temple indicates."]]]},
+{h:["報名——最常被忽略的一步","Introduce Yourself — the step most people skip"],steps:[
+ [["說出你是誰","Say who you are"],["在心中或小聲念出：<em>姓名、農曆出生年月日、現在住的地址</em>。",
+   "Silently or quietly state <em>your name, your date of birth, and where you live now</em>."]],
+ [["再說你求什麼","Then say what you want"],["把事情講清楚、具體。「希望工作順利」太籠統，「希望三月的面試能通過」比較好。",
+   "Be specific. “I hope work goes well” is too vague; “I hope I pass the interview in March” is better."]],
+ [["最後說謝謝","Say thank you"],["不論求什麼，結尾向神明道謝。",
+   "Whatever you asked for, close by thanking the god."]]]},
+{h:["插香","Placing the Incense"],steps:[
+ [["先三鞠躬","Bow three times first"],["到香爐前，雙手持香行三鞠躬，再插。",
+   "Stand before the burner holding the incense in both hands, bow three times, then place it."]],
+ [["用左手插","Use your left hand"],
+  ["<em>民俗以左手為淨手</em>——多數人是右撇子，右手用於如廁等事，故視為不潔；古禮也以左為尊。左撇子則反過來用右手。",
+   "<em>The left hand is considered the clean hand.</em> Most people are right-handed and use the right for the toilet, so it is seen as unclean; classical etiquette also honours the left. Left-handers use the right hand instead."]],
+ [["順序跟參拜一樣","Same order as the bows"],["先天公爐，再主爐，再各殿爐。",
+   "Heaven Burner first, then the main burner, then the side halls."]],
+ [["插歪了不要拔起來","Don't pull it out if it leans"],["輕輕調整角度就好，不要用力戳，以免弄倒香爐裡的香。",
+   "Just nudge the angle gently. Don't jab it in, and don't pull it back out."]]]},
+{h:["擲筊","Casting the Moon Blocks"],steps:[
+ [["先報名","Introduce yourself first"],["跟參拜一樣，要先讓神明知道你是誰。",
+   "As before — the god needs to know who is asking."]],
+ [["問是非題","Ask a yes/no question"],["筊只能回答「是」或「不是」，問題要能用是非回答。",
+   "The blocks answer only yes or no, so the question must be answerable that way."]],
+ [["看筊相","Read the blocks"],
+  ["<em>一平一凸＝聖筊（允）</em>；<em>兩平面＝笑筊（問題不清楚，重問）</em>；<em>兩凸面＝陰筊（不允）</em>。",
+   "<em>One flat, one round = sacred (yes).</em> <em>Both flat = laughing (unclear question, ask again).</em> <em>Both round = negative (no).</em>"]],
+ [["重要的事求三聖筊","Three in a row for serious matters"],["連續三次聖筊才算確定。",
+   "Three consecutive sacred casts make it certain."]]]},
+{h:["求籤的完整流程","Drawing a Fortune Stick"],steps:[
+ [["先擲筊請示","Ask permission with the blocks"],["問神明「可不可以賜我一支籤」，<em>得到聖筊才能抽</em>。",
+   "Ask “may I draw a stick?” — <em>only a sacred cast lets you proceed</em>."]],
+ [["搖籤筒抽籤","Shake the cylinder"],["心中默念所求之事，搖到一支竹籤掉出來為止。只掉一支才算。",
+   "Hold your question in mind and shake until one bamboo stick falls out. Only one counts."]],
+ [["拿籤號再擲筊確認","Confirm the number with the blocks"],["問「是不是這一支」，<em>要連續三個聖筊</em>才算數。",
+   "Ask “is this the one?” — <em>three sacred casts in a row</em> are needed."]],
+ [["不是就放回去重抽","Put it back if not"],["中途出現陰筊，把籤放回籤筒，重新再來。笑筊則是重擲同一支。",
+   "A negative cast means put the stick back and draw again. A laughing cast means cast again for the same stick."]],
+ [["到籤櫃取籤詩","Collect the printed verse"],["確認後，依籤號到籤詩櫃抽出對應的那張紙。看不懂可以找解籤志工。",
+   "Take the slip matching your number from the drawer. If you can't read it, a temple volunteer will interpret it."]]]},
+{h:["離開","Leaving"],steps:[
+ [["從虎門出","Out through the Tiger Door"],["面向廟外時的左手邊。",
+   "On your left as you face out of the temple."]],
+ [["金紙依廟方規定","Follow the temple's rule on joss paper"],["有些廟已不燒金紙（例如行天宮），請看現場告示。",
+   "Some temples no longer burn joss paper (Xingtian Temple, for example). Check the signs."]]]}
+];
+var TABOO=[
+ ["不可用嘴吹熄香——這是最常被外國朋友犯的錯。","Never blow out incense — the mistake visitors make most often."],
+ ["不踩門檻，要跨過去。","Don't step on the threshold; step over it."],
+ ["不走中門，那是神明走的。","Don't use the centre door; it is for the gods."],
+ ["插香用左手，插歪了不要拔起來重插。","Place incense with your left hand, and don't pull it out to straighten it."],
+ ["拍照前先確認有無禁止標示，或詢問廟方。","Check for no-photography signs, or ask, before taking pictures."],
+ ["部分長輩仍有生理期不入廟的說法，現今多數宮廟已不作此要求。",
+  "Some older people still say menstruating women should not enter; most temples today make no such rule."],
+ ["關聖帝君忌牛肉；行天宮不燒金紙、不供牲禮。",
+  "No beef for Lord Guan. Xingtian Temple burns no joss paper and accepts no meat offerings."]
+];
+
+/* 神明簡介英文欄位 */
+var GOD_EN={
+cs:{name:"God of Wealth",full:"Zhao Gongming, Martial God of Wealth",wish:"Wealth",
+ duty:"Wealth, commerce, replenishing one's fortune",
+ origin:"Canonised in the Ming novel Investiture of the Gods as the Marshal of the Mystic Altar, commanding four lesser gods of treasure, gems, wealth and profit — together the Five Ways of Wealth.",
+ bday:"15th day of the 3rd lunar month",
+ offer:"Steamed sponge cake, pineapple, joss paper. Some wealth temples also provide a written petition.",
+ temples:"Wude Temple (Beigang), Zinan Temple (Zhushan)",
+ tip:"At Zinan Temple the “lucky money” is a loan — you come back next year to repay it with a little interest.",
+ bless:"May wealth come to you"},
+yl:{name:"Old Man Under the Moon",full:"Yuelao, the Matchmaker God",wish:"Love",
+ duty:"Marriage, matchmaking, reconciliation",
+ origin:"From a Tang dynasty tale: a traveller meets an old man reading by moonlight with a sack of red cords. Each cord ties two ankles together — and once tied, no distance, poverty or feud can undo it.",
+ bday:"Varies between temples",
+ offer:"Lead coins, red thread, sweets, peanuts. The red thread is carried with you afterwards.",
+ temples:"Xiahai City God Temple (Taipei), Grand Matsu Temple (Tainan), Longshan Temple",
+ tip:"If the match works out you are expected to come back and thank him — that part is not optional.",
+ bless:"A red thread across a thousand miles"},
+wc:{name:"Lord of Literature",full:"Wenchang Dijun",wish:"Study",
+ duty:"Examinations, scholarship, literary success",
+ origin:"Originally Zhang Yazi, a local god of Zitong in Sichuan, later merged with the Wenchang star of the Big Dipper to become the god who governs rank and office.",
+ bday:"3rd day of the 2nd lunar month",
+ offer:"Offerings chosen for puns: spring onion (cong, “clever”), celery (qin, “diligent”), garlic (suan, “to calculate”), radish (caitou, “good omen”), rice dumpling or bun (zong/bao, “to pass”), bottled water (“thoughts flowing like a spring”).",
+ temples:"Wenchang Temple (Taipei), Xinzhuang Wenchang Shrine, Changhua Confucius Temple",
+ tip:"Temples disagree on whether offerings should be odd or even in number, and whether round foods are unlucky (“zero marks”). Ask before you copy anyone.",
+ bless:"May your thoughts flow and your name be on the list"},
+bs:{name:"Great Emperor Who Protects Life",full:"Baosheng Dadi, the physician Wu Tao",wish:"Health",
+ duty:"Medicine, health, warding off misfortune",
+ origin:"Wu Tao, an 11th-century physician from Tong'an in Fujian, treated the poor without charge. Villagers built a shrine after his death and later dynasties raised his title to Great Emperor.",
+ bday:"15th day of the 3rd lunar month",
+ offer:"Flowers, fruit, tea. As a healing god his worship is kept plain — meat offerings are rare.",
+ temples:"Baoan Temple (Taipei), Cizhi Temple (Xuejia, Tainan), Yuanbao Temple (Taichung)",
+ tip:"These temples once issued “medicine sticks” prescribing herbal remedies; almost all have stopped. See a doctor.",
+ bless:"A healing hand, a body at ease"},
+gg:{name:"Lord Guan",full:"Guan Yu, Emperor Who Assists Heaven",wish:"Career",
+ duty:"Career, loyalty, business (also worshipped as a god of wealth)",
+ origin:"Guan Yu, a general of the Three Kingdoms period, honoured across Confucianism, Buddhism and Daoism for his loyalty. Merchants adopted him as a god of wealth, crediting him with inventing a system of bookkeeping.",
+ bday:"24th day of the 6th lunar month",
+ offer:"Never beef. Xingtian Temple burns no joss paper and takes no meat — flowers and fruit only.",
+ temples:"Xingtian Temple (Taipei), Xietian Temple (Jiaoxi), Official Martial Temple (Tainan)",
+ tip:"Xingtian Temple has no donation box, sells nothing and refuses offerings. Bring nothing but yourself.",
+ bless:"Loyalty endures; may your work prosper"},
+mz:{name:"Mazu",full:"Lin Moniang, Heavenly Holy Mother",wish:"Safety",
+ duty:"Seafaring, safe travel, the safety of the household",
+ origin:"Lin Moniang of Meizhou Island, Fujian, said to have foreseen storms and rescued sailors. Fishermen worshipped her after her death and later dynasties raised her to Heavenly Holy Mother.",
+ bday:"23rd day of the 3rd lunar month",
+ offer:"Flowers, fruit, longevity peaches, red turtle cakes",
+ temples:"Chaotian Temple (Beigang), Zhenlan Temple (Dajia), Lukang Mazu Temple",
+ tip:"The third lunar month is Mazu season. The nine-day Dajia pilgrimage is one of the largest religious events in Taiwan.",
+ bless:"Safe passage, coming and going"}
+};
+/* 六十甲子籤 白話英譯 */
+var LOT_EN={
+1:"The clouds part and the sun comes through. What stands in your way will pass — go on.",
+2:"The flowers are about to open. The timing has just ripened; wait a little longer.",
+3:"Settle your mind. What is yours will not be lost; it comes when its time comes.",
+4:"Calm water, steady boat. Don't overthink it — keep going as you are.",
+5:"The road ahead may shift. Move early on what must move; hold still and nothing breaks.",
+6:"Wind and rain together. This one will not come off, and there may be travelling to do.",
+7:"The moon is out and clear. No need to hesitate — what should happen will.",
+8:"The rice is nearly ripe. Both sides will be satisfied; go home and wait calmly.",
+9:"Dragon and tiger face each other. Keep the peace and you gain; fall out and you both lose.",
+10:"Half the blossom withered before fruiting. This year is a loss — stop pushing.",
+11:"Dawn is close. Give it a while longer and things will clear.",
+12:"The waves are settling. Someone will help you; the bad part is passing.",
+13:"The boat is stuck on a shoal. No amount of cleverness gets you over — stop for now.",
+14:"The money is coming into view. Be patient; it will bear fruit.",
+15:"Jiang Ziya was eighty before his king found him. Set the urgent matter down and wait for your turn.",
+16:"Asking won't help. This is not within your control — stop picking at it.",
+17:"An old grievance is still open. Bear with it, seek peace, and it dissolves.",
+18:"Fortune is lined up ahead of you. Find the right person and there is profit in it.",
+19:"Aiming too high will cost you. Go back to the road you were on and it clears by itself.",
+20:"The recognition isn't here yet. Both sides stand to lose — better to step back.",
+21:"The sun stands high. Great trouble shrinks to small, and help comes to the door.",
+22:"A late bloomer's fate. However plain things look now, everything will come good.",
+23:"Wide, empty water. Rod in hand but no fish — the timing is wrong.",
+24:"Moonlight over all four seas. The clouds sweep away and no harm reaches you.",
+25:"Don't fret so much. It will be clear a few days from now.",
+26:"The finest peony on the branch. You can see which one — pick it, stop hesitating.",
+27:"A quiet, clean household. Relax; there is nothing you need to force.",
+28:"A tiger on flat ground gets bullied by dogs. This is not your moment — don't force it.",
+29:"Dead wood has not met its spring. Outlast the frost and the ground comes back to you.",
+30:"Mild enough for now, but guard what comes after — and expect it to cost effort.",
+31:"The willows are at their greenest. Go ahead; it will bear fruit.",
+32:"Gold turns to iron in your hand. Things have turned sharply; praying won't reverse it.",
+33:"Hold the boat steady and no storm catches you. Put care into home and you will meet it.",
+34:"The worst of the climb is behind you. Hold on a little more — the snake becomes a dragon.",
+35:"No need for schemes. Let it run and it resolves itself.",
+36:"Fortune deep as the sea, life solid as a mountain. Stop sighing; good things are coming.",
+37:"Your luck is running strong. Decide and move — nothing blocks the road.",
+38:"The recognition is right in front of you. Don't beg for it; a few days and it's yours.",
+39:"Step back and look properly. Hold steady and the right person appears.",
+40:"A household in good light. Nothing is lost, and the marriage lasts.",
+41:"Word is close now. What's coming will come; this match was settled long ago.",
+42:"Mountain after mountain, river after river. However you change tack you won't get past; the dispute stays unsettled.",
+43:"Don't rush. Your help is still a thousand miles off; news comes mid-month.",
+44:"Visitors bring profit. There is some back and forth, but your luck turns in the end.",
+45:"The blossom has already set fruit. Nothing to worry about.",
+46:"Recognition arrives. Under a full moon it is brighter still.",
+47:"The answer is already in you. Mid-month the bad turns to good.",
+48:"Clouds across the moon. You want to move, but the luck has not opened yet.",
+49:"Plenty of talk, little of it worth following. Good news will come quietly.",
+50:"Even iron can become gold. Keep your intent undivided and word will come.",
+51:"No direction is good for travel. Stay with your household and you stay safe.",
+52:"Rank and work are heaven's business — stop holding your breath. The opening is right there.",
+53:"A house that does good has plenty to spare. Wealth and children arrive together.",
+54:"The night is deep, but it will still come off. Sincere incense is heard.",
+55:"All the talk of advance and retreat is empty. The jewel is still buried; hurrying won't help.",
+56:"Hard going, but nothing serious. Once it's past, don't look back.",
+57:"Settle your mind. Nothing major in between, and a god is keeping watch.",
+58:"The snake wants to be a dragon but the luck hasn't opened. Relax, and ignore the chatter.",
+59:"Now is the time. This will come together, and money follows.",
+60:"A bright moon behind cloud. Put care into home and deal fairly — that pays."
+};
+
+/* ========== 神明 ========== */
 var DEITIES=[
 {id:"cs",name:"財神爺",full:"武財神 趙公明",wish:"財運",
  robe:"#c01f33",robe2:"#7d0f1e",trim:"#e3c069",glow:"#ffcf6b",skin:"#f3d2ae",
  hat:"wing",beard:"white",prop:"ingot",icon:"ingot",bless:"招財進寶　日進斗金",
- lots:[
- {g:"上上籤",p:["金鱗豈是池中物","一遇風雲便化龍","積善之家慶有餘","開門已見貴人逢"],
-  e:"時機成熟了，過去的積累會一次兌現。財來得快，守得住才算真的得到。"},
- {g:"上吉籤",p:["春耕夏耘秋有實","莫問何時穀滿倉","腳下泥濘休嫌苦","來日方長路更長"],
-  e:"正財可期，但急不得。按部就班做下去，年底自然見分曉。"},
- {g:"中籤",p:["石中藏玉人不識","待得良工琢磨時","眼前小利休貪戀","自有貴人指路歧"],
-  e:"你手上有被低估的東西。別為小錢分心，等懂的人出現。"},
- {g:"中平籤",p:["進一步時退兩步","風波暗處且停舟","先將舊帳理分明","方得新渠引水流"],
-  e:"先把舊的債務和麻煩清乾淨，現在不宜開新局。"},
- {g:"下下籤",p:["鏡裡黃金終是幻","枝頭好果已蟲穿","貪他一粒米中利","失卻半倉舊有錢"],
-  e:"有受騙與投機失利之象。這陣子切勿借貸、跟會或聽信明牌。"}]},
+ duty:"財富、商業、補財庫",
+ origin:"《封神演義》中受封「金龍如意正一龍虎玄壇真君」，statue手下統領招寶、納珍、招財、利市四位神君，民間合稱五路財神。",
+ bday:"農曆三月十五",bdayNote:"",
+ offer:"發糕、鳳梨、金紙。部分財神廟另備「補財庫」疏文",
+ temples:"北港武德宮、竹山紫南宮、南投竹山紫南宮（可借發財金）",
+ tip:"紫南宮的發財金是「借」的，隔年要回來還，並添個利息。"},
 
 {id:"yl",name:"月下老人",full:"月老星君",wish:"姻緣",
  robe:"#c2566b",robe2:"#8a3147",trim:"#f0d7a8",glow:"#ffb3c4",skin:"#f3d2ae",
  hat:"cloth",beard:"white",prop:"thread",icon:"knot",bless:"千里姻緣　一線相牽",
- lots:[
- {g:"上上籤",p:["千里姻緣一線牽","紅絲早繫不須憂","莫嫌相逢猶未識","明月終當照兩頭"],
-  e:"對的人已經在你附近，只是還沒認出來。多出門、多答應邀約。"},
- {g:"上吉籤",p:["舊枝新發一點紅","春風不負有心人","若肯低頭多讓步","石上也能開杏花"],
-  e:"有機會，但需要你主動軟一點。別再硬碰硬了。"},
- {g:"中籤",p:["隔溪相望兩相知","只欠橋頭一語遲","莫待花殘空嘆息","開口原來不費時"],
-  e:"你們其實都有意，缺的只是一句話。該說就說。"},
- {g:"中平籤",p:["同行一段各西東","不是無緣是未逢","且將心事交流水","自有來時渡口逢"],
-  e:"這段先放下，時候未到。緣分還沒走到渡口。"},
- {g:"下下籤",p:["強摘之瓜終不甜","牽來之絲易斷弦","回頭看取身邊路","莫向荊叢覓牡丹"],
-  e:"對方無意，勉強只會兩敗俱傷。該放手，也該看看身邊的人。"}]},
+ duty:"姻緣、婚配、和合",
+ origin:"典出唐代李復言《續玄怪錄・定婚店》：韋固夜遇老人倚囊翻書，囊中紅繩繫男女之足，雖仇敵之家、貧賤懸隔，繩一繫終不可逭。",
+ bday:"各廟說法不一",bdayNote:"常見農曆八月十五，但來源不一致，建議向所在廟宇確認",
+ offer:"鉛錢、紅線、喜糖、花生。求得的紅線多隨身帶著",
+ temples:"台北霞海城隍廟、台南大天后宮、台北龍山寺",
+ tip:"求得紅線後，傳統上不另還願反而失禮——成了要回來「謝月老」。"},
 
 {id:"wc",name:"文昌帝君",full:"梓潼帝君",wish:"學業",
  robe:"#2f6f8f",robe2:"#1b4257",trim:"#e3c069",glow:"#7fd4ff",skin:"#f3d2ae",
  hat:"scholar",beard:"black",prop:"brush",icon:"brush",bless:"文思泉湧　金榜題名",
- lots:[
- {g:"上上籤",p:["十年窗下無人問","一舉成名天下知","筆下自有千鈞力","金榜題名正此時"],
-  e:"準備夠了，放膽去考。臨場不要改答案，相信第一直覺。"},
- {g:"上吉籤",p:["螢窗雪案苦功深","已過三關剩一關","莫在臨門鬆了手","穩住心神便登山"],
-  e:"進度超前，但最後關頭最危險。別提早慶祝。"},
- {g:"中籤",p:["書中自有黃金屋","只是沙中未見金","換個法門重整理","豁然開朗在明晨"],
-  e:"方法要換，不是你不夠努力。把筆記重新整理一次。"},
- {g:"中平籤",p:["讀得三分忘七分","心猿意馬坐難安","且先收拾窗前亂","書聲方得入心間"],
-  e:"心定不下來。先處理讓你分心的那件事，再談讀書。"},
- {g:"下下籤",p:["臨渴掘井水難得","臨陣磨槍刃不光","此科且作他科計","莫將僥倖當文章"],
-  e:"準備不足，這次勝算不高。及早改計畫，或者延後一年。"}]},
+ duty:"功名、考試、文運",
+ origin:"又稱梓潼帝君，原為四川梓潼地方神張亞子，後與北斗文昌星信仰合流，成為掌管功名祿位之神。",
+ bday:"農曆二月初三",bdayNote:"此日期來源不夠一致，建議向所在廟宇確認",
+ offer:"蔥（聰明）、芹菜（勤勞）、蒜（會算）、菜頭（好彩頭）、粽子或包子（包中）、礦泉水（文思泉湧）",
+ temples:"台北文昌宮、新莊文昌祠、彰化孔廟",
+ tip:"各廟對供品單雙數與可否擺圓形食物的說法不同（有一說圓形食物忌「零分」），照做前先問廟方。"},
 
 {id:"bs",name:"保生大帝",full:"大道公 吳本",wish:"健康",
  robe:"#3d7a62",robe2:"#22493a",trim:"#e3c069",glow:"#8de8c0",skin:"#f3d2ae",
  hat:"cloth",beard:"black",prop:"gourd",icon:"gourd",bless:"妙手回春　身安體泰",
- lots:[
- {g:"上上籤",p:["沉痾一旦雲開散","良藥正逢對症時","自此身輕如脫殼","莫忘當初惜福心"],
-  e:"病痛將解，身體會好轉。痊癒之後記得保養，別故態復萌。"},
- {g:"上吉籤",p:["藥到病除須三日","調養還需七日功","莫因稍好便逞強","培元固本在從容"],
-  e:"會好，但別急著恢復原本的作息。多給身體一點時間。"},
- {g:"中籤",p:["病在身上根在心","愁腸百結損元神","解鈴還須繫鈴者","放下便是上藥針"],
-  e:"身體的問題來自心理壓力。先把煩惱處理掉，症狀自然減輕。"},
- {g:"中平籤",p:["三分在藥七分養","熬夜貪涼總是傷","若肯早眠兼節飲","何須四處覓仙方"],
-  e:"沒有大礙，但壞習慣要改。作息、飲食，兩樣先挑一樣。"},
- {g:"下下籤",p:["小恙不理成大患","諱疾忌醫最堪憂","速速尋醫莫拖延","莫待秋深悔晚籌"],
-  e:"有警訊被你忽略了。盡快就醫檢查，不要再拖。"}]},
+ duty:"醫藥、health、消災解厄",
+ origin:"本名吳本（音同「滔」），北宋福建泉州同安人，行醫濟世、不取酬勞，歿後鄉人立廟奉祀，歷代加封至「保生大帝」。",
+ bday:"農曆三月十五",bdayNote:"",
+ offer:"鮮花、水果、清茶。醫神信仰重清淡，少用牲禮",
+ temples:"台北大龍峒保安宮、台南學甲慈濟宮、台中元保宮",
+ tip:"早期保生大帝廟有「藥籤」，現今多數已依法停止提供，身體不適請就醫。"},
 
 {id:"gg",name:"關聖帝君",full:"協天大帝 關羽",wish:"事業",
  robe:"#2e6b4f",robe2:"#174330",trim:"#e3c069",glow:"#ffd98a",skin:"#d4624f",
  hat:"warrior",beard:"black",prop:"blade",icon:"blade",bless:"忠義千秋　事業亨通",
- lots:[
- {g:"上上籤",p:["青龍出匣光照天","一刀劈開萬重山","此去前程無阻礙","義字當頭自有緣"],
-  e:"大膽前進，阻礙會自己退開。守住信義的人，貴人會來。"},
- {g:"上吉籤",p:["過五關時斬六將","一關一難一重天","忠肝義膽終能渡","莫為小人改初顏"],
-  e:"會遇到連續難關，但都過得去。別被小人逼得變了性子。"},
- {g:"中籤",p:["兵馬未動糧草先","謀定而後再揮鞭","此時不是爭鋒日","養銳三分待明年"],
-  e:"現在不是衝的時候。先補資源、建人脈，明年再出手。"},
- {g:"中平籤",p:["同舟共濟風浪中","各懷心事各西東","若無一語交分明","空負當初結義情"],
-  e:"團隊有嫌隙沒說破。找個時間開誠布公談一次。"},
- {g:"下下籤",p:["赤兔雖良失其主","寶刀縱利無用時","此地非是棲身處","早作良圖莫遲疑"],
-  e:"你在錯的地方。環境配不上你的能力，該另謀出路了。"}]},
+ duty:"事業、忠義、商業（亦為武財神之一）",
+ origin:"三國蜀漢名將關羽，字雲長。因忠義形象受歷代加封，儒釋道三教共尊；商界奉為財神，傳說其善理財、創簿記法。",
+ bday:"農曆六月二十四",bdayNote:"",
+ offer:"忌牛肉。行天宮系統不燒金紙、不供牲禮，只需鮮花素果",
+ temples:"台北行天宮、宜蘭礁溪協天廟、台南祀典武廟",
+ tip:"行天宮不設功德箱、不收金紙，也謝絕供品——去之前不用買東西。"},
 
 {id:"mz",name:"天上聖母",full:"媽祖 林默娘",wish:"平安",
  robe:"#9b2b3e",robe2:"#5e1322",trim:"#e3c069",glow:"#ffd1a8",skin:"#f6ddc0",
  hat:"phoenix",beard:"none",prop:"tablet",icon:"wave",bless:"慈航普渡　出入平安",
- lots:[
- {g:"上上籤",p:["黑水溝前風浪急","一盞紅燈照夜明","娘娘自有慈悲在","平安二字抵千金"],
-  e:"有驚無險，會被護住。這段時間出入平安，不必過度擔心。"},
- {g:"上吉籤",p:["舟行千里終須靠","只在舵手穩心神","前路雖有三分浪","過得此灘便是春"],
-  e:"有些波折但無大礙。穩住自己的心，就過得去。"},
- {g:"中籤",p:["出門且看天色變","莫將僥倖付行囊","多備一傘多分穩","小心駛得萬年船"],
-  e:"行程要多做準備，別抱僥倖。該買的保險、該備的東西別省。"},
- {g:"中平籤",p:["家中瑣事如亂麻","在外奔波兩頭忙","且分輕重先後序","風平浪靜自歸航"],
-  e:"忙亂但無災。把優先順序排好，不要什麼都想顧。"},
- {g:"下下籤",p:["風起浪高不宜行","強渡此灘恐翻舟","且將行期暫延後","待得雲收月自明"],
-  e:"近期不宜遠行或動大工程。能延後就延後，為上策。"}]}
+ duty:"航海、出入平安、闔家平安",
+ origin:"本名林默娘，北宋福建莆田湄洲人，相傳能預知風浪、救助海難，歿後受漁民奉祀，歷代加封至「天上聖母」。",
+ bday:"農曆三月二十三",bdayNote:"",
+ offer:"鮮花、水果、壽桃、紅龜粿",
+ temples:"北港朝天宮、大甲鎮瀾宮、鹿港天后宮、雲林北港",
+ tip:"農曆三月是「瘋媽祖」的季節，大甲媽九天八夜遶境是台灣最大的宗教活動之一。"}
 ];
-var GRADE_COLOR={"上上籤":"#f6dfa8","上吉籤":"#8de8c0","中籤":"#ece4d8","中平籤":"#a2978c","下下籤":"#d47e8e"};
+DEITIES[0].origin="《封神演義》中受封「金龍如意正一龍虎玄壇真君」，手下統領招寶、納珍、招財、利市四位神君，民間合稱五路財神。";
+DEITIES[3].duty="醫藥、健康、消災解厄";
+
 
 /* ========== 圖像 ========== */
 function hatSVG(k,d){
@@ -472,36 +931,137 @@ function cupSVG(flatUp){
  return '<div class="cup-w">'+art+'<span class="cup-lab">'+(flatUp?"平面":"凸面")+'</span></div>';
 }
 
+/* 三炷香（state: 0 未燃 1 火焰 2 紅星） */
+function jossSVG(st){
+ var tip="";
+ if(st===1) tip='<g><path d="M43 6 Q49 -4 43 -14 Q37 -4 43 6 Z" fill="#ffb347"><animate attributeName="opacity" values="1;.6;1" dur=".5s" repeatCount="indefinite"/></path>'+
+   '<path d="M43 4 Q46 -2 43 -8 Q40 -2 43 4 Z" fill="#fff0c0"/></g>';
+ if(st===2) tip='<circle cx="43" cy="6" r="4.5" fill="#ff8c3a"><animate attributeName="opacity" values="1;.5;1" dur="2s" repeatCount="indefinite"/></circle>';
+ var s='<svg viewBox="0 0 86 120" aria-label="三炷香">'+tip;
+ for(var i=0;i<3;i++){
+  var x=31+i*12, h=i===1?96:88;
+  s+='<rect x="'+(x-2)+'" y="'+(116-h)+'" width="4" height="'+h+'" rx="2" fill="#8a3a2a"/>'+
+     '<rect x="'+(x-2)+'" y="'+(116-h)+'" width="4" height="12" rx="2" fill="#c01f33"/>';
+  if(st===2) s+='<circle cx="'+x+'" cy="'+(116-h)+'" r="2.6" fill="#ff8c3a"/>';
+ }
+ return s+'</svg>';
+}
+function candleSVG(){
+ return '<svg viewBox="0 0 54 92" aria-hidden="true">'+
+ '<path d="M27 20 Q33 10 27 0 Q21 10 27 20 Z" fill="#ffb347"><animate attributeName="opacity" values="1;.65;1" dur=".7s" repeatCount="indefinite"/></path>'+
+ '<path d="M27 17 Q30 11 27 5 Q24 11 27 17 Z" fill="#fff4cf"/>'+
+ '<rect x="26" y="18" width="2" height="8" fill="#4a3a26"/>'+
+ '<rect x="17" y="24" width="20" height="52" rx="4" fill="#d8402f"/>'+
+ '<rect x="17" y="24" width="7" height="52" rx="3" fill="#ec6450" opacity=".7"/>'+
+ '<rect x="12" y="74" width="30" height="9" rx="3" fill="#c9a44c"/>'+
+ '<rect x="19" y="83" width="16" height="7" rx="2" fill="#8a7147"/></svg>';
+}
+
+/* ========== 語音與音效 ========== */
+var SND={on:true,ac:null};
+try{var sv2=localStorage.getItem("baibai.snd"); if(sv2==="0") SND.on=false;}catch(e8){}
+function sndSave(){try{localStorage.setItem("baibai.snd",SND.on?"1":"0");}catch(e){}}
+function AC(){
+ if(!SND.ac){ var C=window.AudioContext||window.webkitAudioContext; if(!C) return null; SND.ac=new C(); }
+ if(SND.ac.state==="suspended") SND.ac.resume();
+ return SND.ac;
+}
+/* 木質撞擊：筊杯落地 */
+function clack(t0,gain){
+ var ac=AC(); if(!ac) return;
+ var o=ac.createOscillator(), g=ac.createGain(), f=ac.createBiquadFilter();
+ o.type="triangle"; o.frequency.setValueAtTime(420+Math.random()*140,t0);
+ o.frequency.exponentialRampToValueAtTime(110,t0+0.09);
+ f.type="bandpass"; f.frequency.value=900; f.Q.value=1.2;
+ g.gain.setValueAtTime(0,t0);
+ g.gain.linearRampToValueAtTime((gain||0.3),t0+0.004);
+ g.gain.exponentialRampToValueAtTime(0.001,t0+0.16);
+ o.connect(f); f.connect(g); g.connect(ac.destination);
+ o.start(t0); o.stop(t0+0.18);
+}
+/* 竹籤摩擦：搖籤筒 */
+function rattle(dur){
+ var ac=AC(); if(!ac) return;
+ var n=Math.floor(ac.sampleRate*(dur||0.8)), buf=ac.createBuffer(1,n,ac.sampleRate), ch=buf.getChannelData(0);
+ for(var i=0;i<n;i++){ var env=Math.pow(1-i/n,1.4); ch[i]=(Math.random()*2-1)*env*(Math.random()<0.08?1:0.25); }
+ var s=ac.createBufferSource(); s.buffer=buf;
+ var f=ac.createBiquadFilter(); f.type="bandpass"; f.frequency.value=2200; f.Q.value=0.8;
+ var g=ac.createGain(); g.gain.value=0.22;
+ s.connect(f); f.connect(g); g.connect(ac.destination); s.start();
+}
+/* 磬聲：上香完成 */
+function bell(){
+ var ac=AC(); if(!ac) return; var t0=ac.currentTime;
+ [1,2.76,5.4].forEach(function(m,i){
+  var o=ac.createOscillator(), g=ac.createGain();
+  o.type="sine"; o.frequency.value=528*m;
+  g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(0.18/(i+1),t0+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0008,t0+2.6-i*0.5);
+  o.connect(g); g.connect(ac.destination); o.start(t0); o.stop(t0+2.8);
+ });
+}
+function sfx(kind){
+ if(!SND.on) return;
+ var ac=AC(); if(!ac) return; var t=ac.currentTime;
+ if(kind==="jiao"){ clack(t+0.02,0.32); clack(t+0.13,0.26); clack(t+0.30,0.14); clack(t+0.40,0.10); }
+ else if(kind==="rattle") rattle(0.9);
+ else if(kind==="bell") bell();
+ else if(kind==="tick") clack(t,0.14);
+}
+/* 語音朗讀 */
+var VOICES=[];
+function loadVoices(){ try{ VOICES=speechSynthesis.getVoices()||[]; }catch(e){} }
+if(window.speechSynthesis){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+function pickVoice(code){
+ for(var i=0;i<VOICES.length;i++) if(VOICES[i].lang&&VOICES[i].lang.replace("_","-").toLowerCase()===code.toLowerCase()) return VOICES[i];
+ var base=code.split("-")[0].toLowerCase();
+ for(var j=0;j<VOICES.length;j++) if(VOICES[j].lang&&VOICES[j].lang.toLowerCase().indexOf(base)===0) return VOICES[j];
+ return null;
+}
+function say(text,code,rate){
+ if(!SND.on||!window.speechSynthesis||!text) return false;
+ try{
+  speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  u.lang=code||(LANG==="en"?"en-US":"zh-TW");
+  var v=pickVoice(u.lang); if(v) u.voice=v;
+  u.rate=rate||0.92; u.pitch=1;
+  speechSynthesis.speak(u);
+  return true;
+ }catch(e){ return false; }
+}
+function stopSay(){ try{ speechSynthesis.cancel(); }catch(e){} }
+function canSpeak(){ return !!(window.speechSynthesis); }
+
 /* ========== 狀態 ========== */
 var $=function(s){return document.querySelector(s)};
 var state={deity:null,incense:false,streak:0};
 var place={x:0,y:0,scale:1};
 var gyro={on:false,anchor:null,cur:null,dx:0,dy:0};
-var homeEl=$("#home"),altarEl=$("#altar"),sheetEl=$("#sheet"),figEl=$("#figure"),touchEl=$("#touch");
+var homeEl=$("#home"),altarEl=$("#altar"),pageEl=$("#page"),sheetEl=$("#sheet"),
+    figEl=$("#figure"),touchEl=$("#touch");
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+function clamp(v,a,b){return v<a?a:(v>b?b:v)}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
 var DL=null;
 try{ if(window.claude&&window.claude.use){ window.claude.use("downloads").then(function(d){DL=d;},function(){}); } }catch(e0){}
 
 /* 願望卡 */
 (function(){
- var html="";
- for(var i=0;i<DEITIES.length;i++){var d=DEITIES[i];
-  html+='<button class="wish" data-i="'+i+'"><span class="w-ico">'+iconSVG(d.icon)+
-    '</span><span class="w-n">'+d.wish+'</span><span class="w-d">'+d.name+'</span></button>';
- }
- $("#wishes").innerHTML=html;
  $("#wishes").addEventListener("click",function(e){
+  var inf=e.target.closest("[data-info]");
+  if(inf){ e.stopPropagation(); showGods(+inf.dataset.info); return; }
   var b=e.target.closest(".wish"); if(b) openAltar(DEITIES[+b.dataset.i]);
  });
 })();
+$("#bGuide").addEventListener("click",showGuide);
+$("#who").addEventListener("click",function(){ showGods(DEITIES.indexOf(state.deity)); });
 
 function openAltar(d){
  state.deity=d; state.incense=false; state.streak=0;
- place.x=0; place.y=0; place.scale=1;
- gyro.anchor=null; gyro.dx=0; gyro.dy=0;
- $("#who").textContent=d.name;
- $("#for").textContent="求　"+d.wish+"　·　"+d.full;
+ place.x=0;place.y=0;place.scale=1; gyro.anchor=null;gyro.dx=0;gyro.dy=0;
+ $("#who").textContent=gname(d);
+ $("#for").textContent=U("wishFor")+"　"+gwish(d)+"　·　"+gfull(d);
  figEl.innerHTML='<div class="fl">'+figureSVG(d)+'</div>';
  figEl.className="entering"; void figEl.offsetWidth; figEl.classList.add("enter");
  setTimeout(function(){figEl.className="";},950);
@@ -510,43 +1070,93 @@ function openAltar(d){
  $("#bIncense").disabled=false; $("#bIncense").classList.add("lit");
  $("#bJiao").classList.remove("lit"); $("#bQian").classList.remove("lit");
  figEl.style.filter="";
- homeEl.hidden=true; altarEl.hidden=false;
- applyFigure(); startCamera(); startLoop();
- toast(d.bless);
+ pageEl.hidden=true; homeEl.hidden=true; altarEl.hidden=false;
+ applyFigure(); startCamera(); startLoop(); toast(gbless(d));
 }
 function closeAltar(){
  altarEl.hidden=true; homeEl.hidden=false;
- endRitual(); stopCamera(); stopLoop(); closeSheet(); hideHint();
+ endRite(); stopCamera(); stopLoop(); closeSheet(); hideHint();
 }
 $("#back").addEventListener("click",closeAltar);
+$("#pageBack").addEventListener("click",function(){ pageEl.hidden=true; });
 
 /* ========== 相機 ========== */
 var stream=null;
 function startCamera(){
  var v=$("#cam");
  if(stream){v.classList.add("on");return;}
- if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){chip("示範模式 · 廟宇場景");return;}
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){chip(U("camOff"));return;}
  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false})
- .then(function(s){ stream=s; v.srcObject=s; v.classList.add("on");
-   $("#backdrop").style.opacity=".25"; chip("AR 相機已開啟 · 可拖曳神明"); })
- .catch(function(){ chip("示範模式 · 廟宇場景"); });
+ .then(function(s){stream=s;v.srcObject=s;v.classList.add("on");
+   $("#backdrop").style.opacity=".25";chip(U("camOn"));})
+ .catch(function(){chip(U("camOff"));});
 }
 function stopCamera(){
  if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null;}
  $("#cam").classList.remove("on"); $("#backdrop").style.opacity="";
 }
-function chip(t){
- var c=$("#camChip"); c.textContent=t; c.hidden=false;
- clearTimeout(chip._t); chip._t=setTimeout(function(){c.hidden=true;},4200);
+function chip(t){var c=$("#camChip");c.textContent=t;c.hidden=false;
+ clearTimeout(chip._t);chip._t=setTimeout(function(){c.hidden=true;},4200);}
+function toast(t){var o=document.querySelector(".toast");if(o)o.remove();
+ var el=document.createElement("div");el.className="toast";el.textContent=t;
+ $(".shell").appendChild(el);setTimeout(function(){el.remove();},2600);}
+
+/* ========== 動作感測：權限 + 搖晃偵測（差分演算法） ========== */
+var motion={bound:false,granted:false,last:null,lastT:0,supported:false};
+var shakeWant=null, shakeGuard=0;
+function onMotion(e){
+ var a=e.accelerationIncludingGravity||e.acceleration; if(!a) return;
+ motion.supported=true;
+ var now=Date.now();
+ if(!motion.last){motion.last={x:a.x||0,y:a.y||0,z:a.z||0};motion.lastT=now;return;}
+ var dt=now-motion.lastT; if(dt<40) return;
+ motion.lastT=now;
+ var dx=(a.x||0)-motion.last.x,dy=(a.y||0)-motion.last.y,dz=(a.z||0)-motion.last.z;
+ motion.last={x:a.x||0,y:a.y||0,z:a.z||0};
+ var sp=Math.sqrt(dx*dx+dy*dy+dz*dz)/dt*1000;
+ if(sp>720&&shakeWant&&now-shakeGuard>700){shakeGuard=now;var f=shakeWant;f();}
 }
-function toast(t){
- var old=document.querySelector(".toast"); if(old) old.remove();
- var el=document.createElement("div"); el.className="toast"; el.textContent=t;
- $(".shell").appendChild(el); setTimeout(function(){el.remove();},2600);
+function bindMotion(){
+ if(motion.bound) return;
+ motion.bound=true; motion.granted=true;
+ addEventListener("devicemotion",onMotion);
+}
+function needsPrompt(){
+ return (typeof DeviceMotionEvent!=="undefined"&&!!DeviceMotionEvent.requestPermission)
+     || (typeof DeviceOrientationEvent!=="undefined"&&!!DeviceOrientationEvent.requestPermission);
+}
+function askMotion(){
+ if(motion.granted) return Promise.resolve(true);
+ var ps=[];
+ if(typeof DeviceMotionEvent!=="undefined"&&DeviceMotionEvent.requestPermission) ps.push(DeviceMotionEvent.requestPermission());
+ if(typeof DeviceOrientationEvent!=="undefined"&&DeviceOrientationEvent.requestPermission) ps.push(DeviceOrientationEvent.requestPermission());
+ if(!ps.length){bindMotion();return Promise.resolve(true);}
+ return Promise.all(ps).then(function(r){
+  var ok=r.every(function(x){return x==="granted"});
+  if(ok){bindMotion();bindOrient();}
+  return ok;
+ }).catch(function(){return false});
+}
+if(!needsPrompt()) bindMotion();
+
+/* 觸控替代：左右來回滑也算「搖」 */
+var swipe={x:0,flips:0,dir:0,t:0};
+function swipeShake(x){
+ var now=Date.now();
+ if(now-swipe.t>700){swipe.flips=0;swipe.dir=0;}
+ swipe.t=now;
+ var d=x-swipe.x; swipe.x=x;
+ if(Math.abs(d)<16) return;
+ var nd=d>0?1:-1;
+ if(swipe.dir&&nd!==swipe.dir) swipe.flips++;
+ swipe.dir=nd;
+ if(swipe.flips>=3&&shakeWant&&now-shakeGuard>700){
+  shakeGuard=now;swipe.flips=0;var f=shakeWant;f();
+ }
 }
 
-/* ========== 1. 陀螺儀空間錨定 ========== */
-function angDiff(a,b){ var d=a-b; while(d>180)d-=360; while(d<-180)d+=360; return d; }
+/* ========== 陀螺儀空間錨定 ========== */
+function angDiff(a,b){var d=a-b;while(d>180)d-=360;while(d<-180)d+=360;return d}
 function onOrient(e){
  if(e.alpha==null||e.beta==null) return;
  gyro.cur={a:e.alpha,b:e.beta};
@@ -555,310 +1165,382 @@ function onOrient(e){
  gyro.dx=clamp(angDiff(e.alpha,gyro.anchor.a)*ppd,-3000,3000);
  gyro.dy=clamp((e.beta-gyro.anchor.b)*ppd*0.9,-3000,3000);
 }
-function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
-function enableSensors(){
- var need=[];
- if(typeof DeviceOrientationEvent!=="undefined"&&DeviceOrientationEvent.requestPermission)
-   need.push(DeviceOrientationEvent.requestPermission());
- if(typeof DeviceMotionEvent!=="undefined"&&DeviceMotionEvent.requestPermission)
-   need.push(DeviceMotionEvent.requestPermission());
- if(!need.length){ bindSensors(); return; }
- Promise.all(need).then(function(rs){
-   var ok=rs.every(function(r){return r==="granted"});
-   if(ok) bindSensors(); else chip("未取得動作權限，可改用拖曳擺放");
- }).catch(function(){ chip("此裝置不支援空間錨定"); });
-}
-function bindSensors(){
+function bindOrient(){
  if(gyro.on) return;
  gyro.on=true; gyro.anchor=null;
  addEventListener("deviceorientation",onOrient);
- addEventListener("devicemotion",onShake);
  $("#bAnchor").classList.add("on");
- chip("空間錨定已開啟 · 轉動手機看看");
 }
 $("#bAnchor").addEventListener("click",function(){
- if(gyro.on){ gyro.on=false; gyro.dx=0; gyro.dy=0;
-   removeEventListener("deviceorientation",onOrient); removeEventListener("devicemotion",onShake);
-   $("#bAnchor").classList.remove("on"); chip("空間錨定已關閉"); return; }
- enableSensors();
+ if(gyro.on){gyro.on=false;gyro.dx=0;gyro.dy=0;
+  removeEventListener("deviceorientation",onOrient);
+  $("#bAnchor").classList.remove("on");chip(U("anchorOff"));return;}
+ askMotion().then(function(ok){
+  if(ok){bindOrient();chip(U("anchorOn"));}
+  else chip(U("anchorNo"));
+ });
 });
 $("#bReset").addEventListener("click",function(){
- place.x=0; place.y=0; place.scale=1;
+ place.x=0;place.y=0;place.scale=1;
  if(gyro.cur) gyro.anchor={a:gyro.cur.a,b:gyro.cur.b};
- gyro.dx=0; gyro.dy=0; applyFigure(); chip("神明已回到正前方");
+ gyro.dx=0;gyro.dy=0;applyFigure();chip(U("recentre"));
 });
-
 function applyFigure(){
  figEl.style.transform="translate(calc(-50% + "+(place.x+gyro.dx).toFixed(1)+"px), calc(-50% + "+
-   (place.y+gyro.dy).toFixed(1)+"px)) scale("+place.scale.toFixed(3)+")";
- var cx=innerWidth/2+place.x+gyro.dx, cy=innerHeight*0.46+place.y+gyro.dy;
- var gh=$("#ghost"), m=70;
+  (place.y+gyro.dy).toFixed(1)+"px)) scale("+place.scale.toFixed(3)+")";
+ var cx=innerWidth/2+place.x+gyro.dx, cy=innerHeight*0.46+place.y+gyro.dy, gh=$("#ghost"), m=70;
  if(cx<m||cx>innerWidth-m||cy<m||cy>innerHeight-m){
-  var ex=clamp(cx,m,innerWidth-m), ey=clamp(cy,m,innerHeight-m);
   gh.textContent=(cx<m?"◀ ":"")+state.deity.name+(cx>innerWidth-m?" ▶":"");
-  gh.style.left=ex+"px"; gh.style.top=ey+"px"; gh.hidden=false;
+  gh.style.left=clamp(cx,m,innerWidth-m)+"px"; gh.style.top=clamp(cy,m,innerHeight-m)+"px";
+  gh.hidden=false;
  } else gh.hidden=true;
 }
 
-/* ========== 2. 拖曳擺放 ＋ 雙指縮放 ========== */
-var ptrs={},pinch0=null,drag0=null;
+/* ========== 拖曳擺放 ＋ 雙指縮放 ＋ 上香拖曳 ========== */
+var ptrs={},pinch0=null,drag0=null,jossDrag=null;
 touchEl.addEventListener("pointerdown",function(e){
  touchEl.setPointerCapture(e.pointerId);
  ptrs[e.pointerId]={x:e.clientX,y:e.clientY};
+ if(rite.on){ onRiteDown(e); return; }
  var ks=Object.keys(ptrs);
- if(ritual.on){ ritual.last=null; return; }
- if(ks.length===2){
-  var a=ptrs[ks[0]],b=ptrs[ks[1]];
-  pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),s:place.scale}; drag0=null;
- }else if(ks.length===1){ drag0={x:e.clientX,y:e.clientY,px:place.x,py:place.y}; }
+ if(ks.length===2){var a=ptrs[ks[0]],b=ptrs[ks[1]];
+  pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),s:place.scale};drag0=null;}
+ else if(ks.length===1) drag0={x:e.clientX,y:e.clientY,px:place.x,py:place.y};
 });
 touchEl.addEventListener("pointermove",function(e){
  if(!ptrs[e.pointerId]) return;
  ptrs[e.pointerId]={x:e.clientX,y:e.clientY};
- if(ritual.on){ ritualMove(e.clientX,e.clientY); return; }
+ if(rite.on){ onRiteMove(e); return; }
+ if(shakeWant) swipeShake(e.clientX);
  var ks=Object.keys(ptrs);
- if(ks.length>=2&&pinch0){
-  var a=ptrs[ks[0]],b=ptrs[ks[1]];
-  var d=Math.hypot(a.x-b.x,a.y-b.y);
-  place.scale=clamp(pinch0.s*(d/pinch0.d),0.45,2.4);
- }else if(drag0){
-  place.x=drag0.px+(e.clientX-drag0.x);
-  place.y=drag0.py+(e.clientY-drag0.y);
- }
+ if(ks.length>=2&&pinch0){var a=ptrs[ks[0]],b=ptrs[ks[1]];
+  place.scale=clamp(pinch0.s*(Math.hypot(a.x-b.x,a.y-b.y)/pinch0.d),0.45,2.4);}
+ else if(drag0){place.x=drag0.px+(e.clientX-drag0.x);place.y=drag0.py+(e.clientY-drag0.y);}
 });
 function ptrUp(e){
  delete ptrs[e.pointerId];
  if(Object.keys(ptrs).length<2) pinch0=null;
- if(!Object.keys(ptrs).length){ drag0=null; if(ritual.on) ritual.last=null; }
+ if(!Object.keys(ptrs).length){drag0=null; if(rite.on) onRiteUp(e);}
 }
 touchEl.addEventListener("pointerup",ptrUp);
 touchEl.addEventListener("pointercancel",ptrUp);
-addEventListener("resize",function(){ if(!altarEl.hidden){ sizeCanvas(); applyFigure(); } });
-
-/* ========== 6. 畫圈點香 ========== */
-var ritual={on:false,acc:0,last:null,trail:[],cx:0,cy:0};
-function showHint(main,sub,fn){
- var h=$("#hint"); h.querySelector(".ht").textContent=main;
- var b=h.querySelector(".hs");
- if(sub){ b.textContent=sub; b.hidden=false; b.onclick=fn; } else b.hidden=true;
- h.hidden=false;
-}
-function hideHint(){ $("#hint").hidden=true; }
-function startRitual(){
- var r=$("#censer").getBoundingClientRect();
- ritual.on=true; ritual.acc=0; ritual.last=null; ritual.trail=[];
- ritual.cx=r.left+r.width/2; ritual.cy=r.top+r.height/2;
- $("#bIncense").classList.remove("lit");
- showHint("繞著香爐畫一圈","或點此直接上香",function(){ lightIncense(); });
-}
-function endRitual(){ ritual.on=false; ritual.trail=[]; ritual.last=null; hideHint(); }
-function ritualMove(x,y){
- var dx=x-ritual.cx, dy=y-ritual.cy, rad=Math.hypot(dx,dy);
- ritual.trail.push({x:x,y:y}); if(ritual.trail.length>70) ritual.trail.shift();
- if(rad<30||rad>320){ ritual.last=null; return; }
- var ang=Math.atan2(dy,dx);
- if(ritual.last!==null){
-  var d=ang-ritual.last;
-  while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI;
-  if(Math.abs(d)<1.2) ritual.acc+=d;
- }
- ritual.last=ang;
- if(Math.abs(ritual.acc)>=Math.PI*2){ lightIncense(); }
-}
-function lightIncense(){
- if(state.incense) return;
- endRitual();
- state.incense=true;
- $("#censer").innerHTML=censerSVG(true);
- $("#bIncense").disabled=true; $("#bIncense").classList.remove("lit");
- $("#bJiao").disabled=false; $("#bQian").disabled=false;
- $("#bJiao").classList.add("lit"); $("#bQian").classList.add("lit");
- figEl.style.filter="drop-shadow(0 0 46px "+state.deity.glow+"88)";
- toast("三炷清香　心誠則靈");
-}
+addEventListener("resize",function(){if(!altarEl.hidden){sizeCanvas();applyFigure();layoutRite();}});
 
 /* ========== 香煙 ＋ 繪製迴圈 ========== */
 var sc=$("#smoke"),sctx=sc.getContext("2d"),parts=[],raf=0;
-function sizeCanvas(){
- var r=Math.min(devicePixelRatio||1,2);
- sc.width=sc.clientWidth*r; sc.height=sc.clientHeight*r;
- sctx.setTransform(r,0,0,r,0,0);
-}
-function startLoop(){ sizeCanvas(); if(!raf) raf=requestAnimationFrame(tick); }
-function stopLoop(){ cancelAnimationFrame(raf); raf=0; parts.length=0; sctx.clearRect(0,0,sc.width,sc.height); }
-function emitSmoke(w,h){
+function sizeCanvas(){var r=Math.min(devicePixelRatio||1,2);
+ sc.width=sc.clientWidth*r;sc.height=sc.clientHeight*r;sctx.setTransform(r,0,0,r,0,0);}
+function startLoop(){sizeCanvas();if(!raf)raf=requestAnimationFrame(tick);}
+function stopLoop(){cancelAnimationFrame(raf);raf=0;parts.length=0;sctx.clearRect(0,0,sc.width,sc.height);}
+function emitSmoke(){
  if(!state.incense||reduce||parts.length>=90||Math.random()>=.55) return;
  var r=$("#censer").getBoundingClientRect();
- var bx=r.left+r.width/2+(Math.random()*40-20), by=r.top+r.height*0.34;
- parts.push({x:bx,y:by,vx:(Math.random()-.5)*.18,vy:-(.5+Math.random()*.5),
-   r:3+Math.random()*4,a:.4+Math.random()*.2,t:0});
+ parts.push({x:r.left+r.width/2+(Math.random()*40-20),y:r.top+r.height*0.34,
+  vx:(Math.random()-.5)*.18,vy:-(.5+Math.random()*.5),r:3+Math.random()*4,a:.4+Math.random()*.2,t:0});
 }
-function stepSmoke(){
- for(var i=parts.length-1;i>=0;i--){
-  var p=parts[i]; p.t++;
-  p.x+=p.vx+Math.sin(p.t/26+p.r)*.28; p.y+=p.vy; p.vy*=.995; p.r+=.22; p.a-=.0042;
-  if(p.a<=0||p.y<-40) parts.splice(i,1);
+function stepSmoke(){for(var i=parts.length-1;i>=0;i--){var p=parts[i];p.t++;
+ p.x+=p.vx+Math.sin(p.t/26+p.r)*.28;p.y+=p.vy;p.vy*=.995;p.r+=.22;p.a-=.0042;
+ if(p.a<=0||p.y<-40)parts.splice(i,1);}}
+function drawSmoke(g,k){for(var i=0;i<parts.length;i++){var p=parts[i],R=p.r*3*k,X=p.x*k,Y=p.y*k;
+ var gr=g.createRadialGradient(X,Y,0,X,Y,R);
+ gr.addColorStop(0,"rgba(238,232,220,"+p.a.toFixed(3)+")");gr.addColorStop(1,"rgba(238,232,220,0)");
+ g.fillStyle=gr;g.beginPath();g.arc(X,Y,R,0,6.283);g.fill();}}
+function tick(){raf=requestAnimationFrame(tick);
+ sctx.clearRect(0,0,sc.clientWidth,sc.clientHeight);
+ emitSmoke();stepSmoke();drawSmoke(sctx,1);applyFigure();}
+
+/* ========== 上香三步 ========== */
+var rite={on:false,step:0,x:0,y:0,drag:false,ox:0,oy:0};
+var jossEl=$("#joss"),candleEl=$("#candle");
+function showHint(main,sub,fn){var h=$("#hint");h.querySelector(".ht").innerHTML=main;
+ var b=h.querySelector(".hs");
+ if(sub){b.textContent=sub;b.hidden=false;b.onclick=fn;}else b.hidden=true;
+ h.hidden=false;}
+function hideHint(){$("#hint").hidden=true;}
+function pips(){
+ var ps=$("#rite").querySelectorAll(".pip");
+ for(var i=0;i<ps.length;i++){
+  ps[i].classList.toggle("on", i+1===rite.step);
+  ps[i].classList.toggle("done", i+1<rite.step);
  }
 }
-function drawSmoke(g,k){
- for(var i=0;i<parts.length;i++){
-  var p=parts[i], R=p.r*3*k, X=p.x*k, Y=p.y*k;
-  var gr=g.createRadialGradient(X,Y,0,X,Y,R);
-  gr.addColorStop(0,"rgba(238,232,220,"+p.a.toFixed(3)+")");
-  gr.addColorStop(1,"rgba(238,232,220,0)");
-  g.fillStyle=gr; g.beginPath(); g.arc(X,Y,R,0,6.283); g.fill();
- }
+function layoutRite(){
+ var c=$("#censer").getBoundingClientRect();
+ candleEl.style.left=(c.right+16)+"px";
+ candleEl.style.top=(c.top-14)+"px";
+ if(!rite.drag){ jossEl.style.left=rite.x+"px"; jossEl.style.top=rite.y+"px"; }
 }
-function drawRitual(g){
- if(!ritual.on) return;
- var t=ritual.trail;
- if(t.length>1){
-  g.save(); g.strokeStyle="rgba(246,223,168,.7)"; g.lineWidth=3;
-  g.lineCap="round"; g.lineJoin="round"; g.shadowColor="#f6dfa8"; g.shadowBlur=14;
-  g.beginPath(); g.moveTo(t[0].x,t[0].y);
-  for(var i=1;i<t.length;i++) g.lineTo(t[i].x,t[i].y);
-  g.stroke(); g.restore();
- }
- var prog=Math.min(Math.abs(ritual.acc)/(Math.PI*2),1), R=86;
- g.save();
- g.strokeStyle="rgba(216,171,85,.22)"; g.lineWidth=5;
- g.beginPath(); g.arc(ritual.cx,ritual.cy,R,0,6.283); g.stroke();
- g.strokeStyle="#f6dfa8"; g.lineWidth=5; g.lineCap="round";
- g.beginPath(); g.arc(ritual.cx,ritual.cy,R,-Math.PI/2,-Math.PI/2+6.283*prog); g.stroke();
- g.restore();
+function startRite(){
+ var c=$("#censer").getBoundingClientRect();
+ rite.on=true; rite.step=1; rite.drag=false;
+ rite.x=c.left-104; rite.y=c.top-30;
+ jossEl.innerHTML=jossSVG(0); jossEl.hidden=false;
+ candleEl.innerHTML=candleSVG(); candleEl.hidden=false;
+ $("#rite").hidden=false; pips(); layoutRite();
+ $("#bIncense").classList.remove("lit");
+ showHint(U("r1"),U("rSkip"),function(){finishRite();});
+ markDrop(candleEl);
 }
-function tick(){
- raf=requestAnimationFrame(tick);
- var w=sc.clientWidth,h=sc.clientHeight;
- sctx.clearRect(0,0,w,h);
- emitSmoke(w,h); stepSmoke(); drawSmoke(sctx,1); drawRitual(sctx);
- applyFigure();
+function endRite(){
+ rite.on=false; rite.drag=false; shakeWant=null;
+ jossEl.hidden=true; candleEl.hidden=true; $("#rite").hidden=true;
+ clearDrop(); hideHint();
+}
+function markDrop(el){
+ clearDrop();
+ var r=el.getBoundingClientRect(), d=document.createElement("div");
+ d.className="drop"; var s=Math.max(r.width,r.height)+34;
+ d.style.width=s+"px"; d.style.height=s+"px";
+ d.style.left=(r.left+r.width/2-s/2)+"px"; d.style.top=(r.top+r.height/2-s/2)+"px";
+ altarEl.appendChild(d);
+}
+function clearDrop(){var d=altarEl.querySelector(".drop");if(d)d.remove();}
+function jossCenter(){var r=jossEl.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height*0.12}}
+function near(el,pt,pad){var r=el.getBoundingClientRect();
+ return Math.hypot(pt.x-(r.left+r.width/2),pt.y-(r.top+r.height/2))< (Math.max(r.width,r.height)/2+(pad||46));}
+function onRiteDown(e){
+ if(rite.step===2) return;
+ rite.drag=true; var r=jossEl.getBoundingClientRect();
+ rite.ox=e.clientX-r.left; rite.oy=e.clientY-r.top;
+}
+function onRiteMove(e){
+ if(!rite.drag) return;
+ rite.x=e.clientX-rite.ox; rite.y=e.clientY-rite.oy;
+ jossEl.style.left=rite.x+"px"; jossEl.style.top=rite.y+"px";
+}
+function onRiteUp(){
+ if(!rite.drag) return; rite.drag=false;
+ var pt=jossCenter();
+ if(rite.step===1&&near(candleEl,pt,54)){
+  jossEl.innerHTML=jossSVG(1); rite.step=2; pips(); clearDrop();
+  shakeWant=function(){ if(rite.step!==2) return;
+   jossEl.innerHTML=jossSVG(2); rite.step=3; pips(); shakeWant=null;
+   markDrop($("#censer"));
+   showHint(U("r3"),U("rSkip"),function(){finishRite();});
+   toast(U("rBlow"));
+  };
+  showHint(U("r2"),U("rSkip2"),function(){ if(shakeWant) shakeWant(); });
+  return;
+ }
+ if(rite.step===3&&near($("#censer"),pt,56)){ finishRite(); return; }
+}
+function finishRite(){
+ endRite();
+ if(state.incense) return;
+ state.incense=true;
+ $("#censer").innerHTML=censerSVG(true);
+ $("#bIncense").disabled=true;$("#bIncense").classList.remove("lit");
+ $("#bJiao").disabled=false;$("#bQian").disabled=false;
+ $("#bJiao").classList.add("lit");$("#bQian").classList.add("lit");
+ figEl.style.filter="drop-shadow(0 0 46px "+state.deity.glow+"88)";
+ sfx("bell");
+ bow(3);
+}
+function bow(n){
+ var i=0;
+ (function next(){
+  if(i>=n){ setTimeout(declare,500); return; }
+  i++;
+  figEl.style.transition="filter .25s";
+  figEl.style.filter="drop-shadow(0 0 70px "+state.deity.glow+")";
+  setTimeout(function(){figEl.style.filter="drop-shadow(0 0 46px "+state.deity.glow+"88)";
+   setTimeout(next,230);},230);
+ })();
 }
 
-/* ========== 動作 ========== */
-$(".rail").addEventListener("click",function(e){
- var b=e.target.closest(".act"); if(!b||b.disabled) return;
- var a=b.dataset.act;
- if(a==="incense"){ ritual.on?endRitual():startRitual(); }
- if(a==="jiao") doJiao();
- if(a==="qian") doQian();
- if(a==="photo") doPhoto();
-});
+/* ========== 擲筊 ========== */
+function throwJiao(){
+ var a=Math.random()<.5,b=Math.random()<.5;
+ return {a:a,b:b,kind:(a!==b)?"sheng":(a?"xiao":"yin")};
+}
+function J(k){return {
+ sheng:{t:U("shengT"),s:U("shengS"),c:"#f6dfa8",m:U("shengM"),tw:"聖筊"},
+ xiao :{t:U("xiaoT"), s:U("xiaoS"), c:"#ece4d8",m:U("xiaoM"), tw:"笑筊"},
+ yin  :{t:U("yinT"),  s:U("yinS"),  c:"#d47e8e",m:U("yinM"),  tw:"陰筊"}
+}[k];}
 function doJiao(){
- var a=Math.random()<.5, b=Math.random()<.5;   /* true = 平面朝上（陽） */
- var kind=(a!==b)?"sheng":(a?"xiao":"yin"), title,sub,body,color;
- if(kind==="sheng"){ state.streak++;
-  title="聖　筊"; sub="一平一凸　神明允許"; color="#f6dfa8";
-  body="神明答應了。心中所問，可以依此而行；但記得，神明應允的是方向，路還是得自己走。";
- }else if(kind==="xiao"){ state.streak=0;
-  title="笑　筊"; sub="兩平面朝上　笑而不答"; color="#ece4d8";
-  body="神明笑而不答。通常表示問題問得不夠清楚，或者你心裡其實已經有答案了。想清楚再擲一次。";
- }else{ state.streak=0;
-  title="陰　筊"; sub="兩凸面朝上　神明不允"; color="#d47e8e";
-  body="神明沒有答應。可能是時機未到，也可能該換個做法。別硬求，改個問法再試。";
- }
- var streak=state.streak>=3?'<p class="streak">連三聖杯　大允</p>':"";
+ sfx("jiao");
+ var r=throwJiao(),k=J(r.kind);
+ if(r.kind==="sheng") state.streak++; else state.streak=0;
+ var streak=state.streak>=3?'<p class="streak">'+U("streak3")+'</p>':"";
  if(state.streak>=3) state.streak=0;
- openSheet('<h2 style="color:'+color+'">'+title+'</h2><p class="sub">'+sub+'</p>'+
-  '<div class="cups">'+cupSVG(a)+cupSVG(b)+'</div><p class="verdict">'+body+'</p>'+streak+
-  '<div class="sheet-btns"><button class="sbtn" data-close>退下</button>'+
-  '<button class="sbtn primary" data-again="jiao">再擲一次</button></div>');
-}
-function doQian(){
- var d=state.deity, i=Math.floor(Math.random()*d.lots.length), lot=d.lots[i];
- var no=["第一籤","第二籤","第三籤","第四籤","第五籤"][i];
- var col=GRADE_COLOR[lot.g]||"#ece4d8";
- openSheet('<div class="lot-head"><span class="lot-no">'+d.name+'　'+no+'</span>'+
-  '<span class="grade" style="color:'+col+'">'+lot.g+'</span></div>'+
-  '<div class="poem-wrap"><div class="poem">'+lot.p.join("<br>")+'</div></div>'+
-  '<div class="explain"><b>解　曰</b>'+lot.e+'</div>'+
-  '<div class="sheet-btns"><button class="sbtn" data-close>收籤</button>'+
-  '<button class="sbtn primary" data-again="qian">再抽一支</button></div>');
+ openSheet('<h2 style="color:'+k.c+'">'+k.t+'</h2><p class="sub">'+k.s+'</p>'+
+  '<div class="cups">'+cupSVG(r.a)+cupSVG(r.b)+'</div>'+tl(k.tw)+'<p class="verdict">'+k.m+'</p>'+streak+
+  '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+  '<button class="sbtn primary" data-again="jiao">'+U("again")+'</button></div>');
 }
 
-/* ========== 3. 合成拍照 ========== */
-function svgToImg(svg){
- return new Promise(function(res,rej){
-  var im=new Image();
-  im.onload=function(){res(im);}; im.onerror=function(){rej(new Error("svg"));};
-  im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+/* ========== 求籤（傳統流程） ========== */
+var qs={phase:"",lot:null,ok:0};
+function doQian(){ qs={phase:"ask",lot:null,ok:0}; renderQian(); }
+function qianShake(fn){
+ shakeWant=fn;
+ if(!motion.granted&&needsPrompt()) askMotion().then(function(){});
+}
+function renderQian(){
+ var d=state.deity;
+ if(qs.phase==="ask"){
+  shakeWant=null;
+  openSheet('<h2 style="color:#f6dfa8">'+U("askT")+'</h2><p class="sub">'+U("askS")+'</p>'+
+   '<p class="rite-note">'+U("askN").replace("%s",esc(gname(d)))+'</p>'+tl("擲筊")+
+   '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+   '<button class="sbtn primary" data-q="ask">'+U("askDo")+'</button></div>');
+  return;
+ }
+ if(qs.phase==="draw"){
+  openSheet('<h2 style="color:#f6dfa8">'+U("drawT")+'</h2><p class="sub">'+U("drawS")+'</p>'+
+   '<p class="rite-note">'+U("drawN")+'</p>'+tl("抽籤")+
+   '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+   '<button class="sbtn primary" data-q="draw">'+U("drawDo")+'</button></div>'+
+   '<p class="srcline">'+U("drawAlt")+'</p>');
+  qianShake(function(){ if(qs.phase==="draw") drawLot(); });
+  return;
+ }
+ if(qs.phase==="confirm"){
+  shakeWant=null;
+  var tally="";
+  for(var i=0;i<3;i++) tally+='<i class="'+(i<qs.ok?"ok":"")+'"></i>';
+  openSheet('<div class="qno">'+esc(qs.lot.no)+'</div><div class="qgz">'+esc(qs.lot.gz)+'</div>'+
+   '<div class="tally">'+tally+'</div>'+
+   '<p class="rite-note">'+U("confN")+'</p>'+
+   '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+   '<button class="sbtn primary" data-q="confirm">'+U("confDo")+'</button></div>');
+  return;
+ }
+ if(qs.phase==="done") showLot(qs.lot);
+}
+function drawLot(){
+ shakeWant=null; sfx("rattle");
+ qs.lot=QIAN.lots[Math.floor(Math.random()*QIAN.lots.length)];
+ qs.ok=0; qs.phase="confirm"; renderQian();
+}
+function qianStep(which){
+ sfx("jiao");
+ var r=throwJiao(),k=J(r.kind);
+ var cups='<div class="cups">'+cupSVG(r.a)+cupSVG(r.b)+'</div>';
+ if(which==="ask"){
+  if(r.kind==="sheng"){ qs.phase="draw";
+   openSheet('<h2 style="color:#f6dfa8">'+U("shengT")+'</h2><p class="sub">'+U("drawS")+'</p>'+cups+
+    '<p class="verdict">'+U("okGo")+'</p><div class="sheet-btns">'+
+    '<button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+    '<button class="sbtn primary" data-q="next">'+U("goShake")+'</button></div>');
+  }else{
+   openSheet('<h2 style="color:'+k.c+'">'+k.t+'</h2><p class="sub">'+k.s+'</p>'+cups+
+    '<p class="verdict">'+(r.kind==="xiao"?U("xiaoAsk"):U("yinAsk"))+'</p>'+
+    '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+    '<button class="sbtn primary" data-q="ask">'+U("retryAsk")+'</button></div>');
+  }
+  return;
+ }
+ if(which==="confirm"){
+  if(r.kind==="sheng"){
+   qs.ok++;
+   if(qs.ok>=3){ qs.phase="done";
+    openSheet('<h2 style="color:#f6dfa8">'+U("conf3T")+'</h2><p class="sub">'+U("conf3S")+'</p>'+cups+
+     '<div class="tally"><i class="ok"></i><i class="ok"></i><i class="ok"></i></div>'+
+     '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+     '<button class="sbtn primary" data-q="show">'+U("seeLot")+'</button></div>');
+   } else renderQian();
+  }else if(r.kind==="xiao"){
+   openSheet('<h2 style="color:'+k.c+'">'+k.t+'</h2><p class="sub">'+k.s+'</p>'+cups+
+    '<p class="verdict">'+U("xiaoConf")+'</p>'+
+    '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+    '<button class="sbtn primary" data-q="next">'+U("again")+'</button></div>');
+  }else{
+   qs.phase="draw"; qs.lot=null; qs.ok=0;
+   openSheet('<h2 style="color:'+k.c+'">'+k.t+'</h2><p class="sub">'+k.s+'</p>'+cups+
+    '<p class="verdict">'+U("yinConf")+'</p>'+
+    '<div class="sheet-btns"><button class="sbtn" data-close>'+U("dismiss")+'</button>'+
+    '<button class="sbtn primary" data-q="next">'+U("putBack")+'</button></div>');
+  }
+ }
+}
+var TONE={"吉":"#f6dfa8","平":"#ece4d8","凶":"#d47e8e"};
+
+/* ========== 報名（稟告）========== */
+var WISHP={cs:"cái yùn",yl:"yīn yuán",wc:"xué yè",bs:"jiàn kāng",gg:"shì yè",mz:"píng ān"};
+function cline(k){
+ return '<div class="cl"><span class="cf"><b>'+U(k)+'</b><i>'+U(k+"P")+'</i></span>'+
+        '<span class="bl"></span></div>';
+}
+function declare(){
+ var d=state.deity;
+ openSheet('<h2 style="color:#f6dfa8">'+U("decl")+'</h2>'+
+  '<p class="sub">'+U("declSub")+'</p>'+
+  '<p class="rite-note">'+U("declNote")+'</p>'+
+  '<div class="chant">'+
+   cline("cName")+cline("cBirth")+cline("cAddr")+
+   '<div class="cl"><span class="cf"><b>'+U("cWish")+'</b><i>'+U("cWishP")+'</i></span>'+
+   '<span class="fill"><b>'+esc(gwish(d))+'</b><i>'+esc(WISHP[d.id])+'</i></span></div>'+
+  '</div>'+
+  '<p class="srcline">'+U("declPriv")+'</p>'+
+  '<div class="sheet-btns"><button class="sbtn" data-close>'+U("later")+'</button>'+
+  '<button class="sbtn primary" id="bDeclare">'+U("declDo")+'</button></div>');
+ $("#bDeclare").addEventListener("click",function(){
+  say(U("sayDecl"));
+  closeSheet(); toast(U("declOk"));
  });
 }
+
+/* ========== 合影 ========== */
+function svgToImg(svg){return new Promise(function(res,rej){var im=new Image();
+ im.onload=function(){res(im)};im.onerror=function(){rej(new Error("svg"))};
+ im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);});}
 function doPhoto(){
- var d=state.deity, v=$("#cam");
- var fr=figEl.getBoundingClientRect(), cr=$("#censer").getBoundingClientRect();
+ var d=state.deity,v=$("#cam");
+ var fr=figEl.getBoundingClientRect(),cr=$("#censer").getBoundingClientRect();
  var ready=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
- toast("合成中…");
+ toast(U("composing"));
  Promise.all([svgToImg(figureSVG(d,true)),svgToImg(censerSVG(state.incense,true)),ready])
  .then(function(r){
-  var figImg=r[0], cenImg=r[1];
-  var vw=innerWidth, vh=innerHeight, W=1080, H=Math.round(W*vh/vw), k=W/vw;
-  var c=document.createElement("canvas"); c.width=W; c.height=H;
-  var g=c.getContext("2d");
+  var vw=innerWidth,vh=innerHeight,W=1080,H=Math.round(W*vh/vw),k=W/vw;
+  var c=document.createElement("canvas");c.width=W;c.height=H;var g=c.getContext("2d");
   if(stream&&v.videoWidth>0){
-   var vr=v.videoWidth/v.videoHeight, cR=W/H, sw,sh;
-   if(vr>cR){ sh=v.videoHeight; sw=sh*cR; } else { sw=v.videoWidth; sh=sw/cR; }
+   var vr=v.videoWidth/v.videoHeight,cR=W/H,sw,sh;
+   if(vr>cR){sh=v.videoHeight;sw=sh*cR;}else{sw=v.videoWidth;sh=sw/cR;}
    g.drawImage(v,(v.videoWidth-sw)/2,(v.videoHeight-sh)/2,sw,sh,0,0,W,H);
   }else{
    var lg=g.createLinearGradient(0,0,0,H);
-   lg.addColorStop(0,"#1a0f0b"); lg.addColorStop(.45,"#120b08"); lg.addColorStop(1,"#0b0907");
-   g.fillStyle=lg; g.fillRect(0,0,W,H);
+   lg.addColorStop(0,"#1a0f0b");lg.addColorStop(.45,"#120b08");lg.addColorStop(1,"#0b0907");
+   g.fillStyle=lg;g.fillRect(0,0,W,H);
    var rg=g.createRadialGradient(W/2,H*0.42,0,W/2,H*0.42,W*0.75);
-   rg.addColorStop(0,"rgba(216,171,85,.18)"); rg.addColorStop(1,"rgba(216,171,85,0)");
-   g.fillStyle=rg; g.fillRect(0,0,W,H);
+   rg.addColorStop(0,"rgba(216,171,85,.18)");rg.addColorStop(1,"rgba(216,171,85,0)");
+   g.fillStyle=rg;g.fillRect(0,0,W,H);
   }
   drawSmoke(g,k);
-  g.save(); g.shadowColor="rgba(216,171,85,.55)"; g.shadowBlur=40*k;
-  g.drawImage(figImg,fr.left*k,fr.top*k,fr.width*k,fr.height*k); g.restore();
-  g.drawImage(cenImg,cr.left*k,cr.top*k,cr.width*k,cr.height*k);
-
+  g.save();g.shadowColor="rgba(216,171,85,.55)";g.shadowBlur=40*k;
+  g.drawImage(r[0],fr.left*k,fr.top*k,fr.width*k,fr.height*k);g.restore();
+  g.drawImage(r[1],cr.left*k,cr.top*k,cr.width*k,cr.height*k);
   var bh=Math.round(H*0.105);
-  g.fillStyle="rgba(11,9,7,.74)"; g.fillRect(0,H-bh,W,bh);
-  g.strokeStyle="rgba(216,171,85,.5)"; g.lineWidth=3;
-  g.beginPath(); g.moveTo(0,H-bh); g.lineTo(W,H-bh); g.stroke();
-  g.textAlign="center"; g.textBaseline="alphabetic";
-  g.fillStyle="#f6dfa8"; g.font='600 '+Math.round(bh*0.30)+'px "Noto Serif TC",serif';
+  g.fillStyle="rgba(11,9,7,.74)";g.fillRect(0,H-bh,W,bh);
+  g.strokeStyle="rgba(216,171,85,.5)";g.lineWidth=3;
+  g.beginPath();g.moveTo(0,H-bh);g.lineTo(W,H-bh);g.stroke();
+  g.textAlign="center";
+  g.fillStyle="#f6dfa8";g.font='600 '+Math.round(bh*0.30)+'px "Noto Serif TC",serif';
   g.fillText(d.name,W/2,H-bh*0.60);
-  g.fillStyle="#a2978c"; g.font=Math.round(bh*0.17)+'px "Noto Sans TC",sans-serif';
+  g.fillStyle="#a2978c";g.font=Math.round(bh*0.17)+'px "Noto Sans TC",sans-serif';
   g.fillText(d.bless,W/2,H-bh*0.33);
-  g.fillStyle="#6d645c"; g.font=Math.round(bh*0.14)+'px "Noto Sans TC",sans-serif';
+  g.fillStyle="#6d645c";g.font=Math.round(bh*0.14)+'px "Noto Sans TC",sans-serif';
   g.fillText("掌心香火",W/2,H-bh*0.11);
-
-  c.toBlob(function(blob){
-   if(!blob){ toast("合成失敗，請再試一次"); return; }
-   showPhoto(blob);
-  },"image/png");
- }).catch(function(){ toast("合成失敗，請再試一次"); });
+  c.toBlob(function(b){ if(!b){toast("合成失敗，請再試一次");return;} showPhoto(b); },"image/png");
+ }).catch(function(){toast("合成失敗，請再試一次");});
 }
 function showPhoto(blob){
  var url=URL.createObjectURL(blob);
- openSheet('<h2 style="color:#f6dfa8">合影留念</h2><p class="sub">長按圖片可存到相簿</p>'+
-  '<img class="shot" src="'+url+'" alt="與'+state.deity.name+'的合影">'+
-  '<div class="sheet-btns"><button class="sbtn" data-close>關閉</button>'+
-  '<button class="sbtn primary" id="bSave">儲存圖片</button></div>');
- var btn=$("#bSave");
- btn.addEventListener("click",function(){ savePhoto(blob); });
- sheetEl.addEventListener("click",function once(e){
-  if(e.target===sheetEl||e.target.closest("[data-close]")){
-   setTimeout(function(){URL.revokeObjectURL(url);},800);
-   sheetEl.removeEventListener("click",once);
-  }
- });
+ openSheet('<h2 style="color:#f6dfa8">'+U("photoT")+'</h2><p class="sub">'+U("photoS")+'</p>'+
+  '<img class="shot" src="'+url+'" alt="與'+esc(state.deity.name)+'的合影">'+
+  '<div class="sheet-btns"><button class="sbtn" data-close>'+U("close")+'</button>'+
+  '<button class="sbtn primary" id="bSave">'+U("save")+'</button></div>');
+ $("#bSave").addEventListener("click",function(){savePhoto(blob)});
 }
 function savePhoto(blob){
  var name="掌心香火-"+state.deity.name+".png";
- if(DL){
-  DL.save({filename:name,data:blob}).then(function(){ toast("已儲存"); },function(err){
-   if(err&&err.code==="declined") return;
-   toast("無法直接儲存，長按圖片試試");
-  });
-  return;
- }
- try{
-  var u=URL.createObjectURL(blob), a=document.createElement("a");
-  a.href=u; a.download=name; document.body.appendChild(a); a.click();
-  setTimeout(function(){a.remove();URL.revokeObjectURL(u);},1500);
- }catch(e){}
+ if(DL){ DL.save({filename:name,data:blob}).then(function(){toast(U("saved"))},
+   function(err){ if(!(err&&err.code==="declined")) toast("無法直接儲存，長按圖片試試"); });
+  return; }
+ try{var u=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){a.remove();URL.revokeObjectURL(u)},1500);}catch(e){}
  toast("若未自動下載，長按圖片可儲存");
 }
 
@@ -868,42 +1550,185 @@ function openSheet(html){
  sheetEl.innerHTML='<div class="sheet-in gut" role="dialog" aria-modal="true">'+html+'</div>';
  var f=sheetEl.querySelector(".sbtn"); if(f) f.focus();
 }
-function closeSheet(){ sheetEl.hidden=true; sheetEl.innerHTML=""; }
+function closeSheet(){ sheetEl.hidden=true; sheetEl.innerHTML=""; shakeWant=null; }
 sheetEl.addEventListener("click",function(e){
  if(e.target===sheetEl){closeSheet();return;}
  if(e.target.closest("[data-close]")){closeSheet();return;}
  var ag=e.target.closest("[data-again]");
- if(ag){ var w=ag.dataset.again; closeSheet(); setTimeout(function(){ w==="jiao"?doJiao():doQian(); },140); }
+ if(ag){closeSheet();setTimeout(doJiao,140);return;}
+ var q=e.target.closest("[data-q]");
+ if(!q) return;
+ var w=q.dataset.q;
+ if(w==="ask"||w==="confirm") qianStep(w);
+ else if(w==="draw") drawLot();
+ else if(w==="next") renderQian();
+ else if(w==="show") showLot(qs.lot);
+ else if(w==="again"){ qs={phase:"ask",lot:null,ok:0}; renderQian(); }
+});
+$(".rail").addEventListener("click",function(e){
+ var b=e.target.closest(".act"); if(!b||b.disabled) return;
+ var a=b.dataset.act;
+ if(a==="incense"){ rite.on?endRite():startRite(); }
+ if(a==="jiao") doJiao();
+ if(a==="qian") doQian();
+ if(a==="photo") doPhoto();
 });
 addEventListener("keydown",function(e){
  if(e.key!=="Escape") return;
- if(!sheetEl.hidden){ closeSheet(); return; }
- if(ritual.on){ endRitual(); $("#bIncense").classList.add("lit"); return; }
+ if(!sheetEl.hidden){closeSheet();return;}
+ if(!pageEl.hidden){pageEl.hidden=true;return;}
+ if(rite.on){endRite();$("#bIncense").classList.add("lit");return;}
  if(!altarEl.hidden) closeAltar();
 });
-
-/* ========== 4. 搖手機擲筊 ========== */
-var lastShake=0;
-function onShake(e){
- var a=e.accelerationIncludingGravity; if(!a) return;
- var m=Math.abs(a.x||0)+Math.abs(a.y||0)+Math.abs(a.z||0);
- if(m>34&&Date.now()-lastShake>1400&&!altarEl.hidden&&sheetEl.hidden&&state.incense&&!ritual.on){
-  lastShake=Date.now(); doJiao();
- }
-}
-if(typeof DeviceOrientationEvent!=="undefined"&&!DeviceOrientationEvent.requestPermission
-   &&typeof DeviceMotionEvent!=="undefined"&&!DeviceMotionEvent.requestPermission){
- bindSensors();
-}
-
-/* 熱更新時保留當下神明 */
+/* 熱更新保留當下神明 */
 try{
- var boot=function(s){ if(s&&s.id){ for(var i=0;i<DEITIES.length;i++) if(DEITIES[i].id===s.id){openAltar(DEITIES[i]);break;} } };
+ var boot=function(s){ if(s&&s.id) for(var i=0;i<DEITIES.length;i++)
+   if(DEITIES[i].id===s.id){openAltar(DEITIES[i]);break;} };
  if(window.claude&&window.claude.hot){
-  window.claude.hot.snapshot(function(){return state.deity?{id:state.deity.id}:{};});
+  window.claude.hot.snapshot(function(){return state.deity?{id:state.deity.id}:{}});
   window.claude.hot.ready?window.claude.hot.ready(boot):boot(window.claude.hot.data||{});
  }
 }catch(err){}
+
+/* ========== 本地化繪製 ========== */
+function gname(d){ return LANG==="en" ? (GOD_EN[d.id].name) : d.name; }
+function gfull(d){ return LANG==="en" ? (GOD_EN[d.id].full) : d.full; }
+function gwish(d){ return LANG==="en" ? (GOD_EN[d.id].wish) : d.wish; }
+function gbless(d){ return LANG==="en" ? (GOD_EN[d.id].bless) : d.bless; }
+
+function paint(){
+ document.documentElement.lang = LANG==="en" ? "en" : "zh-Hant";
+ $("#tagline").textContent = U("tagline");
+ $("#bGuide").textContent  = U("guideBtn");
+ $("#homeFoot").innerHTML  = U("foot");
+ $("#langBtn").textContent = LANG==="en" ? "中文" : "EN";
+ $("#sndBtn").textContent = SND.on ? "♪" : "✕";
+ $("#sndBtn").classList.toggle("off", !SND.on);
+ var lab=[["bIncense","incense","incenseD"],["bJiao","jiao","jiaoD"],
+          ["bQian","qian","qianD"],["bPhoto","photo","photoD"]];
+ for(var i=0;i<lab.length;i++){var b=$("#"+lab[i][0]);
+  b.querySelector(".a-n").textContent=U(lab[i][1]);
+  b.querySelector(".a-d").textContent=U(lab[i][2]);}
+ var h="";
+ for(var j=0;j<DEITIES.length;j++){var d=DEITIES[j];
+  h+='<button class="wish" data-i="'+j+'"><span class="info" data-info="'+j+'" role="button" tabindex="0" aria-label="'+esc(gname(d))+'">i</span>'+
+     '<span class="w-ico">'+iconSVG(d.icon)+'</span><span class="w-n">'+esc(gwish(d))+'</span>'+
+     '<span class="w-d">'+esc(gname(d))+'</span></button>';
+ }
+ $("#wishes").innerHTML=h;
+ if(state.deity){
+  $("#who").textContent=gname(state.deity);
+  $("#for").textContent=U("wishFor")+"　"+gwish(state.deity)+"　·　"+gfull(state.deity);
+ }
+}
+$("#langBtn").addEventListener("click",function(){
+ setLang(LANG==="en"?"zh":"en"); paint();
+ if(!pageEl.hidden){ var w=pageEl.dataset.view; if(w==="guide") showGuide(); else if(w==="gods") showGods(); }
+ if(!sheetEl.hidden) closeSheet();
+});
+
+/* ---- 教學頁 ---- */
+function showGuide(){
+ var h="";
+ for(var i=0;i<GUIDE.length;i++){var sec=GUIDE[i];
+  h+='<section class="sec"><h3>'+esc(T(sec.h[0],sec.h[1]))+'</h3>';
+  for(var j=0;j<sec.steps.length;j++){var st=sec.steps[j];
+   h+='<div class="step"><span class="n">'+(j+1)+'</span><div class="b">'+
+      '<div class="t">'+esc(T(st[0][0],st[0][1]))+'</div>'+
+      '<div class="d">'+T(st[1][0],st[1][1])+'</div></div></div>';
+  }
+  h+='</section>';
+ }
+ h+='<section class="sec"><h3>'+U("taboo")+'</h3>';
+ for(var k=0;k<TABOO.length;k++)
+  h+='<div class="warn"><span class="wi">！</span><span class="wt">'+esc(T(TABOO[k][0],TABOO[k][1]))+'</span></div>';
+ h+='</section>';
+ h+='<section class="sec"><h3>'+U("vocabH")+'</h3>'+
+   '<div class="vhead"><span>'+U("colZh")+'</span><span>'+U("colTw")+'</span></div><div class="vlist">';
+ var order=["拜拜","燒香","香爐","金紙","天公","擲筊","聖筊","笑筊","陰筊","抽籤","籤詩","保庇"];
+ for(var m=0;m<order.length;m++){var z=order[m],t=TAILO[z];
+  h+='<div class="vrow">'+
+     '<div class="vz"><span class="han">'+z+'</span><span class="rom pin">'+t[2]+'</span></div>'+
+     '<div class="vt"><span class="han">'+t[0]+'</span><span class="rom">'+t[1]+'</span></div>'+
+     '</div>';}
+ h+='</div><p class="srcline">'+T("漢語拼音為自動標注並校對；台羅引自教育部《臺灣台語常用詞辭典》。華語寫「聖筊」，台語詞目為「象桮」。",
+   "Pinyin is auto-generated and checked. Tâi-lô is from the Ministry of Education Taiwanese dictionary. Mandarin writes 聖筊; the Taiwanese headword is 象桮.")+'</p></section>';
+ h+='<p class="srcline">'+U("srcGuide")+'</p>';
+ openPage(U("guideTitle"),h,"guide");
+}
+/* ---- 神明簡介 ---- */
+function showGods(focus){
+ var h='<div class="gods">';
+ for(var i=0;i<DEITIES.length;i++){var d=DEITIES[i],e=GOD_EN[d.id],en=LANG==="en";
+  h+='<article class="god" id="god-'+d.id+'">'+
+   '<div class="god-h"><span class="gi">'+iconSVG(d.icon)+'</span><div>'+
+   '<div class="gn">'+esc(gname(d))+'</div><div class="gf">'+esc(gfull(d))+'　·　'+esc(gwish(d))+'</div></div></div>'+
+   '<dl class="kv">'+
+   '<dt>'+U("duty")+'</dt><dd>'+esc(en?e.duty:d.duty)+'</dd>'+
+   '<dt>'+U("origin")+'</dt><dd>'+esc(en?e.origin:d.origin)+'</dd>'+
+   '<dt>'+U("bday")+'</dt><dd>'+esc(en?e.bday:d.bday)+(d.bdayNote?' <small>（'+esc(d.bdayNote)+'）</small>':'')+'</dd>'+
+   '<dt>'+U("offer")+'</dt><dd>'+esc(en?e.offer:d.offer)+'</dd>'+
+   '<dt>'+U("temples")+'</dt><dd>'+esc(en?e.temples:d.temples)+'</dd>'+
+   '<dt>'+U("tip")+'</dt><dd>'+esc(en?e.tip:d.tip)+'</dd>'+
+   '</dl></article>';
+ }
+ h+='</div><p class="srcline">'+U("srcGods")+'</p>';
+ openPage(U("godsTitle"),h,"gods");
+ if(focus!=null&&DEITIES[focus]) setTimeout(function(){
+  var el=document.getElementById("god-"+DEITIES[focus].id);
+  if(el) el.scrollIntoView({block:"start",behavior:"smooth"});
+ },60);
+}
+function openPage(title,html,view){
+ $("#pageTitle").textContent=title; $("#pageBody").innerHTML=html;
+ pageEl.dataset.view=view||""; pageEl.hidden=false; pageEl.scrollTop=0;
+}
+/* ---- 籤詩頁 ---- */
+var ROM={pin:false,tl:false};
+function showLot(L){
+ shakeWant=null;
+ var hi=QIAN.wish[state.deity.wish], rows="";
+ for(var i=0;i<QIAN.show.length;i++){var k=QIAN.show[i];
+  rows+='<div class="row'+(k===hi?" hi":"")+'"><dt>'+esc(UI.J[k][LANG==="en"?1:0])+'</dt>'+
+        '<dd>'+esc(L.jie[k]||"—")+'</dd></div>';
+ }
+ var story=String(L.story||"").replace(/^[0-9一二三四五六七八九十]+[、.]\s*/,"");
+ var rom="";
+ if(ROM.pin&&PIN[L.i]) rom+='<div class="rom-line">'+PIN[L.i].join("<br>")+'</div>';
+ if(ROM.tl&&TL[L.i])   rom+='<div class="rom-line tl-line">'+TL[L.i].join("<br>")+'</div>';
+ openSheet(
+  '<div class="lot-head"><span class="lot-no">'+U("lotSet")+'　'+esc(L.no)+'</span>'+
+   '<span class="tone" style="color:'+TONE[L.tone]+'">'+esc(T(L.tone,{"吉":"Good","平":"Mixed","凶":"Poor"}[L.tone]))+'</span></div>'+
+  '<p class="sub">'+esc(L.gz)+'　'+esc(L.wuxing)+'</p>'+
+  '<div class="poem-wrap"><div class="poem">'+L.p.join("<br>")+'</div></div>'+
+  '<div class="romrow"><button class="chipbtn'+(ROM.pin?" on":"")+'" data-rom="pin">'+U("showPin")+'</button>'+
+   '<button class="chipbtn'+(ROM.tl?" on":"")+'" data-rom="tl">'+U("showTl")+'</button>'+
+   (canSpeak()?'<button class="chipbtn" id="bSpeak">'+U("readAloud")+'</button>':'')+'</div>'+ rom +
+  '<div class="explain"><b>'+U("vern")+'</b>'+esc(T(L.v, LOT_EN[L.i]||L.v))+'</div>'+
+  '<details class="jiebox"'+(LANG==="en"?"":" open")+'><summary>'+U("detail")+'</summary>'+
+   (LANG==="en"?'<p class="srcline" style="text-align:left;margin:8px 0 2px">'+U("jieZhOnly")+'</p>':'')+
+   '<dl class="jie">'+rows+'</dl></details>'+
+  (story?'<p class="story"><b>'+U("storyLab")+'</b>　'+esc(story)+'</p>':"")+
+  '<div class="sheet-btns"><button class="sbtn" data-close>'+U("keep")+'</button>'+
+  '<button class="sbtn primary" data-q="again">'+U("oneMore")+'</button></div>'+
+  '<p class="srcline">'+U("srcLot")+'<br>'+U("romNote")+'</p>');
+ var sp=$("#bSpeak");
+ if(sp) sp.addEventListener("click",function(){ say(L.p.join("，")+"。","zh-TW",0.78); });
+ var rr=sheetEl.querySelectorAll("[data-rom]");
+ for(var z=0;z<rr.length;z++) rr[z].addEventListener("click",function(ev){
+  var w=ev.currentTarget.dataset.rom; ROM[w]=!ROM[w]; showLot(L);
+ });
+}
+
+$("#sndBtn").addEventListener("click",function(){
+ SND.on=!SND.on; sndSave(); if(!SND.on) stopSay(); else sfx("tick");
+ $("#sndBtn").textContent=SND.on?"♪":"✕";
+ $("#sndBtn").classList.toggle("off",!SND.on);
+ chip(SND.on?U("sndOn"):U("sndOff"));
+});
+
+paint();
+
 })();
 </script>
 

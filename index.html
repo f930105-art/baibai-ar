@@ -2,12 +2,13 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0b0907">
 <meta name="description" content="Taiwanese temple worship in AR / 線上拜拜 AR：六十甲子籤、拜拜流程、神明簡介，中英雙語含拼音與台羅。">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{margin:0;font:14px/1.5 system-ui,sans-serif}
+html,body{margin:0;overscroll-behavior:none}
+body{font:14px/1.5 system-ui,sans-serif}
 </style>
 </head>
 <body>
@@ -169,9 +170,7 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
 .cup-w{display:flex;flex-direction:column;align-items:center;gap:7px}
 .cups svg{width:88px;height:auto}
 .cup-lab{font-size:10.5px;letter-spacing:.16em;text-indent:.16em;color:var(--smoke-2)}
-.cups .cup{animation:toss .75s cubic-bezier(.3,.7,.4,1)}
-.cups .cup-w:nth-child(2) .cup{animation-delay:.08s}
-@keyframes toss{0%{transform:translateY(-120px) rotate(-220deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+
 .verdict{font-size:14px;line-height:1.85;color:#cdc2b5;text-align:center;max-width:26em;margin:0 auto}
 .streak{margin:14px auto 0;max-width:fit-content;font-size:11.5px;letter-spacing:.14em;color:var(--gold-hi);
   border:1px solid rgba(216,171,85,.45);border-radius:999px;padding:5px 14px}
@@ -255,10 +254,10 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
   border:1px solid #3b2b22;border-radius:999px;padding:4px 11px;background:rgba(11,9,7,.78)}
 #rite .pip.on{color:var(--gold-hi);border-color:var(--gold)}
 #rite .pip.done{color:var(--jade);border-color:rgba(78,133,120,.6)}
-#joss{position:absolute;z-index:7;width:86px;touch-action:none;will-change:transform}
-#joss svg{width:100%;height:auto;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
+#joss{position:absolute;z-index:7;width:86px;pointer-events:none;will-change:transform}
+#joss svg{width:100%;height:auto;display:block;pointer-events:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}
 #candle{position:absolute;z-index:6;width:54px;pointer-events:none}
-#candle svg{width:100%;height:auto;display:block}
+#candle svg{width:100%;height:auto;display:block;pointer-events:none}
 .drop{position:absolute;z-index:5;border:2px dashed rgba(216,171,85,.55);border-radius:50%;
   pointer-events:none;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}
@@ -341,6 +340,14 @@ button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer
 .cl .fill{display:flex;flex-direction:column;gap:2px;padding-bottom:3px}
 .cl .fill b{font-weight:600;font-family:var(--font-d);font-size:16px;color:var(--gold-hi)}
 .cl .bl{align-self:flex-end;margin-bottom:6px}
+
+/* v6 修正 */
+html,body{overscroll-behavior:none}
+.shell{touch-action:none}
+#touch{touch-action:none;-webkit-user-select:none;user-select:none}
+#candle{width:62px}
+.drop.hot{border-color:var(--gold-hi);border-style:solid;
+  box-shadow:0 0 26px -4px rgba(246,223,168,.8),inset 0 0 20px -6px rgba(246,223,168,.5)}
 
 </style>
 
@@ -904,16 +911,21 @@ function iconSVG(k){
  return s+"</svg>";
 }
 function censerSVG(lit,forExport){
- var ns = forExport ? ' xmlns="http://www.w3.org/2000/svg"' : '', sticks="";
+ var ns = forExport ? ' xmlns="http://www.w3.org/2000/svg"' : '', sticks="", glow="";
  if(lit){
+  glow='<defs><radialGradient id="emb'+(forExport?"x":"")+'">'+
+   '<stop offset="0" stop-color="#fff3cf" stop-opacity=".95"/>'+
+   '<stop offset=".35" stop-color="#ffb347" stop-opacity=".7"/>'+
+   '<stop offset="1" stop-color="#ff8c3a" stop-opacity="0"/></radialGradient></defs>';
   for(var i=0;i<3;i++){
-   var x=46+i*20, h=28+(i===1?8:0);
-   sticks+='<rect x="'+(x-1.6)+'" y="'+(32-h)+'" width="3.2" height="'+h+'" rx="1.6" fill="#8a3a2a"/>'+
-    '<rect x="'+(x-1.6)+'" y="'+(32-h)+'" width="3.2" height="7" rx="1.6" fill="#c01f33"/>'+
-    '<circle cx="'+x+'" cy="'+(32-h)+'" r="3" fill="#ffb347"/>';
+   var x=46+i*20, h=i===1?52:44, ty=32-h;
+   sticks+='<rect x="'+(x-1.7)+'" y="'+ty+'" width="3.4" height="'+h+'" rx="1.7" fill="#9a8c7a"/>'+
+    '<rect x="'+(x-1.7)+'" y="'+(32-11)+'" width="3.4" height="11" rx="1.7" fill="#c01f33"/>'+
+    '<circle cx="'+x+'" cy="'+ty+'" r="7.5" fill="url(#emb'+(forExport?"x":"")+')"/>'+
+    '<circle cx="'+x+'" cy="'+ty+'" r="2.2" fill="#ffe9b0"/>';
   }
  }
- return '<svg'+ns+' viewBox="0 0 132 92" aria-hidden="true">'+sticks+
+ return '<svg'+ns+' viewBox="0 -44 132 136" aria-hidden="true">'+glow+sticks+
  '<ellipse cx="66" cy="38" rx="42" ry="9" fill="#4a3a26"/>'+
  '<path d="M24 38 Q26 72 48 78 L84 78 Q106 72 108 38 Z" fill="#6b5637"/>'+
  '<path d="M24 38 Q26 72 48 78 L58 78 Q34 70 32 38 Z" fill="#8a7147" opacity=".6"/>'+
@@ -1207,6 +1219,9 @@ touchEl.addEventListener("pointerdown",function(e){
   pinch0={d:Math.hypot(a.x-b.x,a.y-b.y),s:place.scale};drag0=null;}
  else if(ks.length===1) drag0={x:e.clientX,y:e.clientY,px:place.x,py:place.y};
 });
+touchEl.addEventListener("touchmove",function(e){
+ if(rite.on||drag0||pinch0) { if(e.cancelable) e.preventDefault(); }
+},{passive:false});
 touchEl.addEventListener("pointermove",function(e){
  if(!ptrs[e.pointerId]) return;
  ptrs[e.pointerId]={x:e.clientX,y:e.clientY};
@@ -1233,17 +1248,20 @@ function sizeCanvas(){var r=Math.min(devicePixelRatio||1,2);
 function startLoop(){sizeCanvas();if(!raf)raf=requestAnimationFrame(tick);}
 function stopLoop(){cancelAnimationFrame(raf);raf=0;parts.length=0;sctx.clearRect(0,0,sc.width,sc.height);}
 function emitSmoke(){
- if(!state.incense||reduce||parts.length>=90||Math.random()>=.55) return;
+ if(!state.incense||reduce||parts.length>=120||Math.random()>=.55) return;
  var r=$("#censer").getBoundingClientRect();
- parts.push({x:r.left+r.width/2+(Math.random()*40-20),y:r.top+r.height*0.34,
-  vx:(Math.random()-.5)*.18,vy:-(.5+Math.random()*.5),r:3+Math.random()*4,a:.4+Math.random()*.2,t:0});
+ parts.push({x:r.left+r.width/2+(Math.random()*26-13),y:r.top+r.height*0.30,
+  vx:(Math.random()-.5)*.14,vy:-(.75+Math.random()*.6),r:2+Math.random()*2.5,
+  a:.16+Math.random()*.1,t:0});
 }
 function stepSmoke(){for(var i=parts.length-1;i>=0;i--){var p=parts[i];p.t++;
- p.x+=p.vx+Math.sin(p.t/26+p.r)*.28;p.y+=p.vy;p.vy*=.995;p.r+=.22;p.a-=.0042;
+ p.x+=p.vx+Math.sin(p.t/30+p.r)*.34;p.y+=p.vy;p.vy*=.997;p.r+=.13;p.a-=.0022;
  if(p.a<=0||p.y<-40)parts.splice(i,1);}}
 function drawSmoke(g,k){for(var i=0;i<parts.length;i++){var p=parts[i],R=p.r*3*k,X=p.x*k,Y=p.y*k;
  var gr=g.createRadialGradient(X,Y,0,X,Y,R);
- gr.addColorStop(0,"rgba(238,232,220,"+p.a.toFixed(3)+")");gr.addColorStop(1,"rgba(238,232,220,0)");
+ gr.addColorStop(0,"rgba(226,220,210,"+p.a.toFixed(3)+")");
+ gr.addColorStop(.45,"rgba(226,220,210,"+(p.a*0.32).toFixed(3)+")");
+ gr.addColorStop(1,"rgba(226,220,210,0)");
  g.fillStyle=gr;g.beginPath();g.arc(X,Y,R,0,6.283);g.fill();}}
 function tick(){raf=requestAnimationFrame(tick);
  sctx.clearRect(0,0,sc.clientWidth,sc.clientHeight);
@@ -1300,18 +1318,30 @@ function near(el,pt,pad){var r=el.getBoundingClientRect();
  return Math.hypot(pt.x-(r.left+r.width/2),pt.y-(r.top+r.height/2))< (Math.max(r.width,r.height)/2+(pad||46));}
 function onRiteDown(e){
  if(rite.step===2) return;
- rite.drag=true; var r=jossEl.getBoundingClientRect();
- rite.ox=e.clientX-r.left; rite.oy=e.clientY-r.top;
+ rite.drag=true; rite.sx=e.clientX; rite.sy=e.clientY;
+ var r=jossEl.getBoundingClientRect();
+ var inside=e.clientX>=r.left-26&&e.clientX<=r.right+26&&e.clientY>=r.top-26&&e.clientY<=r.bottom+26;
+ if(inside){ rite.ox=e.clientX-r.left; rite.oy=e.clientY-r.top; }
+ else { rite.ox=r.width/2; rite.oy=r.height*0.75; }
+ onRiteMove(e);
 }
 function onRiteMove(e){
+ if(rite.step===2){ swipeShake(e.clientX); return; }
  if(!rite.drag) return;
  rite.x=e.clientX-rite.ox; rite.y=e.clientY-rite.oy;
  jossEl.style.left=rite.x+"px"; jossEl.style.top=rite.y+"px";
+ var tgt=rite.step===1?candleEl:$("#censer"), dz=altarEl.querySelector(".drop");
+ if(dz) dz.classList.toggle("hot", riteHit(tgt,{x:e.clientX,y:e.clientY}));
 }
-function onRiteUp(){
+function riteHit(el,fin){ return near(el,jossCenter(),76)||near(el,fin,76); }
+function homeJoss(){
+ var c=$("#censer").getBoundingClientRect();
+ rite.x=c.left-104; rite.y=c.top-30; layoutRite();
+}
+function onRiteUp(e){
  if(!rite.drag) return; rite.drag=false;
- var pt=jossCenter();
- if(rite.step===1&&near(candleEl,pt,54)){
+ var fin=(e&&typeof e.clientX==="number")?{x:e.clientX,y:e.clientY}:jossCenter();
+ if(rite.step===1&&riteHit(candleEl,fin)){
   jossEl.innerHTML=jossSVG(1); rite.step=2; pips(); clearDrop();
   shakeWant=function(){ if(rite.step!==2) return;
    jossEl.innerHTML=jossSVG(2); rite.step=3; pips(); shakeWant=null;
@@ -1322,7 +1352,8 @@ function onRiteUp(){
   showHint(U("r2"),U("rSkip2"),function(){ if(shakeWant) shakeWant(); });
   return;
  }
- if(rite.step===3&&near($("#censer"),pt,56)){ finishRite(); return; }
+ if(rite.step===3&&riteHit($("#censer"),fin)){ finishRite(); return; }
+ homeJoss();
 }
 function finishRite(){
  endRite();
@@ -1545,9 +1576,27 @@ function savePhoto(blob){
 }
 
 /* ========== 面板 ========== */
+/* 用 JS 動畫而非 CSS：不受系統「減少動態效果」把 CSS 動畫歸零的影響，
+   也不會因為插入新子樹時的樣式批次處理而整段被跳過。 */
+function animCups(root){
+ var cups=root.querySelectorAll(".cup");
+ for(var i=0;i<cups.length;i++){
+  var el=cups[i];
+  if(!el.animate) continue;
+  try{
+   if(reduce) el.animate([{opacity:0},{opacity:1}],{duration:180,delay:i*70,fill:"both"});
+   else el.animate(
+     [{transform:"translateY(-130px) rotate(-220deg)",opacity:0},
+      {transform:"translateY(6px) rotate(8deg)",opacity:1,offset:.72},
+      {transform:"none",opacity:1}],
+     {duration:780,delay:i*90,easing:"cubic-bezier(.3,.7,.4,1)",fill:"both"});
+  }catch(err){}
+ }
+}
 function openSheet(html){
  sheetEl.className="sheet"; sheetEl.hidden=false;
  sheetEl.innerHTML='<div class="sheet-in gut" role="dialog" aria-modal="true">'+html+'</div>';
+ animCups(sheetEl);
  var f=sheetEl.querySelector(".sbtn"); if(f) f.focus();
 }
 function closeSheet(){ sheetEl.hidden=true; sheetEl.innerHTML=""; shakeWant=null; }
